@@ -1,0 +1,26 @@
+{
+  "name": "fmeyer.dev",
+  "version": "0.1.0",
+  "description": "this is the repository for my website fmeyer.dev",
+  "scripts": {
+    "dev": "parcel index.html",
+    "build": "parcel build index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dinooo13/fmeyer.dev.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dinooo13/fmeyer.dev/issues"
+  },
+  "homepage": "https://github.com/dinooo13/fmeyer.dev#readme",
+  "devDependencies": {
+    "parcel": "^2.3.2",
+    "postcss-jit-props": "^1.0.4"
+  },
+  "dependencies": {
+    "open-props": "^1.3.8"
+  }
+}
