@@ -2,5 +2,5 @@
 	path = themes/hugo-theme-stack
 	url = https://github.com/dinooo13/hugo-theme-stack.git
 [submodule "themes/content"]
-	path = themes/content
+	path = content
 	url = https://github.com/dinooo13/fmeyer.dev-content
