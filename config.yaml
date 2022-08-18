@@ -39,7 +39,7 @@ params:
 
     footer:
         since: 2022
-        customText: Made with ❤️
+        customText: 'Made with ❤️ - Mini-Impressum ⚖️ Anbieter dieser Webseite ist Fabian Meyer, Utbremer Ring 217, 28215 Bremen. Kontakt: hello@fmeyer.dev'
 
     dateFormat:
         published: Jan 02, 2006
