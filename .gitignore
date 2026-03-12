@@ -1,4 +1,31 @@
+# Nuxt dev/build outputs
+.output
+.data
+.nuxt
+.nitro
+.cache
+dist
+
+# Node dependencies
+node_modules
+
+# Logs
+logs
+*.log
+
+# Playwright artifacts
+.playwright-cli/
+output/playwright/
+
+# Misc
+.DS_Store
+.fleet
 .idea
-/public/
-.hugo_build.lock
-resources/_gen
+
+# Local env files
+.env
+.env.*
+!.env.example
+
+# VSC
+.history
