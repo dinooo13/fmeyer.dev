@@ -1,0 +1,25 @@
+seo:
+  title: Speaking
+  description: Fabian Meyer is starting to speak publicly about frontend leadership, platform engineering, and AI-enabled ways of working.
+title: Speaking
+description: I am starting to speak publicly about frontend leadership, platform engineering, and AI-enabled ways of working.
+links:
+  - label: Invite me to speak
+    to: mailto:hello@fmeyer.dev
+    color: neutral
+    variant: subtle
+upcoming:
+  title: First talk in preparation
+  event: Event details coming soon
+  date: Date to be announced
+  location: Location to be announced
+  topic: Frontend leadership, platform engineering, and agentic engineering in practice
+  description: The first public talk is being prepared now. Details will be published once the format, venue, and date are confirmed.
+invite:
+  title: Future speaking
+  description: More talks and workshops may appear here over time. If you would like to discuss a talk, workshop, or internal session, email is the best starting point.
+  link:
+    label: Invite me to speak
+    to: mailto:hello@fmeyer.dev
+    color: neutral
+    variant: subtle

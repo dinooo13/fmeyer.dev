@@ -2,6 +2,16 @@
 const { data: page } = await useAsyncData('index', () => {
   return queryCollection('index').first()
 })
+
+const { data: labs } = await useAsyncData('labs-teaser', async () => {
+  const entries = await queryCollection('labs').all()
+
+  return entries
+    .slice()
+    .sort((left, right) => new Date(right.date).getTime() - new Date(left.date).getTime())
+    .slice(0, 3)
+})
+
 if (!page.value) {
   throw createError({
     statusCode: 404,
@@ -21,15 +31,13 @@ useSeoMeta({
 <template>
   <UPage v-if="page">
     <LandingHero :page />
-    <UPageSection
-      :ui="{
-        container: '!pt-0 lg:grid lg:grid-cols-2 lg:gap-8'
-      }"
-    >
-      <LandingAbout :page />
-      <LandingWorkExperience :page />
-    </UPageSection>
-    <LandingTestimonials :page />
-    <LandingFAQ :page />
+    <LandingFocus :page />
+    <LandingWorkExperience :page />
+    <LandingLabsTeaser
+      :section="page.labs"
+      :labs="labs || []"
+    />
+    <LandingSpeakingTeaser :section="page.speaking" />
+    <LandingContactLinks />
   </UPage>
 </template>

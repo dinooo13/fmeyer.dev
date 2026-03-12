@@ -1,0 +1,15 @@
+seo:
+  title: Labs
+  description: Side experiments, occasional builds, and prototypes outside work. Often exploratory, sometimes AI-assisted, and not always polished or finished.
+title: Labs
+description: Side experiments, occasional builds, and prototypes outside work. Often exploratory, sometimes AI-assisted, and not always polished or finished.
+links:
+  - label: GitHub
+    to: https://github.com/dinooo13
+    target: _blank
+    color: neutral
+    variant: subtle
+  - label: Email me
+    to: mailto:hello@fmeyer.dev
+    color: neutral
+    variant: ghost

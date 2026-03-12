@@ -1,0 +1,10 @@
+title: Agent Workflow Desk
+description: A small playground for testing how agentic workflows can support engineering tasks, handoffs, and documentation loops.
+status: prototype
+image: /labs/agent-workflow-desk.svg
+tags:
+  - Agents
+  - AI workflows
+  - Experimentation
+date: 2026-02-14
+note: Early prototype focused on working patterns rather than a finished product.

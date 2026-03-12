@@ -1,0 +1,57 @@
+seo:
+  title: Fabian Meyer
+  description: Learning leader, software engineer at eventim Tech, Vue chapter lead, and technical leader for the Tixx Online Shop.
+title: Fabian Meyer
+description: Learning leader, software engineer at eventim Tech, and Vue chapter lead focused on frontend craft, platform impact, and AI-driven workflows.
+hero:
+  name: Fabian Meyer
+  role: Learning leader, software engineer at eventim Tech, and Vue chapter lead.
+  intro: I lead frontend engineers through the Vue chapter, provide technical leadership for the Tixx Online Shop, and care about measurable customer impact, strong frontend craft, and agentic engineering in day-to-day software delivery.
+focus:
+  title: Focus
+  description: What I spend time on right now.
+  items:
+    - title: Vue chapter leadership
+      description: Developing frontend engineers through shared standards, coaching, and practical enablement across the chapter.
+    - title: Frontend craft and customer impact
+      description: Raising quality in ways that matter for delivery, maintainability, and the customer experience.
+    - title: Tixx Online Shop technical leadership
+      description: Providing technical direction for a core commerce surface and helping teams move through complexity with clarity.
+    - title: Agentic engineering and AI workflows
+      description: Exploring how agents and AI-assisted workflows can improve engineering loops without losing pragmatism or quality.
+experience:
+  title: Experience
+  description: Current responsibilities first. A broader public timeline will follow later.
+  items:
+    - period: Current
+      title: Software Engineer, Vue Chapter Lead, and Technical Lead for the Tixx Online Shop
+      organization: eventim Tech
+      summary: Working across people development, frontend quality, and product delivery.
+      highlights:
+        - Lead frontend engineers through the Vue chapter and help shape how the team grows craft.
+        - Carry technical leadership for the Tixx Online Shop and support decisions with measurable product impact.
+        - Invest in agentic engineering and AI-driven workflows that improve how software is built.
+    - period: Earlier
+      title: More experience will be added here
+      organization: Profile in progress
+      summary: A fuller career history will be added once more public details are ready.
+      highlights:
+        - Additional roles, dates, and context will be published later instead of being guessed here.
+      placeholder: true
+labs:
+  title: Labs
+  description: Outside work, Labs is where side experiments, prototypes, and occasional AI-assisted builds live. It is intentionally exploratory, and not everything here is polished or finished.
+  link:
+    label: Explore Labs
+    to: /labs
+    color: neutral
+    variant: subtle
+speaking:
+  title: Speaking
+  description: Speaking is becoming part of my public profile. The first talk is in progress now, and this area will grow as real events become concrete.
+  note: First talk details coming soon.
+  link:
+    label: View Speaking
+    to: /speaking
+    color: neutral
+    variant: subtle
