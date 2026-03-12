@@ -1,30 +1,33 @@
 <script setup lang="ts">
-const { data: page } = await useAsyncData('labs-page', () => {
-  return queryCollection('pages').path('/labs').first()
-})
+const { data: page } = await useAsyncData("labs-page", () => {
+  return queryCollection("pages").path("/labs").first();
+});
 
-const { data: labs } = await useAsyncData('labs', async () => {
-  const entries = await queryCollection('labs').all()
+const { data: labs } = await useAsyncData("labs", async () => {
+  const entries = await queryCollection("labs").all();
 
   return entries
     .slice()
-    .sort((left, right) => new Date(right.date).getTime() - new Date(left.date).getTime())
-})
+    .sort(
+      (left, right) =>
+        new Date(right.date).getTime() - new Date(left.date).getTime(),
+    );
+});
 
 if (!page.value) {
   throw createError({
     statusCode: 404,
-    statusMessage: 'Page not found',
-    fatal: true
-  })
+    statusMessage: "Page not found",
+    fatal: true,
+  });
 }
 
 useSeoMeta({
   title: page.value?.seo?.title || page.value?.title,
   ogTitle: page.value?.seo?.title || page.value?.title,
   description: page.value?.seo?.description || page.value?.description,
-  ogDescription: page.value?.seo?.description || page.value?.description
-})
+  ogDescription: page.value?.seo?.description || page.value?.description,
+});
 </script>
 
 <template>
@@ -35,7 +38,7 @@ useSeoMeta({
       :ui="{
         title: '!mx-0 max-w-3xl text-left',
         description: '!mx-0 max-w-2xl text-left',
-        links: 'justify-start'
+        links: 'justify-start',
       }"
     >
       <template #links>
@@ -47,6 +50,7 @@ useSeoMeta({
             v-for="link in page.links"
             :key="`${link.label}-${link.to}`"
             v-bind="link"
+            color="neutral"
           />
         </div>
       </template>
@@ -54,7 +58,7 @@ useSeoMeta({
 
     <UPageSection
       :ui="{
-        container: '!pt-0'
+        container: '!pt-0',
       }"
     >
       <div class="grid gap-6 lg:grid-cols-3">

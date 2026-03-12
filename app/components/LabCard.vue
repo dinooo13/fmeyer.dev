@@ -98,8 +98,9 @@ const formattedDate = computed(() => {
           :to="lab.url"
           target="_blank"
           color="neutral"
-          variant="subtle"
+          variant="ghost"
           label="Demo"
+          class="text-highlighted hover:text-highlighted"
         />
         <UButton
           v-if="lab.repoUrl"
@@ -108,6 +109,7 @@ const formattedDate = computed(() => {
           color="neutral"
           variant="ghost"
           label="Repository"
+          class="text-highlighted hover:text-highlighted"
         />
         <span
           v-if="!lab.url && !lab.repoUrl"

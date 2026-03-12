@@ -1,8 +1,8 @@
 export default defineAppConfig({
   global: {
     picture: {
-      dark: 'https://avatars.githubusercontent.com/u/44942030?v=4',
-      light: 'https://avatars.githubusercontent.com/u/44942030?v=4',
+      dark: '/profile/fabian-meyer-portrait.jpg',
+      light: '/profile/fabian-meyer-portrait.jpg',
       alt: 'Fabian Meyer'
     },
     meetingLink: '',

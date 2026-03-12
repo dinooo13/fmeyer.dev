@@ -6,8 +6,6 @@ description: I am starting to speak publicly about frontend leadership, platform
 links:
   - label: Invite me to speak
     to: mailto:hello@fmeyer.dev
-    color: neutral
-    variant: subtle
 upcoming:
   title: First talk in preparation
   event: Event details coming soon
@@ -21,5 +19,3 @@ invite:
   link:
     label: Invite me to speak
     to: mailto:hello@fmeyer.dev
-    color: neutral
-    variant: subtle

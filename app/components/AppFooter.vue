@@ -3,22 +3,19 @@ const { footer } = useAppConfig()
 </script>
 
 <template>
-  <UFooter
-    class="z-10 bg-default"
-    :ui="{ left: 'text-muted text-xs' }"
-  >
-    <template #left>
-      {{ footer.credits }}
-    </template>
-
-    <template #right>
-      <template v-if="footer?.links">
+  <footer class="z-10 bg-default py-8">
+    <UContainer class="flex flex-col items-center gap-3">
+      <div class="flex items-center gap-2">
         <UButton
           v-for="(link, index) of footer?.links"
           :key="index"
           v-bind="{ size: 'xs', color: 'neutral', variant: 'ghost', ...link }"
+          class="text-highlighted hover:text-highlighted"
         />
-      </template>
-    </template>
-  </UFooter>
+      </div>
+      <p class="text-xs text-muted">
+        {{ footer.credits }}
+      </p>
+    </UContainer>
+  </footer>
 </template>

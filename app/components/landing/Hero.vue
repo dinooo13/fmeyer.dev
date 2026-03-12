@@ -12,26 +12,6 @@ const { footer, global } = useAppConfig()
 defineProps<{
   page: HeroPage
 }>()
-
-const socialLinks = computed(() => {
-  const footerLinks = footer?.links || []
-
-  return [{
-    label: 'GitHub',
-    icon: 'i-simple-icons-github',
-    to: footerLinks.find(link => link['aria-label']?.includes('GitHub'))?.to,
-    target: '_blank' as const
-  }, {
-    label: 'LinkedIn',
-    icon: 'i-simple-icons-linkedin',
-    to: footerLinks.find(link => link['aria-label']?.includes('LinkedIn'))?.to,
-    target: '_blank' as const
-  }, {
-    label: 'Email',
-    icon: 'i-lucide-mail',
-    to: `mailto:${global.email}`
-  }].filter(link => Boolean(link.to))
-})
 </script>
 
 <template>
@@ -153,11 +133,10 @@ const socialLinks = computed(() => {
       >
         <div class="flex flex-wrap items-center justify-center gap-3">
           <UButton
-            v-for="link in socialLinks"
-            :key="`${link.label}-${link.to}`"
-            color="neutral"
-            variant="subtle"
-            v-bind="link"
+            v-for="(link, index) of footer?.links"
+            :key="index"
+            v-bind="{ size: 'xs', color: 'neutral', variant: 'ghost', ...link }"
+            class="text-highlighted hover:text-highlighted"
           />
         </div>
       </Motion>

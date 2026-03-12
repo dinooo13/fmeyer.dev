@@ -44,8 +44,7 @@ labs:
   link:
     label: Explore Labs
     to: /labs
-    color: neutral
-    variant: subtle
+
 speaking:
   title: Speaking
   description: Speaking is becoming part of my public profile. The first talk is in progress now, and this area will grow as real events become concrete.
@@ -53,5 +52,3 @@ speaking:
   link:
     label: View Speaking
     to: /speaking
-    color: neutral
-    variant: subtle

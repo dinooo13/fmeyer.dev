@@ -3,13 +3,16 @@ const { data: page } = await useAsyncData('index', () => {
   return queryCollection('index').first()
 })
 
-const { data: labs } = await useAsyncData('labs-teaser', async () => {
+const { data: latestLab } = await useAsyncData('latest-lab', async () => {
   const entries = await queryCollection('labs').all()
 
   return entries
     .slice()
-    .sort((left, right) => new Date(right.date).getTime() - new Date(left.date).getTime())
-    .slice(0, 3)
+    .sort((left, right) => new Date(right.date).getTime() - new Date(left.date).getTime())[0]
+})
+
+const { data: speakingPage } = await useAsyncData('speaking-home', () => {
+  return queryCollection('speaking').first()
 })
 
 if (!page.value) {
@@ -35,9 +38,11 @@ useSeoMeta({
     <LandingWorkExperience :page />
     <LandingLabsTeaser
       :section="page.labs"
-      :labs="labs || []"
+      :lab="latestLab"
     />
-    <LandingSpeakingTeaser :section="page.speaking" />
-    <LandingContactLinks />
+    <LandingSpeakingTeaser
+      :section="page.speaking"
+      :upcoming="speakingPage?.upcoming"
+    />
   </UPage>
 </template>
