@@ -72,7 +72,10 @@ defineProps<{
             {{ experience.summary }}
           </p>
 
-          <ul class="mt-4 space-y-2">
+          <ul
+            v-if="experience.highlights.length"
+            class="mt-4 space-y-2"
+          >
             <li
               v-for="highlight in experience.highlights"
               :key="highlight"

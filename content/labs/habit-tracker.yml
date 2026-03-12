@@ -1,0 +1,12 @@
+title: Habit Tracker
+description: Habit tracking app focused on atomic daily routines, progress visibility, and a simple flow that makes consistency easier to keep up over time. The idea is to keep the product lightweight while still making momentum and streaks feel tangible. It is one of the more product-minded side projects, with room to evolve into a sharper daily-use tool.
+icon: i-lucide-calendar-check
+status: wip
+image: /labs/habit-tracker.svg
+url: https://habits.fmeyer.dev
+repoUrl: https://github.com/dinooo13/habit-tracker
+tags:
+  - Vue
+  - Productivity
+  - Habits
+date: 2026-02-22T15:06:22Z

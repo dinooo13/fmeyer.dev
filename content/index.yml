@@ -21,28 +21,46 @@ focus:
       description: Exploring how agents and AI-assisted workflows can improve engineering loops without losing pragmatism or quality.
 experience:
   title: Experience
-  description: Current responsibilities first. A broader public timeline will follow later.
+  description: Roles and dates pulled from LinkedIn, with current work first.
   items:
-    - period: Current
-      title: Software Engineer, Vue Chapter Lead, and Technical Lead for the Tixx Online Shop
-      organization: eventim Tech
-      summary: Working across people development, frontend quality, and product delivery.
+    - period: Oct 2025 - Present
+      title: Chapter Lead Vue | Sales & Settlement
+      organization: CTS EVENTIM AG & Co. KGaA
+      summary: Chapter leadership role within Sales & Settlement, alongside ongoing hands-on engineering work at CTS EVENTIM.
       highlights:
-        - Lead frontend engineers through the Vue chapter and help shape how the team grows craft.
-        - Carry technical leadership for the Tixx Online Shop and support decisions with measurable product impact.
-        - Invest in agentic engineering and AI-driven workflows that improve how software is built.
-    - period: Earlier
-      title: More experience will be added here
-      organization: Profile in progress
-      summary: A fuller career history will be added once more public details are ready.
+        - Bremen, Germany
+        - Full-time
+        - Added to current responsibilities in October 2025
+    - period: Apr 2022 - Present
+      title: Software Development Expert
+      organization: CTS EVENTIM AG & Co. KGaA
+      summary: Ongoing software engineering role at CTS EVENTIM focused on shipping product work while growing frontend quality and team effectiveness.
       highlights:
-        - Additional roles, dates, and context will be published later instead of being guessed here.
-      placeholder: true
+        - Bremen, Germany
+        - Full-time
+        - Continues alongside the chapter lead role
+    - period: Jan 2022 - Apr 2022
+      title: Software-Entwickler
+      organization: neusta software development - neusta GmbH
+      summary: Full-time software developer role at neusta software development before moving to CTS EVENTIM.
+      highlights:
+        - Bremen, Germany
+        - Full-time
+        - 4 months
+    - period: Feb 2020 - Jan 2022
+      title: Ausbildung Fachinformatiker für Anwendungsentwicklung
+      organization: neusta software development - neusta GmbH
+      summary: Application development apprenticeship completed at neusta software development.
+      highlights:
+        - Bremen, Germany
+        - Apprenticeship
+        - 2 years
 labs:
   title: Labs
-  description: Outside work, Labs is where side experiments, prototypes, and occasional AI-assisted builds live. It is intentionally exploratory, and not everything here is polished or finished.
+  description: Four pinned GitHub projects that show what I build outside day-to-day product work, from this site to small product experiments.
   link:
     label: Explore Labs
+    icon: i-lucide-flask-conical
     to: /labs
 
 speaking:
@@ -51,4 +69,5 @@ speaking:
   note: First talk details coming soon.
   link:
     label: View Speaking
+    icon: i-lucide-mic-vocal
     to: /speaking

@@ -1,0 +1,13 @@
+title: fmeyer.dev
+description: Personal website and portfolio built with Nuxt, used to shape a more intentional public profile and a clean home for writing, speaking, and side projects. It is also where I iterate on tone, layout, and how technical work is presented in public. The project doubles as a small frontend playground for content structure, polish, and continuous refinement.
+icon: i-lucide-layout-panel-top
+status: wip
+image: /labs/fmeyer-dev.svg
+url: https://fmeyer.dev
+repoUrl: https://github.com/dinooo13/fmeyer.dev
+tags:
+  - Nuxt
+  - Portfolio
+  - Personal site
+date: 2022-09-28T20:11:20Z
+note: The site itself is one of the pinned builds.

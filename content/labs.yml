@@ -1,10 +1,10 @@
 seo:
   title: Labs
-  description: Side experiments, occasional builds, and prototypes outside work. Often exploratory, sometimes AI-assisted, and not always polished or finished.
+  description: Four pinned GitHub projects and side builds, pulled into one place.
 title: Labs
-description: Side experiments, occasional builds, and prototypes outside work. Often exploratory, sometimes AI-assisted, and not always polished or finished.
+description: Four pinned GitHub projects and side builds, pulled into one place.
 links:
-  - label: GitHub
+  - label: dinooo13
     icon: i-simple-icons-github
     to: https://github.com/dinooo13
     target: _blank

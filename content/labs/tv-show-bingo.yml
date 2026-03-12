@@ -1,0 +1,11 @@
+title: TV Show Bingo
+description: Lightweight shared bingo game for watching TV shows together, built around playful prompts and a more social second-screen viewing experience. The project leans into fun over complexity and explores how a tiny interaction can make shared watching more participatory. It is a compact experiment in building something playful, fast, and easy to pick up.
+icon: i-lucide-tv
+status: prototype
+image: /labs/tv-show-bingo.svg
+repoUrl: https://github.com/dinooo13/tv-show-bingo
+tags:
+  - TypeScript
+  - Games
+  - TV shows
+date: 2026-02-22T15:57:33Z

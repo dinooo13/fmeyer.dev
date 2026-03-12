@@ -4,6 +4,7 @@ type Lab = {
   description: string
   status: 'wip' | 'prototype' | 'paused'
   image: string
+  icon?: string
   url?: string
   repoUrl?: string
   tags: string[]
@@ -11,7 +12,7 @@ type Lab = {
   note?: string
 }
 
-const props = defineProps<{
+defineProps<{
   lab: Lab
 }>()
 
@@ -30,57 +31,53 @@ const statusMap = {
   }
 } as const
 
-const formattedDate = computed(() => {
-  return new Date(props.lab.date).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'short'
-  })
-})
+const previewIconMap = {
+  wip: 'i-lucide-sparkles',
+  prototype: 'i-lucide-flask-conical',
+  paused: 'i-lucide-pause'
+} as const
 </script>
 
 <template>
   <UCard
-    class="h-full overflow-hidden border border-default"
+    class="h-full border border-default"
     :ui="{
-      body: 'p-0'
+      body: 'p-5 sm:p-6'
     }"
   >
-    <NuxtImg
-      :src="lab.image"
-      :alt="lab.title"
-      width="1200"
-      height="720"
-      class="aspect-[16/10] w-full border-b border-default bg-muted object-cover"
-    />
-
-    <div class="flex h-full flex-col gap-4 p-5 sm:p-6">
+    <div class="flex h-full flex-col gap-5">
       <div class="flex items-start justify-between gap-4">
-        <div>
-          <p class="text-xs font-medium uppercase tracking-[0.24em] text-muted">
-            {{ formattedDate }}
-          </p>
-          <h3 class="mt-2 text-lg font-semibold text-highlighted">
+        <div class="flex min-w-0 items-center gap-3">
+          <UIcon
+            :name="lab.icon || 'i-lucide-box'"
+            class="size-5 shrink-0 text-black dark:text-white"
+          />
+
+          <h3 class="min-w-0 text-lg font-semibold text-highlighted">
             {{ lab.title }}
           </h3>
         </div>
 
         <UBadge
           :label="statusMap[lab.status].label"
+          :icon="previewIconMap[lab.status]"
           :color="statusMap[lab.status].color"
           variant="soft"
         />
       </div>
 
-      <p class="text-sm text-muted">
-        {{ lab.description }}
-      </p>
+      <div class="space-y-3">
+        <p class="text-sm text-muted">
+          {{ lab.description }}
+        </p>
 
-      <p
-        v-if="lab.note"
-        class="text-sm text-muted"
-      >
-        {{ lab.note }}
-      </p>
+        <p
+          v-if="lab.note"
+          class="text-sm text-muted"
+        >
+          {{ lab.note }}
+        </p>
+      </div>
 
       <div class="flex flex-wrap gap-2">
         <UBadge
@@ -97,19 +94,19 @@ const formattedDate = computed(() => {
           v-if="lab.url"
           :to="lab.url"
           target="_blank"
+          icon="i-lucide-external-link"
           color="neutral"
-          variant="ghost"
+          size="sm"
           label="Demo"
-          class="text-highlighted hover:text-highlighted"
         />
         <UButton
           v-if="lab.repoUrl"
           :to="lab.repoUrl"
           target="_blank"
+          icon="i-simple-icons-github"
           color="neutral"
-          variant="ghost"
+          size="sm"
           label="Repository"
-          class="text-highlighted hover:text-highlighted"
         />
         <span
           v-if="!lab.url && !lab.repoUrl"

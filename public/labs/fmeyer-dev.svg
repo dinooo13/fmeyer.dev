@@ -1,0 +1,25 @@
+<svg width="1200" height="720" viewBox="0 0 1200 720" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="72" y1="68" x2="1120" y2="640" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0F172A"/>
+      <stop offset="1" stop-color="#1D4ED8"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="860" y1="120" x2="1060" y2="460" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#60A5FA"/>
+      <stop offset="1" stop-color="#BFDBFE"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="720" rx="48" fill="url(#bg)"/>
+  <rect x="72" y="72" width="1056" height="576" rx="36" fill="#0B1220" fill-opacity="0.28" stroke="#93C5FD" stroke-opacity="0.28"/>
+  <rect x="778" y="132" width="266" height="388" rx="28" fill="url(#panel)" fill-opacity="0.12" stroke="#DBEAFE" stroke-opacity="0.32"/>
+  <circle cx="911" cy="219" r="52" fill="#93C5FD" fill-opacity="0.16"/>
+  <rect x="828" y="309" width="166" height="16" rx="8" fill="#DBEAFE" fill-opacity="0.78"/>
+  <rect x="828" y="343" width="118" height="16" rx="8" fill="#BFDBFE" fill-opacity="0.55"/>
+  <rect x="828" y="411" width="166" height="18" rx="9" fill="#1D4ED8"/>
+  <text x="92" y="178" fill="#E2E8F0" font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="28" letter-spacing="0.24em">PINNED PROJECT</text>
+  <text x="92" y="290" fill="white" font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="86" font-weight="700">fmeyer.dev</text>
+  <text x="92" y="356" fill="#BFDBFE" font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="34">Personal portfolio and website</text>
+  <text x="92" y="490" fill="#E2E8F0" font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="30">Nuxt</text>
+  <text x="210" y="490" fill="#E2E8F0" font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="30">Portfolio</text>
+  <text x="380" y="490" fill="#E2E8F0" font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="30">Web</text>
+</svg>

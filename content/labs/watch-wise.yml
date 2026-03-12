@@ -1,0 +1,11 @@
+title: Watch Wise
+description: Movie and TV discovery concept centered on an AI recommendation interface, with the focus on a polished browsing flow and stronger content suggestions. It is less about building a full platform and more about exploring how recommendation UX can feel clearer and more curated. The project gives room to experiment with interface quality, media browsing patterns, and AI-assisted product ideas.
+icon: i-lucide-clapperboard
+status: prototype
+image: /labs/watch-wise.svg
+repoUrl: https://github.com/dinooo13/watch-wise
+tags:
+  - TypeScript
+  - AI UI
+  - Movies and TV
+date: 2026-02-22T15:55:53Z

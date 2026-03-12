@@ -65,6 +65,7 @@ export default defineContentConfig({
         title: z.string().nonempty(),
         description: z.string().nonempty(),
         image: z.string().nonempty().editor({ input: 'media' }),
+        icon: z.string().optional(),
         status: z.enum(['wip', 'prototype', 'paused']),
         url: z.string().optional(),
         repoUrl: z.string().optional(),
