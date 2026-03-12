@@ -88,17 +88,23 @@ export default defineContentConfig({
       schema: createBaseSchema().extend({
         seo: createSeoSchema().optional(),
         links: z.array(createButtonSchema()).optional(),
-        upcoming: z.object({
-          title: z.string(),
-          event: z.string(),
-          date: z.string(),
-          location: z.string(),
-          topic: z.string(),
-          description: z.string()
-        }).optional(),
         invite: createBaseSchema().extend({
           link: createButtonSchema().optional()
         }).optional()
+      })
+    }),
+    talks: defineCollection({
+      type: 'data',
+      source: 'speaking/*.yml',
+      schema: z.object({
+        title: z.string().nonempty(),
+        description: z.string().nonempty(),
+        event: z.string().nonempty(),
+        location: z.string().nonempty(),
+        topic: z.string().nonempty(),
+        date: z.date().optional(),
+        dateLabel: z.string().nonempty(),
+        placeholder: z.boolean().optional()
       })
     })
   }

@@ -1,9 +1,5 @@
 <script setup lang="ts">
-type UpcomingTalk = {
-  title: string
-  topic: string
-  description: string
-}
+import type { TalkEntry } from '../../utils/speaking'
 
 type SpeakingSection = {
   title: string
@@ -21,7 +17,7 @@ type SpeakingSection = {
 
 defineProps<{
   section: SpeakingSection
-  upcoming?: UpcomingTalk | null
+  talk?: TalkEntry | null
 }>()
 </script>
 
@@ -60,19 +56,19 @@ defineProps<{
           {{ section.note }}
         </p>
         <h3
-          v-if="upcoming"
+          v-if="talk"
           class="mt-2 text-xl font-semibold text-highlighted"
         >
-          {{ upcoming.title }}
+          {{ talk.title }}
         </h3>
         <p class="mt-2 text-sm text-muted">
-          {{ upcoming?.description || section.description }}
+          {{ talk?.description || section.description }}
         </p>
         <p
-          v-if="upcoming?.topic"
+          v-if="talk?.topic"
           class="mt-2 text-sm text-muted"
         >
-          {{ upcoming.topic }}
+          {{ talk.topic }}
         </p>
       </div>
     </UCard>

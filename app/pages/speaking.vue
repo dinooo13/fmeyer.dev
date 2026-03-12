@@ -1,6 +1,14 @@
 <script setup lang="ts">
+import { sortTalks } from "../utils/speaking";
+
 const { data: page } = await useAsyncData("speaking", () => {
   return queryCollection("speaking").first();
+});
+
+const { data: talks } = await useAsyncData("speaking-talks", async () => {
+  const entries = await queryCollection("talks").all();
+
+  return sortTalks(entries);
 });
 
 if (!page.value) {
@@ -46,56 +54,68 @@ useSeoMeta({
     </UPageHero>
 
     <UPageSection
-      title="Upcoming talk"
-      description="A first public talk is being prepared now. Real event details will replace these placeholders once they are confirmed."
       :ui="{
         container: '!pt-0',
       }"
     >
-      <UCard
-        v-if="page.upcoming"
-        class="border border-default"
-        :ui="{
-          body: 'p-6 sm:p-8',
-        }"
-      >
-        <div
-          class="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between"
+      <div class="space-y-6">
+        <Motion
+          v-for="(talk, index) in talks"
+          :key="`${talk.title}-${talk.event}`"
+          :initial="{ opacity: 0, transform: 'translateY(12px)' }"
+          :while-in-view="{ opacity: 1, transform: 'translateY(0)' }"
+          :transition="{ delay: index * 0.08 }"
+          :in-view-options="{ once: true }"
         >
-          <div class="space-y-3">
-            <UBadge color="warning" variant="soft" label="Upcoming" />
-            <div>
-              <h2 class="text-2xl font-semibold text-highlighted">
-                {{ page.upcoming.title }}
-              </h2>
-              <p class="mt-2 text-sm text-muted">
-                {{ page.upcoming.description }}
-              </p>
-            </div>
-          </div>
-
-          <div
-            class="grid gap-4 text-sm text-muted sm:grid-cols-2 lg:min-w-[22rem]"
+          <UCard
+            class="border border-default"
+            :ui="{
+              body: 'p-6 sm:p-8',
+            }"
           >
-            <div>
-              <p class="font-medium text-highlighted">Event</p>
-              <p>{{ page.upcoming.event }}</p>
+            <div
+              class="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between"
+            >
+              <div class="space-y-3">
+                <UBadge
+                  color="warning"
+                  variant="soft"
+                  :label="talk.placeholder ? 'Upcoming' : 'Talk'"
+                />
+                <div>
+                  <h2 class="text-2xl font-semibold text-highlighted">
+                    {{ talk.title }}
+                  </h2>
+                  <p class="mt-2 text-sm text-muted">
+                    {{ talk.description }}
+                  </p>
+                </div>
+              </div>
+
+              <div
+                class="grid gap-4 text-sm text-muted sm:grid-cols-2 lg:min-w-[22rem]"
+              >
+                <div>
+                  <p class="font-medium text-highlighted">Event</p>
+                  <p>{{ talk.event }}</p>
+                </div>
+                <div>
+                  <p class="font-medium text-highlighted">Date</p>
+                  <p>{{ talk.dateLabel }}</p>
+                </div>
+                <div>
+                  <p class="font-medium text-highlighted">Location</p>
+                  <p>{{ talk.location }}</p>
+                </div>
+                <div>
+                  <p class="font-medium text-highlighted">Topic</p>
+                  <p>{{ talk.topic }}</p>
+                </div>
+              </div>
             </div>
-            <div>
-              <p class="font-medium text-highlighted">Date</p>
-              <p>{{ page.upcoming.date }}</p>
-            </div>
-            <div>
-              <p class="font-medium text-highlighted">Location</p>
-              <p>{{ page.upcoming.location }}</p>
-            </div>
-            <div>
-              <p class="font-medium text-highlighted">Topic</p>
-              <p>{{ page.upcoming.topic }}</p>
-            </div>
-          </div>
-        </div>
-      </UCard>
+          </UCard>
+        </Motion>
+      </div>
     </UPageSection>
   </UPage>
 </template>

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { getLatestTalk } from '../utils/speaking'
+
 const { data: page } = await useAsyncData('index', () => {
   return queryCollection('index').first()
 })
@@ -11,8 +13,10 @@ const { data: latestLab } = await useAsyncData('latest-lab', async () => {
     .sort((left, right) => new Date(right.date).getTime() - new Date(left.date).getTime())[0]
 })
 
-const { data: speakingPage } = await useAsyncData('speaking-home', () => {
-  return queryCollection('speaking').first()
+const { data: latestTalk } = await useAsyncData('latest-talk', async () => {
+  const entries = await queryCollection('talks').all()
+
+  return getLatestTalk(entries)
 })
 
 if (!page.value) {
@@ -42,7 +46,7 @@ useSeoMeta({
     />
     <LandingSpeakingTeaser
       :section="page.speaking"
-      :upcoming="speakingPage?.upcoming"
+      :talk="latestTalk"
     />
   </UPage>
 </template>
