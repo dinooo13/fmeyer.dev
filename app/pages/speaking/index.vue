@@ -1,17 +1,15 @@
 <script setup lang="ts">
-const { data: page } = await useAsyncData('labs-page', () => {
-  return queryCollection('pages').path('/labs').first()
+import TalkPreviewCard from '../../components/talks/TalkPreviewCard.vue'
+import { getTalkPath, sortTalks } from '../../utils/speaking'
+
+const { data: page } = await useAsyncData('speaking', () => {
+  return queryCollection('speaking').first()
 })
 
-const { data: labs } = await useAsyncData('labs', async () => {
-  const entries = await queryCollection('labs').all()
+const { data: talks } = await useAsyncData('speaking-talks', async () => {
+  const entries = await queryCollection('talks').all()
 
-  return entries
-    .slice()
-    .sort(
-      (left, right) =>
-        new Date(right.date).getTime() - new Date(left.date).getTime()
-    )
+  return sortTalks(entries)
 })
 
 if (!page.value) {
@@ -61,16 +59,25 @@ useSeoMeta({
         container: '!pt-0'
       }"
     >
-      <div class="grid gap-6 lg:grid-cols-3">
+      <div class="space-y-6">
         <Motion
-          v-for="(lab, index) in labs"
-          :key="lab.title"
+          v-for="(talk, index) in talks"
+          :key="`${talk.title}-${talk.event}`"
           :initial="{ opacity: 0, transform: 'translateY(12px)' }"
           :while-in-view="{ opacity: 1, transform: 'translateY(0)' }"
           :transition="{ delay: index * 0.08 }"
           :in-view-options="{ once: true }"
         >
-          <LabCard :lab="lab" />
+          <TalkPreviewCard
+            :talk="talk"
+            variant="list"
+            :show-summary="true"
+            :show-meta="true"
+            :primary-action="{
+              label: 'View details',
+              to: getTalkPath(talk)
+            }"
+          />
         </Motion>
       </div>
     </UPageSection>

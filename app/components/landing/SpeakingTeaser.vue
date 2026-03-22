@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import TalkPreviewCard from '../talks/TalkPreviewCard.vue'
 import type { TalkEntry } from '../../utils/speaking'
+import { getTalkPath } from '../../utils/speaking'
 
 type SpeakingSection = {
   title: string
@@ -42,35 +44,29 @@ defineProps<{
       />
     </Motion>
 
-    <UCard
-      class="border border-default"
-      :ui="{
-        body: 'p-6 sm:p-8'
-      }"
-    >
-      <div class="max-w-2xl">
-        <p
-          v-if="section.note"
-          class="text-sm font-medium text-highlighted"
-        >
-          {{ section.note }}
+    <div class="space-y-4">
+      <TalkPreviewCard
+        v-if="talk"
+        :talk="talk"
+        variant="featured"
+        :show-summary="true"
+        :primary-action="{
+          label: 'View details',
+          to: getTalkPath(talk)
+        }"
+      />
+
+      <UCard
+        v-else
+        class="border border-default"
+        :ui="{
+          body: 'p-6 sm:p-8'
+        }"
+      >
+        <p class="text-sm text-muted">
+          {{ section.description }}
         </p>
-        <h3
-          v-if="talk"
-          class="mt-2 text-xl font-semibold text-highlighted"
-        >
-          {{ talk.title }}
-        </h3>
-        <p class="mt-2 text-sm text-muted">
-          {{ talk?.description || section.description }}
-        </p>
-        <p
-          v-if="talk?.topic"
-          class="mt-2 text-sm text-muted"
-        >
-          {{ talk.topic }}
-        </p>
-      </div>
-    </UCard>
+      </UCard>
+    </div>
   </UPageSection>
 </template>

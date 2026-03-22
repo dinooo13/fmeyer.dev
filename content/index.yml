@@ -65,8 +65,8 @@ labs:
 
 speaking:
   title: Speaking
-  description: Speaking is becoming part of my public profile. The first talk is in progress now, and this area will grow as real events become concrete.
-  note: First talk details coming soon.
+  description: Speaking now includes my session at Agentic Conf Hamburg 2026, with more talks and workshops to follow.
+  note: "First announced talk: Agentic Conf Hamburg 2026."
   link:
     label: View Speaking
     icon: i-lucide-mic-vocal

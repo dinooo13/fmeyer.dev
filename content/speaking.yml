@@ -1,8 +1,8 @@
 seo:
   title: Speaking
-  description: Fabian Meyer is starting to speak publicly about frontend leadership, platform engineering, and AI-enabled ways of working.
+  description: Fabian Meyer speaks about frontend leadership, platform engineering, and agentic engineering, including Agentic Conf Hamburg 2026.
 title: Speaking
-description: I am starting to speak publicly about frontend leadership, platform engineering, and AI-enabled ways of working.
+description: I speak about frontend leadership, platform engineering, and agentic engineering. My first announced talk is at Agentic Conf Hamburg 2026.
 links:
   - label: Invite me to speak
     icon: i-lucide-mic-vocal

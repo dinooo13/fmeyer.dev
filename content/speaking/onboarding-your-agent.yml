@@ -1,0 +1,33 @@
+title: Onboarding Your Agent
+summary: Learn how eventim onboarded an engineering agent with real GitLab and Jira workflows, turning ticket-to-verification delivery into a review-driven loop built on clear specs and guardrails.
+event: Agentic Conf Hamburg 2026
+organizerTitle: "Onboarding Your Agent: How eventim integrates agentic engineering into enterprise workflows"
+location: Medienbunker / SAE Institute Hamburg, Hamburg, Germany
+topic: Agentic engineering in enterprise workflows
+description: >-
+  Coding agents are impressive, but in enterprise environments code was never
+  the main bottleneck. The friction lives in the process: turning tickets into
+  specs, running pipelines, opening merge requests, deploying, and debugging
+  failures. At eventim, we onboarded our agent like a new engineer. We gave it
+  access to GitLab and Jira, implemented our workflows as agent skills, and let
+  it operate within our guardrails from ticket to verified result. Engineers
+  review outcomes, not execute steps. This talk introduces the four pillars
+  that enable this: Specification, Implementation, Tools, and Verification -
+  and why in agentic engineering, the best engineers write the best specs.
+date: 2026-03-22
+dateLabel: "March 22, 2026 · 11:10"
+time: "11:10"
+room: The Space
+duration: 25 min
+format: Full Talk
+level: Advanced
+language: English
+venueName: SAE Institute Hamburg
+venueAddress: "Feldstr. 66, 20359 Hamburg"
+url: https://agentic.hamburg/conf-2026/sessions/onboarding-your-agent/
+resources:
+  - kind: slides
+    title: Slides
+    asset: onboarding-your-agent-slides
+    format: PDF
+    pages: 18
