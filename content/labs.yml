@@ -1,8 +1,8 @@
 seo:
   title: Labs
-  description: Four pinned GitHub projects and side builds, pulled into one place.
+  description: Projects, experiments, and side builds that show what Fabian Meyer works on outside day-to-day product delivery.
 title: Labs
-description: Four pinned GitHub projects and side builds, pulled into one place.
+description: Projects, experiments, and side builds that show what I work on outside day-to-day product delivery.
 links:
   - label: dinooo13
     icon: i-simple-icons-github

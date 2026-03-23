@@ -48,9 +48,11 @@ defineProps<{
       }"
     >
       <div class="max-w-2xl">
-        <p class="text-sm font-medium text-highlighted">
-          Latest lab
-        </p>
+        <UBadge
+          color="success"
+          variant="soft"
+          label="Latest lab"
+        />
         <h3
           v-if="lab"
           class="mt-2 text-xl font-semibold text-highlighted"

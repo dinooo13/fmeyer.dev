@@ -19,6 +19,27 @@ const props = withDefaults(defineProps<{
 })
 
 const badgeLabel = computed(() => props.talk?.placeholder ? 'Upcoming' : 'Talk')
+const badgeColor = computed(() => props.variant === 'featured' ? 'success' : 'warning')
+const subtitle = computed(() => {
+  const organizerTitle = props.talk?.organizerTitle?.trim()
+  const title = props.talk?.title?.trim()
+
+  if (!organizerTitle) {
+    return null
+  }
+
+  if (!title) {
+    return organizerTitle
+  }
+
+  const prefix = `${title}:`
+
+  if (organizerTitle.startsWith(prefix)) {
+    return organizerTitle.slice(prefix.length).trim()
+  }
+
+  return organizerTitle
+})
 </script>
 
 <template>
@@ -39,7 +60,7 @@ const badgeLabel = computed(() => props.talk?.placeholder ? 'Upcoming' : 'Talk')
       >
         <div class="space-y-3">
           <UBadge
-            color="warning"
+            :color="badgeColor"
             variant="soft"
             :label="badgeLabel"
           />
@@ -53,6 +74,13 @@ const badgeLabel = computed(() => props.talk?.placeholder ? 'Upcoming' : 'Talk')
             </h3>
 
             <p
+              v-if="subtitle"
+              class="text-sm font-medium text-highlighted/80"
+            >
+              {{ subtitle }}
+            </p>
+
+            <p
               v-if="showSummary"
               class="text-sm text-muted"
             >
@@ -60,7 +88,7 @@ const badgeLabel = computed(() => props.talk?.placeholder ? 'Upcoming' : 'Talk')
             </p>
 
             <p
-              v-if="talk.topic"
+              v-if="talk.topic && !subtitle"
               class="text-sm text-muted"
             >
               {{ talk.topic }}

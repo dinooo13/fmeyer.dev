@@ -1,5 +1,5 @@
 title: Onboarding Your Agent
-summary: Learn how eventim onboarded an engineering agent with real GitLab and Jira workflows, turning ticket-to-verification delivery into a review-driven loop built on clear specs and guardrails.
+summary: Enterprise delivery is rarely blocked by code alone - the real friction lives in the process. This talk shows how eventim onboarded an engineering agent into real delivery tooling and shifted engineers from executing process to reviewing outcomes.
 event: Agentic Conf Hamburg 2026
 organizerTitle: "Onboarding Your Agent: How eventim integrates agentic engineering into enterprise workflows"
 location: Medienbunker / SAE Institute Hamburg, Hamburg, Germany
@@ -7,7 +7,7 @@ topic: Agentic engineering in enterprise workflows
 description: >-
   Coding agents are impressive, but in enterprise environments code was never
   the main bottleneck. The friction lives in the process: turning tickets into
-  specs, running pipelines, opening merge requests, deploying, and debugging
+  specs, running pipelines, reviewing merge requests, deploying, and debugging
   failures. At eventim, we onboarded our agent like a new engineer. We gave it
   access to GitLab and Jira, implemented our workflows as agent skills, and let
   it operate within our guardrails from ticket to verified result. Engineers

@@ -14,9 +14,19 @@ type ExperiencePage = {
   }
 }
 
-defineProps<{
+const { page } = defineProps<{
   page: ExperiencePage
 }>()
+
+const expanded = ref(false)
+
+const hasHiddenItems = computed(() => page.experience.items.length > 2)
+
+const visibleItems = computed(() => {
+  return expanded.value
+    ? page.experience.items
+    : page.experience.items.slice(0, 2)
+})
 </script>
 
 <template>
@@ -30,7 +40,7 @@ defineProps<{
   >
     <div class="relative space-y-6 border-l border-default pl-6 sm:pl-8">
       <Motion
-        v-for="(experience, index) in page.experience.items"
+        v-for="(experience, index) in visibleItems"
         :key="experience.title"
         :initial="{ opacity: 0, transform: 'translateY(16px)' }"
         :while-in-view="{ opacity: 1, transform: 'translateY(0)' }"
@@ -90,6 +100,25 @@ defineProps<{
           </ul>
         </UCard>
       </Motion>
+    </div>
+
+    <div
+      v-if="hasHiddenItems"
+      class="pl-6 pt-2 sm:pl-8"
+    >
+      <UButton
+        color="neutral"
+        variant="ghost"
+        class="inline-flex cursor-pointer items-center gap-2 rounded-md px-3 py-2 text-sm text-highlighted hover:bg-muted/50 hover:text-highlighted"
+        :aria-expanded="expanded"
+        @click="expanded = !expanded"
+      >
+        <span>{{ expanded ? 'Show less experience' : 'Show more experience' }}</span>
+        <UIcon
+          :name="expanded ? 'i-lucide-chevron-up' : 'i-lucide-chevron-down'"
+          class="size-4 shrink-0"
+        />
+      </UButton>
     </div>
   </UPageSection>
 </template>
