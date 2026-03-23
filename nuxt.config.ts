@@ -5,7 +5,6 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@nuxt/ui',
     '@nuxt/content',
-    '@vueuse/nuxt',
     'nuxt-og-image',
     'motion-v/nuxt'
   ],
@@ -27,7 +26,7 @@ export default defineNuxtConfig({
     }
   },
 
-  compatibilityDate: '2024-11-01',
+  compatibilityDate: '2025-03-01',
 
   nitro: {
     prerender: {

@@ -1,12 +1,10 @@
 <script setup lang="ts">
+import { formatLabDate, labStatusIconMap, labStatusMap } from '../../utils/labs'
 const route = useRoute()
 const slug = Array.isArray(route.params.slug) ? route.params.slug[0] : route.params.slug
 
-const { data: lab } = await useAsyncData(`lab-${slug}`, async () => {
-  const entries = await queryCollection('labs').all()
-  const sortedEntries = sortLabs(entries)
-
-  return sortedEntries.find(entry => getLabSlug(entry) === slug) ?? null
+const { data: lab } = await useAsyncData(`lab-${slug}`, () => {
+  return queryCollection('labs').where('stem', '=', `labs/${slug}`).first()
 })
 
 if (!lab.value) {
@@ -17,12 +15,9 @@ if (!lab.value) {
   })
 }
 
-useSeoMeta({
-  title: lab.value.title,
-  ogTitle: lab.value.title,
-  description: lab.value.description,
-  ogDescription: lab.value.description
-})
+usePageSeo(lab.value)
+
+defineOgImage()
 
 const formattedDate = computed(() => formatLabDate(lab.value!.date))
 const hasImage = computed(() => Boolean(lab.value?.image))

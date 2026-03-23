@@ -1,11 +1,10 @@
 <script setup lang="ts">
+import { resolveTalkEntry, type ResolvedTalkResource } from '../../utils/speaking'
 const route = useRoute()
 const slug = Array.isArray(route.params.slug) ? route.params.slug[0] : route.params.slug
 
 const { data: talk } = await useAsyncData(`talk-${slug}`, async () => {
-  const entries = await queryCollection('talks').all()
-  const sortedEntries = sortTalks(entries)
-  const entry = sortedEntries.find(entry => getTalkSlug(entry) === slug) ?? null
+  const entry = await queryCollection('talks').where('stem', '=', `speaking/${slug}`).first()
 
   return entry ? resolveTalkEntry(entry) : null
 })
@@ -18,12 +17,12 @@ if (!talk.value) {
   })
 }
 
-useSeoMeta({
+usePageSeo({
   title: talk.value.title,
-  ogTitle: talk.value.title,
-  description: talk.value.summary || talk.value.description,
-  ogDescription: talk.value.summary || talk.value.description
+  description: talk.value.summary || talk.value.description
 })
+
+defineOgImage()
 
 const organizerSubtitle = computed(() => {
   if (!talk.value?.organizerTitle) {
