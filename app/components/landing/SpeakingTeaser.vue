@@ -41,7 +41,7 @@ defineProps<{
     </Motion>
 
     <div class="space-y-4">
-      <TalkPreviewCard
+      <TalksTalkPreviewCard
         v-if="talk"
         :talk="talk"
         variant="featured"

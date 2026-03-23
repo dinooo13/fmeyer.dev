@@ -65,7 +65,7 @@ useSeoMeta({
           :transition="{ delay: index * 0.08 }"
           :in-view-options="{ once: true }"
         >
-          <TalkPreviewCard
+          <TalksTalkPreviewCard
             :talk="talk"
             variant="list"
             :show-summary="true"

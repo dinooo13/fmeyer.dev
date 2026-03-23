@@ -46,7 +46,7 @@ defineProps<{
           width="72"
           height="72"
           sizes="72px"
-          densities="x1 x2 x3"
+          densities="x1 x2"
           fit="cover"
           loading="eager"
         />
