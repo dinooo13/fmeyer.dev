@@ -1,0 +1,10 @@
+seo:
+  title: Labs
+  description: Projects, experiments, and side builds that show what Fabian Meyer works on outside day-to-day product delivery.
+title: Labs
+description: Projects, experiments, and side builds that show what I work on outside day-to-day product delivery.
+links:
+  - label: dinooo13
+    icon: i-simple-icons-github
+    to: https://github.com/dinooo13
+    target: _blank

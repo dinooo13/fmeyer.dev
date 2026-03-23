@@ -1,0 +1,17 @@
+title: fmeyer.dev
+description: Personal website and portfolio built with Nuxt, used to shape a more intentional public profile and a clean home for writing, speaking, and side projects. It is also where I iterate on tone, layout, and how technical work is presented in public. The project doubles as a small frontend playground for content structure, polish, and continuous refinement.
+challenge: Building a personal site that feels intentional instead of template-like means balancing clarity, personality, and maintainability across content, layout, and navigation. The challenge is to keep the site easy to evolve while still giving each section enough editorial weight to present work in a sharper way.
+approach: The site is structured around content collections and a small set of reusable page patterns so new sections can stay consistent without flattening the presentation. I use it as a safe place to refine Nuxt UI composition, content modeling, and the tone of how projects, talks, and experience are framed publicly.
+nextSteps:
+  - Expand the labs and speaking sections with richer detail pages and stronger internal navigation.
+  - Add writing or notes that make the site more useful as a public technical home, not just a portfolio.
+  - Keep iterating on visual polish and content structure as the body of work grows.
+icon: i-lucide-layout-panel-top
+status: wip
+url: https://fmeyer.dev
+repoUrl: https://github.com/dinooo13/fmeyer.dev
+tags:
+  - Nuxt
+  - Portfolio
+  - Personal site
+date: 2022-09-28T20:11:20Z

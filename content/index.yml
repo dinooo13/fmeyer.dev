@@ -1,0 +1,73 @@
+seo:
+  title: Fabian Meyer
+  description: Learning leader, software engineer and AI mentor at eventim Tech focused on agentic engineering, Vue chapter leadership, and frontend impact.
+title: Fabian Meyer
+description: Learning leader, software engineer and AI mentor at eventim Tech focused on AI enablement, Vue chapter leadership, the Tixx Online Shop, and frontend craft.
+hero:
+  name: Fabian Meyer
+  role: Learning leader, software engineer and AI mentor at eventim Tech
+  intro: I lead frontend engineers through the Vue chapter, work across the stack in product delivery, provide technical leadership for the Tixx Online Shop, and help teams apply agentic engineering with measurable customer impact.
+focus:
+  title: Focus
+  description: What I spend time on right now.
+  items:
+    - title: AI enablement & agentic engineering
+      description: Teaching teams how to leverage agentic engineering to increase their business impact. I help to integrate tools and create custom SDD frameworks that automate team processes.
+    - title: Vue chapter leadership
+      description: Developing frontend engineers through coaching, shared standards, and practical enablement that helps the chapter grow consistently.
+    - title: Technical leadership for the Tixx Online Shop
+      description: Providing technical direction for a core commerce surface and helping teams navigate complexity with clarity, focus, and steady execution.
+    - title: Speaking and stage experience
+      description: Building more speaking experience after my first talk and developing talks that I can bring to more stages, teams, and events.
+experience:
+  title: Experience
+  description: Current and previous roles across chapter leadership and software engineering.
+  items:
+    - period: Oct 2025 - Present
+      title: Chapter Lead Vue | Sales & Settlement
+      organization: eventim Tech GmbH
+      summary: Chapter leadership role within Sales & Settlement, alongside ongoing hands-on engineering work at eventim Tech.
+      highlights:
+        - Lead the Vue chapter through coaching, standards, and practical enablement.
+        - Connect chapter growth with day-to-day product delivery.
+        - Strengthen engineering practices while staying hands-on in delivery.
+    - period: Apr 2022 - Present
+      title: Software Development Expert
+      organization: eventim Tech GmbH
+      summary: Ongoing software engineering role focused on shipping product work while growing frontend quality and team effectiveness.
+      highlights:
+        - Technical leadership for the Tixx Online Shop since January 2026.
+        - Deliver product work with a focus on maintainable frontend solutions.
+        - Work full stack in delivery, from implementation to broader product execution.
+    - period: Jan 2022 - Apr 2022
+      title: Software Developer
+      organization: neusta software development - neusta GmbH
+      summary: Full-time software developer role at neusta software development.
+      highlights:
+        - Delivered software in a client-focused engineering environment.
+        - Contributed across the stack in a team-based delivery setup.
+        - Built the foundation for long-term product engineering work.
+    - period: Feb 2020 - Jan 2022
+      title: Ausbildung Fachinformatiker für Anwendungsentwicklung
+      organization: neusta software development - neusta GmbH
+      summary: Completed an application development apprenticeship at neusta software development.
+      highlights:
+        - Learned software engineering through practical application development.
+        - Built experience in implementation, collaboration, and delivery.
+        - Developed the base for a full-time engineering role.
+labs:
+  title: Labs
+  description: Projects, experiments, and side builds that show what I work on outside day-to-day product delivery.
+  link:
+    label: Explore Labs
+    icon: i-lucide-flask-conical
+    to: /labs
+
+speaking:
+  title: Speaking
+  description: Talks, sessions, and speaking work I want to keep building over time.
+  note: "First announced talk: Agentic Conf Hamburg 2026."
+  link:
+    label: View Speaking
+    icon: i-lucide-mic-vocal
+    to: /speaking

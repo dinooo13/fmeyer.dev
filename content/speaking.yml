@@ -1,0 +1,16 @@
+seo:
+  title: Speaking
+  description: Fabian Meyer speaks about agentic engineering and software engineering.
+title: Speaking
+description: I speak about agentic engineering and software engineering through talks, sessions, and workshops.
+links:
+  - label: Invite me to speak
+    icon: i-lucide-mic-vocal
+    to: mailto:hello@fmeyer.dev
+invite:
+  title: Future speaking
+  description: More talks and workshops may appear here over time. If you would like to discuss a talk, workshop, or internal session, email is the best starting point.
+  link:
+    label: Invite me to speak
+    icon: i-lucide-mic
+    to: mailto:hello@fmeyer.dev
