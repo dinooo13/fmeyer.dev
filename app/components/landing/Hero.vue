@@ -8,6 +8,12 @@ type HeroPage = {
 }
 
 const { footer, global } = useAppConfig()
+const colorMode = useColorMode()
+
+const avatarSrc = computed(() => colorMode.value === 'dark'
+  ? global.picture?.dark
+  : global.picture?.light
+)
 
 defineProps<{
   page: HeroPage
@@ -40,11 +46,16 @@ defineProps<{
           delay: 0.1
         }"
       >
-        <UColorModeAvatar
-          class="size-18 ring ring-default ring-offset-3 ring-offset-(--ui-bg)"
-          :light="global.picture?.light!"
-          :dark="global.picture?.dark!"
+        <NuxtImg
+          class="size-18 rounded-full object-cover ring ring-default ring-offset-3 ring-offset-(--ui-bg)"
+          :src="avatarSrc"
           :alt="global.picture?.alt!"
+          width="72"
+          height="72"
+          sizes="72px"
+          densities="x1 x2 x3"
+          fit="cover"
+          loading="eager"
         />
       </Motion>
     </template>
