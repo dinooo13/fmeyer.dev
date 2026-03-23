@@ -27,6 +27,7 @@ useSeoMeta({
 })
 
 const formattedDate = computed(() => formatLabDate(lab.value!.date))
+const hasImage = computed(() => Boolean(lab.value?.image))
 </script>
 
 <template>
@@ -83,8 +84,14 @@ const formattedDate = computed(() => formatLabDate(lab.value!.date))
       </template>
 
       <template #default>
-        <div class="mt-8 grid gap-6 lg:grid-cols-[minmax(0,1fr)_20rem]">
+        <div
+          :class="[
+            'mt-8 grid gap-6',
+            hasImage ? 'lg:grid-cols-[minmax(0,1fr)_20rem]' : 'lg:grid-cols-[20rem]'
+          ]"
+        >
           <UCard
+            v-if="hasImage"
             class="overflow-hidden border border-default"
             :ui="{
               body: 'p-0'

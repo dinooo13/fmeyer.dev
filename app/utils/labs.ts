@@ -8,7 +8,7 @@ export type LabEntry = {
   challenge: string
   approach: string
   nextSteps: string[]
-  image: string
+  image?: string
   icon?: string
   status: LabStatus
   url?: string

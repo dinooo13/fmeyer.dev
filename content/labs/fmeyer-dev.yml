@@ -8,7 +8,6 @@ nextSteps:
   - Keep iterating on visual polish and content structure as the body of work grows.
 icon: i-lucide-layout-panel-top
 status: wip
-image: /labs/fmeyer-dev.svg
 url: https://fmeyer.dev
 repoUrl: https://github.com/dinooo13/fmeyer.dev
 tags:
@@ -16,4 +15,3 @@ tags:
   - Portfolio
   - Personal site
 date: 2022-09-28T20:11:20Z
-note: The site itself is one of the pinned builds.

@@ -88,7 +88,7 @@ export default defineContentConfig({
         challenge: z.string().nonempty(),
         approach: z.string().nonempty(),
         nextSteps: z.array(z.string().nonempty()).min(1),
-        image: z.string().nonempty().editor({ input: 'media' }),
+        image: z.string().nonempty().editor({ input: 'media' }).optional(),
         icon: z.string().optional(),
         status: z.enum(['wip', 'prototype', 'paused']),
         url: z.string().optional(),

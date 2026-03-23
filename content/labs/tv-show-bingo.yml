@@ -8,7 +8,6 @@ nextSteps:
   - Polish the mobile experience since the product is most useful as a casual second-screen tool.
 icon: i-lucide-tv
 status: prototype
-image: /labs/tv-show-bingo.svg
 repoUrl: https://github.com/dinooo13/tv-show-bingo
 tags:
   - TypeScript

@@ -8,7 +8,6 @@ nextSteps:
   - Test which habit and streak mechanics actually improve retention before expanding the feature set.
 icon: i-lucide-calendar-check
 status: wip
-image: /labs/habit-tracker.svg
 url: https://habits.fmeyer.dev
 repoUrl: https://github.com/dinooo13/habit-tracker
 tags:

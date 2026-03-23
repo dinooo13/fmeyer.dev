@@ -8,7 +8,6 @@ nextSteps:
   - Tighten the visual system to make the concept feel closer to a finished product direction.
 icon: i-lucide-clapperboard
 status: prototype
-image: /labs/watch-wise.svg
 repoUrl: https://github.com/dinooo13/watch-wise
 tags:
   - TypeScript
