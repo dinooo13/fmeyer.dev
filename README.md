@@ -66,28 +66,3 @@ Content is defined with Nuxt Content collections in [`content.config.ts`](/Users
 - [`content/speaking/`](/Users/fmeyer/Developer/personal/fmeyer.dev/content/speaking) contains individual talk entries.
 
 Static assets live in [`public/`](/Users/fmeyer/Developer/personal/fmeyer.dev/public), and the Nuxt application code lives in [`app/`](/Users/fmeyer/Developer/personal/fmeyer.dev/app).
-
-## Deployment
-
-CI runs on every push and executes:
-
-- `pnpm install`
-- `pnpm lint`
-- `pnpm typecheck`
-
-Deployment runs on pushes to `main` via [`.github/workflows/deploy.yml`](/Users/fmeyer/Developer/personal/fmeyer.dev/.github/workflows/deploy.yml). The workflow:
-
-1. installs dependencies,
-2. runs `pnpm generate`,
-3. deploys the generated `.output/public/` directory via FTP.
-
-The deployment workflow expects these GitHub repository secrets:
-
-- `HOST`
-- `USERNAME`
-- `PASSWORD`
-
-## Notes
-
-- `NUXT_PUBLIC_SITE_URL` is used for the site URL and OG image generation.
-- The repository is configured as a static site build, not a long-running Node server deployment.
