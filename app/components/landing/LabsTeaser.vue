@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { getLabPath, type LabEntry } from '../../utils/labs'
-
 type LabsSection = {
   title: string
   description: string

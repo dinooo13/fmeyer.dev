@@ -2,5 +2,7 @@ export function copyToClipboard(toCopy: string, message: string = 'Copied to cli
   const toast = useToast()
   navigator.clipboard.writeText(toCopy).then(() => {
     toast.add({ title: message, color: 'success', icon: 'i-lucide-check-circle' })
+  }).catch(() => {
+    toast.add({ title: 'Failed to copy to clipboard', color: 'error', icon: 'i-lucide-x-circle' })
   })
 }

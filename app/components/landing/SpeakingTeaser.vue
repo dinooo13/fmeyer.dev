@@ -1,8 +1,4 @@
 <script setup lang="ts">
-import TalkPreviewCard from '../talks/TalkPreviewCard.vue'
-import type { TalkEntry } from '../../utils/speaking'
-import { getTalkPath } from '../../utils/speaking'
-
 type SpeakingSection = {
   title: string
   description: string
@@ -45,7 +41,7 @@ defineProps<{
     </Motion>
 
     <div class="space-y-4">
-      <TalkPreviewCard
+      <TalksTalkPreviewCard
         v-if="talk"
         :talk="talk"
         variant="featured"

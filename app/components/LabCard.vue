@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { getLabPath, labStatusIconMap, labStatusMap, type LabEntry } from '../utils/labs'
-
 defineProps<{
   lab: LabEntry
 }>()

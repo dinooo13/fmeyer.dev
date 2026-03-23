@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { sortLabs } from '../../utils/labs'
-
 const { data: page } = await useAsyncData('labs-page', () => {
   return queryCollection('pages').path('/labs').first()
 })

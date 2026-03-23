@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import TalkPreviewCard from '../../components/talks/TalkPreviewCard.vue'
-import { getTalkPath, sortTalks } from '../../utils/speaking'
-
 const { data: page } = await useAsyncData('speaking', () => {
   return queryCollection('speaking').first()
 })
@@ -68,7 +65,7 @@ useSeoMeta({
           :transition="{ delay: index * 0.08 }"
           :in-view-options="{ once: true }"
         >
-          <TalkPreviewCard
+          <TalksTalkPreviewCard
             :talk="talk"
             variant="list"
             :show-summary="true"
