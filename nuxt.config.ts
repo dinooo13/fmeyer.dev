@@ -16,6 +16,17 @@ export default defineNuxtConfig({
 
   css: ['~/assets/css/main.css'],
 
+  site: {
+    url: process.env.NUXT_PUBLIC_SITE_URL || 'https://fmeyer.dev',
+    name: 'fmeyer.dev'
+  },
+
+  runtimeConfig: {
+    public: {
+      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://fmeyer.dev'
+    }
+  },
+
   compatibilityDate: '2024-11-01',
 
   nitro: {

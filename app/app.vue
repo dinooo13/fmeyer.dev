@@ -1,7 +1,12 @@
 <script setup lang="ts">
+const route = useRoute()
+const runtimeConfig = useRuntimeConfig()
 const colorMode = useColorMode()
 
 const color = computed(() => colorMode.value === 'dark' ? '#020618' : 'white')
+const canonicalUrl = computed(() => {
+  return new URL(route.path || '/', runtimeConfig.public.siteUrl).toString()
+})
 
 useHead({
   meta: [
@@ -10,7 +15,8 @@ useHead({
     { key: 'theme-color', name: 'theme-color', content: color }
   ],
   link: [
-    { rel: 'icon', href: '/favicon.ico' }
+    { rel: 'icon', href: '/favicon.ico' },
+    { rel: 'canonical', href: canonicalUrl }
   ],
   htmlAttrs: {
     lang: 'en'
@@ -19,6 +25,8 @@ useHead({
 
 useSeoMeta({
   titleTemplate: '%s - fmeyer.dev',
+  ogSiteName: 'fmeyer.dev',
+  ogUrl: canonicalUrl,
   twitterCard: 'summary'
 })
 </script>
