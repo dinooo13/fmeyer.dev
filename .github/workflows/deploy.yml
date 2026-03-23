@@ -4,6 +4,15 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'app/**'
+      - 'content/**'
+      - 'public/**'
+      - 'nuxt.config.ts'
+      - 'content.config.ts'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'tsconfig.json'
   workflow_dispatch:
 
 jobs:
@@ -32,8 +41,6 @@ jobs:
         run: pnpm generate
 
       - name: Deploy via FTP
-        # Full sync: deletes remote files not present in local build to ensure
-        # a clean deployment matching the generated output exactly.
         uses: SamKirkland/FTP-Deploy-Action@v4.3.6
         with:
           server: ${{ secrets.HOST }}
@@ -41,4 +48,3 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           local-dir: ./.output/public/
           server-dir: ./httpdocs/
-          dangerous-clean-slate: true
