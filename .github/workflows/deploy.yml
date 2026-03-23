@@ -4,6 +4,15 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'app/**'
+      - 'content/**'
+      - 'public/**'
+      - 'nuxt.config.ts'
+      - 'content.config.ts'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'tsconfig.json'
   workflow_dispatch:
 
 jobs:
