@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { formatLabDate, getLabSlug, labStatusIconMap, labStatusMap, sortLabs } from '../../utils/labs'
-
 const route = useRoute()
 const slug = Array.isArray(route.params.slug) ? route.params.slug[0] : route.params.slug
 
@@ -97,11 +95,12 @@ const hasImage = computed(() => Boolean(lab.value?.image))
               body: 'p-0'
             }"
           >
-            <img
+            <NuxtImg
               :src="lab.image"
               :alt="`${lab.title} project preview`"
               class="h-full w-full object-cover"
-            >
+              loading="lazy"
+            />
           </UCard>
 
           <UCard

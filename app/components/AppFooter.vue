@@ -7,8 +7,8 @@ const { footer } = useAppConfig()
     <UContainer class="flex flex-col items-center gap-3">
       <div class="flex items-center gap-2">
         <UButton
-          v-for="(link, index) of footer?.links"
-          :key="index"
+          v-for="link of footer?.links"
+          :key="link['aria-label'] || link.to"
           v-bind="{ size: 'xs', color: 'neutral', variant: 'ghost', ...link }"
           class="text-highlighted hover:text-highlighted"
         />

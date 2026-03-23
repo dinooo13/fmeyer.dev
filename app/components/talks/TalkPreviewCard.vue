@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { TalkEntry } from '../../utils/speaking'
-
 type PreviewAction = {
   label: string
   to: string
@@ -47,7 +45,7 @@ const subtitle = computed(() => {
     class="border border-default"
     :class="variant === 'list' ? 'h-full' : ''"
     :ui="{
-      body: variant === 'featured' ? 'p-6 sm:p-8' : 'p-6 sm:p-8'
+      body: 'p-6 sm:p-8'
     }"
   >
     <div

@@ -46,16 +46,6 @@ export type ResolvedTalkEntry<Talk extends TalkEntry = TalkEntry> = Omit<Talk, '
   resources: ResolvedTalkResource[]
 }
 
-const getTimestamp = (value?: string | Date | null) => {
-  if (!value) {
-    return null
-  }
-
-  const timestamp = new Date(value).getTime()
-
-  return Number.isNaN(timestamp) ? null : timestamp
-}
-
 export const sortTalks = <Talk extends TalkEntry>(talks: Talk[]) => {
   return talks.slice().sort((left, right) => {
     const leftTimestamp = getTimestamp(left.date)

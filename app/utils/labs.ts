@@ -39,15 +39,9 @@ export const labStatusIconMap: Record<LabStatus, string> = {
   paused: 'i-lucide-pause'
 }
 
-const getTimestamp = (value: string | Date) => {
-  const timestamp = new Date(value).getTime()
-
-  return Number.isNaN(timestamp) ? 0 : timestamp
-}
-
 export const sortLabs = <Lab extends LabEntry>(labs: Lab[]) => {
   return labs.slice().sort((left, right) => {
-    return getTimestamp(right.date) - getTimestamp(left.date) || left.title.localeCompare(right.title)
+    return (getTimestamp(right.date) ?? 0) - (getTimestamp(left.date) ?? 0) || left.title.localeCompare(right.title)
   })
 }
 

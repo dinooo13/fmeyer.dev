@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import TalkPreviewCard from '../../components/talks/TalkPreviewCard.vue'
-import { getTalkPath, sortTalks } from '../../utils/speaking'
-
 const { data: page } = await useAsyncData('speaking', () => {
   return queryCollection('speaking').first()
 })

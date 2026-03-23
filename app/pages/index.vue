@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import { sortLabs } from '../utils/labs'
-import { getLatestTalk } from '../utils/speaking'
-
 const { data: page } = await useAsyncData('index', () => {
   return queryCollection('index').first()
 })

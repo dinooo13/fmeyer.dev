@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { getTalkSlug, resolveTalkEntry, sortTalks, type ResolvedTalkResource } from '../../utils/speaking'
-
 const route = useRoute()
 const slug = Array.isArray(route.params.slug) ? route.params.slug[0] : route.params.slug
 
