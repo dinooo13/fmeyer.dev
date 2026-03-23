@@ -39,3 +39,4 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           local-dir: ./.output/public/
           server-dir: ./httpdocs/
+          dangerous-clean-slate: true
