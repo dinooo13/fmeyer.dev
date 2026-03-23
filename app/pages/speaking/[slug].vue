@@ -19,7 +19,7 @@ if (!talk.value) {
 
 usePageSeo({
   title: talk.value.title,
-  description: talk.value.summary || talk.value.description
+  description: talk.value.summary ?? talk.value.description
 })
 
 defineOgImage()

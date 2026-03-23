@@ -8,8 +8,8 @@ type SeoInput = {
 }
 
 export function usePageSeo(page: SeoInput) {
-  const title = page.seo?.title || page.title
-  const description = page.seo?.description || page.description
+  const title = page.seo?.title ?? page.title
+  const description = page.seo?.description ?? page.description
 
   useSeoMeta({
     title,
