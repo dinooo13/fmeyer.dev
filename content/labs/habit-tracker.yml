@@ -1,5 +1,11 @@
 title: Habit Tracker
 description: Habit tracking app focused on atomic daily routines, progress visibility, and a simple flow that makes consistency easier to keep up over time. The idea is to keep the product lightweight while still making momentum and streaks feel tangible. It is one of the more product-minded side projects, with room to evolve into a sharper daily-use tool.
+challenge: Habit tools often become overloaded with dashboards, settings, and complexity that gets in the way of daily use. The core challenge here is keeping the experience lightweight enough for repetition while still making progress visible and motivating over time.
+approach: The product is framed around a narrow daily loop with fast check-ins, clear streak visibility, and a smaller set of interactions that reinforce consistency instead of feature discovery. That lets the project stay product-minded while leaving room to sharpen onboarding, retention cues, and routine design later.
+nextSteps:
+  - Refine the core daily tracking flow so logging habits feels faster and more obvious on repeat visits.
+  - Explore lightweight progress summaries that reinforce consistency without turning the UI into a dashboard.
+  - Test which habit and streak mechanics actually improve retention before expanding the feature set.
 icon: i-lucide-calendar-check
 status: wip
 image: /labs/habit-tracker.svg

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { sortLabs } from '../../utils/labs'
+
 const { data: page } = await useAsyncData('labs-page', () => {
   return queryCollection('pages').path('/labs').first()
 })
@@ -6,12 +8,7 @@ const { data: page } = await useAsyncData('labs-page', () => {
 const { data: labs } = await useAsyncData('labs', async () => {
   const entries = await queryCollection('labs').all()
 
-  return entries
-    .slice()
-    .sort(
-      (left, right) =>
-        new Date(right.date).getTime() - new Date(left.date).getTime()
-    )
+  return sortLabs(entries)
 })
 
 if (!page.value) {

@@ -1,5 +1,11 @@
 title: TV Show Bingo
 description: Lightweight shared bingo game for watching TV shows together, built around playful prompts and a more social second-screen viewing experience. The project leans into fun over complexity and explores how a tiny interaction can make shared watching more participatory. It is a compact experiment in building something playful, fast, and easy to pick up.
+challenge: Small social games only work if the rules are obvious immediately and the setup overhead stays close to zero. The hard part is making the experience playful enough to spark interaction without requiring much explanation or coordination between viewers.
+approach: The project stays intentionally compact, focusing on quick prompts, simple shared participation, and a lightweight interface that supports second-screen use. By keeping the scope narrow, it can explore how tiny mechanics change group viewing without the weight of a larger game system.
+nextSteps:
+  - Add a smoother multiplayer or shared-room flow that is easier to start during a live watch session.
+  - Iterate on the bingo prompt set so rounds feel more dynamic and less repetitive.
+  - Polish the mobile experience since the product is most useful as a casual second-screen tool.
 icon: i-lucide-tv
 status: prototype
 image: /labs/tv-show-bingo.svg

@@ -1,41 +1,9 @@
 <script setup lang="ts">
-type Lab = {
-  title: string
-  description: string
-  status: 'wip' | 'prototype' | 'paused'
-  image: string
-  icon?: string
-  url?: string
-  repoUrl?: string
-  tags: string[]
-  date: string | Date
-  note?: string
-}
+import { getLabPath, labStatusIconMap, labStatusMap, type LabEntry } from '../utils/labs'
 
 defineProps<{
-  lab: Lab
+  lab: LabEntry
 }>()
-
-const statusMap = {
-  wip: {
-    label: 'WIP',
-    color: 'warning'
-  },
-  prototype: {
-    label: 'Prototype',
-    color: 'info'
-  },
-  paused: {
-    label: 'Paused',
-    color: 'neutral'
-  }
-} as const
-
-const previewIconMap = {
-  wip: 'i-lucide-sparkles',
-  prototype: 'i-lucide-flask-conical',
-  paused: 'i-lucide-pause'
-} as const
 </script>
 
 <template>
@@ -59,9 +27,9 @@ const previewIconMap = {
         </div>
 
         <UBadge
-          :label="statusMap[lab.status].label"
-          :icon="previewIconMap[lab.status]"
-          :color="statusMap[lab.status].color"
+          :label="labStatusMap[lab.status].label"
+          :icon="labStatusIconMap[lab.status]"
+          :color="labStatusMap[lab.status].color"
           variant="soft"
         />
       </div>
@@ -91,6 +59,13 @@ const previewIconMap = {
 
       <div class="mt-auto flex flex-wrap items-center gap-3 pt-2">
         <UButton
+          :to="getLabPath(lab)"
+          icon="i-lucide-arrow-right"
+          color="neutral"
+          size="sm"
+          label="View details"
+        />
+        <UButton
           v-if="lab.url"
           :to="lab.url"
           target="_blank"
@@ -108,12 +83,6 @@ const previewIconMap = {
           size="sm"
           label="Repository"
         />
-        <span
-          v-if="!lab.url && !lab.repoUrl"
-          class="text-sm text-muted"
-        >
-          Details and links will be added here.
-        </span>
       </div>
     </div>
   </UCard>

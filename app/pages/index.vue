@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { sortLabs } from '../utils/labs'
 import { getLatestTalk } from '../utils/speaking'
 
 const { data: page } = await useAsyncData('index', () => {
@@ -8,9 +9,7 @@ const { data: page } = await useAsyncData('index', () => {
 const { data: latestLab } = await useAsyncData('latest-lab', async () => {
   const entries = await queryCollection('labs').all()
 
-  return entries
-    .slice()
-    .sort((left, right) => new Date(right.date).getTime() - new Date(left.date).getTime())[0]
+  return sortLabs(entries)[0]
 })
 
 const { data: latestTalk } = await useAsyncData('latest-talk', async () => {

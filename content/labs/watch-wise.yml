@@ -1,5 +1,11 @@
 title: Watch Wise
 description: Movie and TV discovery concept centered on an AI recommendation interface, with the focus on a polished browsing flow and stronger content suggestions. It is less about building a full platform and more about exploring how recommendation UX can feel clearer and more curated. The project gives room to experiment with interface quality, media browsing patterns, and AI-assisted product ideas.
+challenge: Recommendation products often overwhelm people with too much choice and vague ranking logic, especially in media browsing. The challenge here is to make discovery feel more curated and understandable while still using AI as a meaningful part of the product concept.
+approach: The concept focuses on the recommendation interface itself rather than trying to become a complete content platform. That makes it easier to experiment with browsing patterns, suggestion framing, and how AI-assisted discovery can feel clearer, more opinionated, and more polished.
+nextSteps:
+  - Improve how recommendations are explained so suggestions feel more trustworthy and intentional.
+  - Explore stronger browsing states for mood, genre, or context-driven discovery.
+  - Tighten the visual system to make the concept feel closer to a finished product direction.
 icon: i-lucide-clapperboard
 status: prototype
 image: /labs/watch-wise.svg

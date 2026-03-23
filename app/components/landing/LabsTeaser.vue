@@ -1,11 +1,5 @@
 <script setup lang="ts">
-type Lab = {
-  title: string
-  description: string
-  status: 'wip' | 'prototype' | 'paused'
-  date: string | Date
-  note?: string
-}
+import { getLabPath, type LabEntry } from '../../utils/labs'
 
 type LabsSection = {
   title: string
@@ -22,7 +16,7 @@ type LabsSection = {
 
 defineProps<{
   section: LabsSection
-  lab?: Lab | null
+  lab?: LabEntry | null
 }>()
 </script>
 
@@ -72,6 +66,19 @@ defineProps<{
         >
           {{ lab.note }}
         </p>
+
+        <div
+          v-if="lab"
+          class="mt-5"
+        >
+          <UButton
+            :to="getLabPath(lab)"
+            color="neutral"
+            size="sm"
+            icon="i-lucide-arrow-right"
+            label="View details"
+          />
+        </div>
       </div>
     </UCard>
   </UPageSection>

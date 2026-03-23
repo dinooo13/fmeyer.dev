@@ -85,6 +85,9 @@ export default defineContentConfig({
       schema: z.object({
         title: z.string().nonempty(),
         description: z.string().nonempty(),
+        challenge: z.string().nonempty(),
+        approach: z.string().nonempty(),
+        nextSteps: z.array(z.string().nonempty()).min(1),
         image: z.string().nonempty().editor({ input: 'media' }),
         icon: z.string().optional(),
         status: z.enum(['wip', 'prototype', 'paused']),
