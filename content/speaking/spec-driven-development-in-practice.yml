@@ -1,0 +1,22 @@
+title: "Spec-Driven Development in Practice: From Prompt to Process"
+summary: From ad-hoc prompting to a structured Spec-Driven Development workflow — a practical look at how to make AI-assisted coding reliable and repeatable in real project work.
+description: >-
+  Most developers start using AI coding tools the same way: throw a prompt at
+  it and hope for the best. That works — until it doesn't. This talk walks
+  through the journey from loose, ad-hoc prompting to a structured
+  Spec-Driven Development workflow. What makes a spec actually useful? How do
+  you define task patterns that an agent can follow reliably? Where do quality
+  gates and verification fit in? And what does the process look like once all
+  the pieces are in place? Honest lessons from real project work — including
+  what didn't work and what we'd do differently.
+event: "Rheinwerk Spotlight »Coding mit KI«"
+location: Online
+topic: Spec-Driven Development
+date: 2026-06-23
+dateLabel: "June 23, 2026 · 12:00"
+time: "12:00"
+duration: 45 min
+format: Talk
+language: German
+eventUrl: https://www.rheinwerk-verlag.de/konferenzen/coding-mit-ki/
+placeholder: true

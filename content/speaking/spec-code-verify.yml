@@ -1,0 +1,23 @@
+title: "Spec, Code, Verify: Building Your Own AI Development Workflows"
+summary: A hands-on full-day workshop where you build a Spec-Driven Development workflow from scratch — structured specs, task patterns, quality gates, and end-to-end verification resulting in an agent pipeline from ticket to reviewable result.
+description: >-
+  Ad-hoc prompting gets you started, but it doesn't scale. In this full-day
+  workshop you build a Spec-Driven Development workflow piece by piece — from
+  scratch, hands-on, with your own tools. You'll learn how to write structured
+  specs that an agent can actually follow, how to define reusable task
+  patterns, where to add quality gates, and how to close the loop with
+  automated verification. By the end of the day you'll have a working pipeline:
+  feed it a ticket, get back a spec, an implementation, a verification result,
+  and a reviewable output — all within defined quality standards. Bring your
+  laptop and expect to write real code.
+event: "Rheinwerk Spotlight »Coding mit KI«"
+location: Online
+topic: Spec-Driven Development
+date: 2026-06-24
+dateLabel: "June 24, 2026"
+time: "09:30"
+duration: Full day (9:30–17:00 incl. lunch)
+format: Workshop
+language: German
+eventUrl: https://www.rheinwerk-verlag.de/konferenzen/coding-mit-ki/
+placeholder: true
