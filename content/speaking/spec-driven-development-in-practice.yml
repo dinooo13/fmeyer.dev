@@ -18,5 +18,6 @@ time: "12:00"
 duration: 45 min
 format: Talk
 language: German
+url: https://www.rheinwerk-verlag.de/konferenzen/coding-mit-ki/
 eventUrl: https://www.rheinwerk-verlag.de/konferenzen/coding-mit-ki/
 placeholder: true
