@@ -19,13 +19,12 @@ if (!page.value) {
 
 usePageSeo(page.value)
 
-defineOgImage()
+defineOgImage('NuxtSeoSatori')
 </script>
 
 <template>
   <UPage v-if="page">
     <UPageHero
-      :title="page.title"
       :description="page.description"
       :ui="{
         title: '!mx-0 max-w-3xl text-left',
@@ -33,6 +32,12 @@ defineOgImage()
         links: 'justify-start'
       }"
     >
+      <template #title>
+        <h1 class="text-3xl font-bold tracking-tight text-highlighted sm:text-4xl lg:text-5xl">
+          {{ page.title }}
+        </h1>
+      </template>
+
       <template #links>
         <div
           v-if="page.links?.length"
@@ -53,10 +58,14 @@ defineOgImage()
         container: '!pt-0'
       }"
     >
-      <div class="grid gap-6 lg:grid-cols-3">
+      <ul
+        class="grid gap-6 lg:grid-cols-3 list-none p-0"
+        aria-label="Lab projects"
+      >
         <Motion
           v-for="(lab, index) in labs"
           :key="lab.title"
+          as="li"
           :initial="{ opacity: 0, transform: 'translateY(12px)' }"
           :while-in-view="{ opacity: 1, transform: 'translateY(0)' }"
           :transition="{ delay: index * 0.08 }"
@@ -64,7 +73,7 @@ defineOgImage()
         >
           <LabCard :lab="lab" />
         </Motion>
-      </div>
+      </ul>
     </UPageSection>
   </UPage>
 </template>

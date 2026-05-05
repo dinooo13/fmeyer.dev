@@ -23,7 +23,7 @@ usePageSeo({
   description: talk.value.summary ?? talk.value.description
 })
 
-defineOgImage()
+defineOgImage('NuxtSeoSatori')
 
 const organizerSubtitle = computed(() => {
   if (!talk.value?.organizerTitle) {

@@ -70,7 +70,7 @@ defineProps<{
           :animate="heroAnimate"
           :transition="heroTransition(0.2)"
         >
-          {{ page.hero.role }}
+          <h1>{{ page.hero.role }}</h1>
         </Motion>
       </div>
     </template>
