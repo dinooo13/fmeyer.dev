@@ -10,10 +10,32 @@ on:
 permissions:
   contents: read
   deployments: write
+  pull-requests: read
 
 jobs:
-  deploy:
+  changes:
     if: github.event.action != 'closed' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    outputs:
+      site: ${{ steps.filter.outputs.site }}
+    steps:
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            site:
+              - 'app/**'
+              - 'content/**'
+              - 'public/**'
+              - 'nuxt.config.ts'
+              - 'content.config.ts'
+              - 'package.json'
+              - 'pnpm-lock.yaml'
+              - 'tsconfig.json'
+
+  deploy:
+    needs: changes
+    if: needs.changes.outputs.site == 'true'
     runs-on: ubuntu-latest
     concurrency:
       group: preview-${{ github.event.pull_request.number }}
@@ -48,6 +70,7 @@ jobs:
         env:
           NUXT_APP_BASE_URL: /pr-${{ github.event.pull_request.number }}/
           NUXT_PUBLIC_SITE_URL: https://preview.fmeyer.dev/pr-${{ github.event.pull_request.number }}
+          NUXT_PUBLIC_NOINDEX: 'true'
         run: pnpm generate
 
       - name: Deploy via FTP
