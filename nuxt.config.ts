@@ -63,7 +63,7 @@ export default defineNuxtConfig({
       name: 'Fabian Meyer',
       url: process.env.NUXT_PUBLIC_SITE_URL || 'https://fmeyer.dev',
       image: '/profile/fabian-meyer-portrait.jpg',
-      jobTitle: 'Chapter Lead Vue, Software Development Expert',
+      jobTitle: 'Chapter Lead Vue, Software Engineer, AI Mentor',
       worksFor: {
         '@type': 'Organization',
         'name': 'eventim Tech GmbH'

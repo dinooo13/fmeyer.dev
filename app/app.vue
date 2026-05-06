@@ -55,7 +55,7 @@ useSchemaOrg([
   definePerson({
     name: 'Fabian Meyer',
     image: '/profile/fabian-meyer-portrait.jpg',
-    jobTitle: 'Chapter Lead Vue, Software Development Expert',
+    jobTitle: 'Chapter Lead Vue, Software Engineer, AI Mentor',
     worksFor: { name: 'eventim Tech GmbH' },
     sameAs: [
       'https://github.com/dinooo13',
