@@ -18,7 +18,7 @@ if (!lab.value) {
 
 usePageSeo(lab.value)
 
-defineOgImage()
+defineOgImage('NuxtSeoSatori')
 
 const formattedDate = computed(() => formatLabDate(lab.value!.date))
 const hasImage = computed(() => Boolean(lab.value?.image))

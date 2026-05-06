@@ -24,10 +24,14 @@ defineProps<{
       description: 'max-w-2xl text-left text-sm text-muted'
     }"
   >
-    <div class="grid gap-4 md:grid-cols-2">
+    <ul
+      class="grid gap-4 md:grid-cols-2 list-none p-0"
+      :aria-label="page.focus.title"
+    >
       <Motion
         v-for="(item, index) in page.focus.items"
         :key="item.title"
+        as="li"
         :initial="{ opacity: 0, transform: 'translateY(12px)' }"
         :while-in-view="{ opacity: 1, transform: 'translateY(0)' }"
         :transition="{ delay: index * 0.08 }"
@@ -47,6 +51,6 @@ defineProps<{
           </p>
         </UCard>
       </Motion>
-    </div>
+    </ul>
   </UPageSection>
 </template>

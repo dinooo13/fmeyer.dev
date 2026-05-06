@@ -25,7 +25,7 @@ if (!page.value) {
 
 usePageSeo(page.value)
 
-defineOgImage()
+defineOgImage('NuxtSeoSatori')
 </script>
 
 <template>

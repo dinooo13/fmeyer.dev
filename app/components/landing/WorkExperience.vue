@@ -38,17 +38,25 @@ const visibleItems = computed(() => {
       description: 'max-w-2xl text-left text-sm text-muted'
     }"
   >
-    <div class="relative space-y-6 border-l border-default pl-6 sm:pl-8">
+    <ol
+      id="experience-list"
+      class="relative space-y-6 border-l border-default pl-6 sm:pl-8 list-none"
+      :aria-label="page.experience.title"
+    >
       <Motion
         v-for="(experience, index) in visibleItems"
         :key="experience.title"
+        as="li"
         :initial="{ opacity: 0, transform: 'translateY(16px)' }"
         :while-in-view="{ opacity: 1, transform: 'translateY(0)' }"
         :transition="{ delay: index * 0.1 }"
         :in-view-options="{ once: true }"
         class="relative"
       >
-        <span class="absolute -left-[1.95rem] top-6 size-3 rounded-full border border-default bg-default sm:-left-[2.45rem]" />
+        <span
+          aria-hidden="true"
+          class="absolute -left-[1.95rem] top-6 size-3 rounded-full border border-default bg-default sm:-left-[2.45rem]"
+        />
 
         <UCard
           class="border border-default"
@@ -100,7 +108,7 @@ const visibleItems = computed(() => {
           </ul>
         </UCard>
       </Motion>
-    </div>
+    </ol>
 
     <div
       v-if="hasHiddenItems"
@@ -111,6 +119,7 @@ const visibleItems = computed(() => {
         variant="ghost"
         class="inline-flex cursor-pointer items-center gap-2 rounded-md px-3 py-2 text-sm text-highlighted hover:bg-muted/50 hover:text-highlighted"
         :aria-expanded="expanded"
+        aria-controls="experience-list"
         @click="expanded = !expanded"
       >
         <span>{{ expanded ? 'Show less experience' : 'Show more experience' }}</span>
