@@ -41,22 +41,14 @@ jobs:
           NUXT_PUBLIC_SITE_URL: https://preview.fmeyer.dev/pr-${{ github.event.pull_request.number }}
         run: pnpm generate
 
-      - name: Install lftp
-        run: sudo apt-get update && sudo apt-get install -y lftp
-
-      - name: Deploy via SFTP
-        env:
-          SFTP_HOST: ${{ secrets.HOST }}
-          SFTP_USER: ${{ secrets.SFTP_PREVIEW_USER }}
-          SFTP_PASS: ${{ secrets.SFTP_PREVIEW_PASSWORD }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-        run: |
-          lftp -u "$SFTP_USER,$SFTP_PASS" "sftp://$SFTP_HOST" <<EOF
-          set sftp:auto-confirm yes
-          mkdir -p -f ./previews/pr-${PR_NUMBER}
-          mirror -R --delete --verbose ./.output/public/ ./previews/pr-${PR_NUMBER}
-          bye
-          EOF
+      - name: Deploy via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.6
+        with:
+          server: ${{ secrets.HOST }}
+          username: ${{ secrets.SFTP_PREVIEW_USER }}
+          password: ${{ secrets.SFTP_PREVIEW_PASSWORD }}
+          local-dir: ./.output/public/
+          server-dir: ./previews/pr-${{ github.event.pull_request.number }}/
 
       - name: Comment preview URL
         if: github.event.action == 'opened' || github.event.action == 'reopened'
@@ -80,13 +72,12 @@ jobs:
 
       - name: Delete preview directory
         env:
-          SFTP_HOST: ${{ secrets.HOST }}
-          SFTP_USER: ${{ secrets.SFTP_PREVIEW_USER }}
-          SFTP_PASS: ${{ secrets.SFTP_PREVIEW_PASSWORD }}
+          FTP_HOST: ${{ secrets.HOST }}
+          FTP_USER: ${{ secrets.SFTP_PREVIEW_USER }}
+          FTP_PASS: ${{ secrets.SFTP_PREVIEW_PASSWORD }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
-          lftp -u "$SFTP_USER,$SFTP_PASS" "sftp://$SFTP_HOST" <<EOF
-          set sftp:auto-confirm yes
+          lftp -u "$FTP_USER,$FTP_PASS" "$FTP_HOST" <<EOF
           set cmd:fail-exit no
           rm -r ./previews/pr-${PR_NUMBER}
           bye
