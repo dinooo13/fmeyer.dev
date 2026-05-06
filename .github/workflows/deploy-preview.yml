@@ -1,0 +1,128 @@
+name: deploy-preview
+
+# preview.fmeyer.dev must be configured in the hosting panel to serve from
+# ./previews/. Each PR is deployed to ./previews/pr-<n>/ and removed on close.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+
+permissions:
+  contents: read
+  deployments: write
+  pull-requests: read
+
+jobs:
+  changes:
+    if: github.event.action != 'closed' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    outputs:
+      site: ${{ steps.filter.outputs.site }}
+    steps:
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            site:
+              - 'app/**'
+              - 'content/**'
+              - 'public/**'
+              - 'nuxt.config.ts'
+              - 'content.config.ts'
+              - 'package.json'
+              - 'pnpm-lock.yaml'
+              - 'tsconfig.json'
+
+  deploy:
+    needs: changes
+    if: needs.changes.outputs.site == 'true'
+    runs-on: ubuntu-latest
+    concurrency:
+      group: preview-${{ github.event.pull_request.number }}
+      cancel-in-progress: true
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Start deployment
+        uses: bobheadxi/deployments@v1
+        id: deployment
+        with:
+          step: start
+          token: ${{ secrets.GITHUB_TOKEN }}
+          env: preview-pr-${{ github.event.pull_request.number }}
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Install Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Generate static site
+        env:
+          NUXT_APP_BASE_URL: /pr-${{ github.event.pull_request.number }}/
+          NUXT_PUBLIC_SITE_URL: https://preview.fmeyer.dev/pr-${{ github.event.pull_request.number }}
+          NUXT_PUBLIC_NOINDEX: 'true'
+        run: pnpm generate
+
+      - name: Deploy via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.6
+        with:
+          server: ${{ secrets.HOST }}
+          username: ${{ secrets.SFTP_PREVIEW_USER }}
+          password: ${{ secrets.SFTP_PREVIEW_PASSWORD }}
+          protocol: ftps
+          local-dir: ./.output/public/
+          server-dir: ./previews/pr-${{ github.event.pull_request.number }}/
+
+      - name: Finish deployment
+        if: always()
+        uses: bobheadxi/deployments@v1
+        with:
+          step: finish
+          token: ${{ secrets.GITHUB_TOKEN }}
+          status: ${{ job.status }}
+          deployment_id: ${{ steps.deployment.outputs.deployment_id }}
+          env: ${{ steps.deployment.outputs.env }}
+          env_url: https://preview.fmeyer.dev/pr-${{ github.event.pull_request.number }}/
+
+  cleanup:
+    if: github.event.action == 'closed' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    concurrency:
+      group: preview-${{ github.event.pull_request.number }}
+
+    steps:
+      - name: Install lftp
+        run: sudo apt-get update && sudo apt-get install -y lftp
+
+      - name: Delete preview directory
+        env:
+          FTP_HOST: ${{ secrets.HOST }}
+          FTP_USER: ${{ secrets.SFTP_PREVIEW_USER }}
+          FTP_PASS: ${{ secrets.SFTP_PREVIEW_PASSWORD }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          lftp -u "$FTP_USER,$FTP_PASS" "$FTP_HOST" <<EOF
+          set ftp:ssl-force true
+          set ftp:ssl-protect-data true
+          set cmd:fail-exit no
+          rm -r ./previews/pr-${PR_NUMBER}
+          bye
+          EOF
+
+      - name: Deactivate deployment
+        uses: bobheadxi/deployments@v1
+        with:
+          step: deactivate-env
+          token: ${{ secrets.GITHUB_TOKEN }}
+          env: preview-pr-${{ github.event.pull_request.number }}
+          desc: Preview removed

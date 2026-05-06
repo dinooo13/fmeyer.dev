@@ -26,6 +26,7 @@ export default defineNuxtConfig({
     public: {
       siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://fmeyer.dev',
       googleSiteVerification: process.env.NUXT_PUBLIC_GOOGLE_SITE_VERIFICATION || ''
+      noindex: process.env.NUXT_PUBLIC_NOINDEX === 'true'
     }
   },
 

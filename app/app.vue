@@ -18,9 +18,13 @@ useHead({
     { charset: 'utf-8' },
     { name: 'viewport', content: 'width=device-width, initial-scale=1' },
     { key: 'theme-color', name: 'theme-color', content: color },
+<<<<<<< claude/improve-seo-google-CoJya
     { name: 'author', content: 'Fabian Meyer' },
     { name: 'robots', content: 'index, follow, max-image-preview:large' },
     ...verificationMeta.value
+=======
+    ...(runtimeConfig.public.noindex ? [{ name: 'robots', content: 'noindex, nofollow' }] : [])
+>>>>>>> main
   ],
   link: [
     { rel: 'icon', href: '/favicon.ico' },
