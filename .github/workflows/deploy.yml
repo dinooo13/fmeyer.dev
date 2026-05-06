@@ -46,5 +46,6 @@ jobs:
           server: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
+          protocol: ftps
           local-dir: ./.output/public/
           server-dir: ./httpdocs/
