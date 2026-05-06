@@ -91,8 +91,8 @@ export default defineContentConfig({
         image: z.string().nonempty().editor({ input: 'media' }).optional(),
         icon: z.string().optional(),
         status: z.enum(['wip', 'prototype', 'paused']),
-        url: z.string().optional(),
-        repoUrl: z.string().optional(),
+        url: z.string().url().optional(),
+        repoUrl: z.string().url().optional(),
         tags: z.array(z.string()),
         date: z.date(),
         note: z.string().optional()

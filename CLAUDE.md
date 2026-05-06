@@ -222,4 +222,28 @@ The site is statically generated (`pnpm generate`) and deployed via GitHub Actio
 
 ## Dependency management
 
-Renovate is configured to follow `github>nuxt/renovate-config-nuxt` presets with lock file maintenance enabled. The `pnpm.overrides` in `package.json` pin specific transitive dependencies (`flatted`, `h3`, `socket.io-parser`) for compatibility.
+Renovate is configured to follow `github>nuxt/renovate-config-nuxt` presets with lock file maintenance enabled.
+
+### `pnpm.overrides`
+
+The `pnpm.overrides` block in `package.json` pins specific transitive dependencies. Each entry should be revisited whenever the upstream package no longer pulls a vulnerable version — once direct dependencies catch up, the override can be dropped.
+
+| Override | Reason |
+|---|---|
+| `flatted: 3.4.2` | Compatibility pin (transitive dep). |
+| `h3: 1.15.10` | Compatibility pin (transitive dep). |
+| `socket.io-parser: 4.2.6` | Compatibility pin (transitive dep). |
+| `brace-expansion@>=2.0.0 <2.0.3 → 2.0.3` | [GHSA-f886-m6hf-6m8v](https://github.com/advisories/GHSA-f886-m6hf-6m8v) — process hang via zero-step sequence. |
+| `brace-expansion@>=4.0.0 <5.0.5 → 5.0.5` | Same advisory, v4/v5 stream. |
+| `brace-expansion@>=5.0.0 <5.0.5 → 5.0.5` | Same advisory, v5 stream. |
+| `node-forge@<1.4.0 → >=1.4.0` | [GHSA-2328-f5f3-gj25](https://github.com/advisories/GHSA-2328-f5f3-gj25), [GHSA-q67f-28xg-22rw](https://github.com/advisories/GHSA-q67f-28xg-22rw), [GHSA-5m6q-g25r-mvwx](https://github.com/advisories/GHSA-5m6q-g25r-mvwx), [GHSA-ppp5-5v6c-4jwp](https://github.com/advisories/GHSA-ppp5-5v6c-4jwp) — cert-chain bypass, signature forgery, infinite-loop DoS. |
+| `picomatch@<2.3.2 → >=2.3.2`, `picomatch@>=4.0.0 <4.0.4 → >=4.0.4` | [GHSA-c2c7-rcm5-vvqj](https://github.com/advisories/GHSA-c2c7-rcm5-vvqj), [GHSA-3v7f-55p6-f55p](https://github.com/advisories/GHSA-3v7f-55p6-f55p) — ReDoS, method injection. |
+| `yaml@>=2.0.0 <2.8.3 → >=2.8.3` | [GHSA-48c2-rrv3-qjmp](https://github.com/advisories/GHSA-48c2-rrv3-qjmp) — stack overflow via deeply nested collections. |
+| `serialize-javascript@<7.0.5 → >=7.0.5` | [GHSA-qj8w-gfj5-8c6v](https://github.com/advisories/GHSA-qj8w-gfj5-8c6v) — CPU exhaustion DoS. |
+| `lodash@<=4.17.23 → >=4.18.0` | [GHSA-r5fr-rjxr-66jc](https://github.com/advisories/GHSA-r5fr-rjxr-66jc), [GHSA-f23m-r3pf-42rh](https://github.com/advisories/GHSA-f23m-r3pf-42rh) — code injection via `_.template`, prototype pollution. |
+| `defu@<=6.1.4 → >=6.1.5` | [GHSA-737v-mqg7-c878](https://github.com/advisories/GHSA-737v-mqg7-c878) — prototype pollution via `__proto__` key. |
+| `vite@>=7.0.0 <=7.3.1 → >=7.3.2` | [GHSA-v2wj-q39q-566r](https://github.com/advisories/GHSA-v2wj-q39q-566r), [GHSA-p9ff-h696-f583](https://github.com/advisories/GHSA-p9ff-h696-f583), [GHSA-4w7w-66w2-5vf9](https://github.com/advisories/GHSA-4w7w-66w2-5vf9) — `server.fs.deny` bypass, arbitrary file read, path traversal in optimized deps. |
+| `unhead@<2.1.13 → >=2.1.13` | [GHSA-95h2-gj7x-gx9w](https://github.com/advisories/GHSA-95h2-gj7x-gx9w) — `hasDangerousProtocol()` bypass. |
+| `simple-git@<3.36.0 → >=3.36.0` | RCE in `simple-git` ≤3.35. |
+
+After bumping a direct dependency, run `pnpm audit` and remove any override that the upstream now resolves on its own.
