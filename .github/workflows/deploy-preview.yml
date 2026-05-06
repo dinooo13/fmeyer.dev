@@ -9,7 +9,7 @@ on:
 
 permissions:
   contents: read
-  pull-requests: write
+  deployments: write
 
 jobs:
   deploy:
@@ -22,6 +22,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+
+      - name: Start deployment
+        uses: bobheadxi/deployments@v1
+        id: deployment
+        with:
+          step: start
+          token: ${{ secrets.GITHUB_TOKEN }}
+          env: preview-pr-${{ github.event.pull_request.number }}
+          ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
@@ -51,15 +60,16 @@ jobs:
           local-dir: ./.output/public/
           server-dir: ./previews/pr-${{ github.event.pull_request.number }}/
 
-      - name: Comment preview URL
-        if: github.event.action == 'opened' || github.event.action == 'reopened'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-        run: |
-          gh pr comment "$PR_NUMBER" \
-            --repo "${{ github.repository }}" \
-            --body "Preview: https://preview.fmeyer.dev/pr-${PR_NUMBER}/"
+      - name: Finish deployment
+        if: always()
+        uses: bobheadxi/deployments@v1
+        with:
+          step: finish
+          token: ${{ secrets.GITHUB_TOKEN }}
+          status: ${{ job.status }}
+          deployment_id: ${{ steps.deployment.outputs.deployment_id }}
+          env: ${{ steps.deployment.outputs.env }}
+          env_url: https://preview.fmeyer.dev/pr-${{ github.event.pull_request.number }}/
 
   cleanup:
     if: github.event.action == 'closed' && github.event.pull_request.head.repo.full_name == github.repository
@@ -85,3 +95,11 @@ jobs:
           rm -r ./previews/pr-${PR_NUMBER}
           bye
           EOF
+
+      - name: Deactivate deployment
+        uses: bobheadxi/deployments@v1
+        with:
+          step: deactivate-env
+          token: ${{ secrets.GITHUB_TOKEN }}
+          env: preview-pr-${{ github.event.pull_request.number }}
+          desc: Preview removed
