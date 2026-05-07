@@ -17,7 +17,7 @@ const props = withDefaults(defineProps<{
 })
 
 const badgeLabel = computed(() => props.talk?.placeholder ? 'Upcoming' : 'Talk')
-const badgeColor = computed(() => props.variant === 'featured' ? 'success' : 'warning')
+const badgeColor = computed(() => props.variant === 'featured' ? 'neutral' : 'warning')
 const subtitle = computed(() => {
   const organizerTitle = props.talk?.organizerTitle?.trim()
   const title = props.talk?.title?.trim()

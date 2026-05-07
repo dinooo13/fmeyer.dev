@@ -40,7 +40,7 @@ defineProps<{
     >
       <div class="max-w-2xl">
         <UBadge
-          color="success"
+          color="neutral"
           variant="soft"
           label="Latest lab"
         />
