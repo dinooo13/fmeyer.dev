@@ -10,10 +10,12 @@ const props = withDefaults(defineProps<{
   showSummary?: boolean
   showMeta?: boolean
   primaryAction?: PreviewAction
+  headingLevel?: 'h2' | 'h3'
 }>(), {
   variant: 'list',
   showSummary: true,
-  showMeta: false
+  showMeta: false,
+  headingLevel: 'h2'
 })
 
 const badgeLabel = computed(() => props.talk?.placeholder ? 'Upcoming' : 'Talk')
@@ -64,12 +66,13 @@ const subtitle = computed(() => {
           />
 
           <div class="space-y-2">
-            <h3
+            <component
+              :is="headingLevel"
               class="font-semibold text-highlighted"
               :class="variant === 'featured' ? 'text-xl sm:text-2xl' : 'text-2xl'"
             >
               {{ talk.title }}
-            </h3>
+            </component>
 
             <p
               v-if="subtitle"

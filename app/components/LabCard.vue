@@ -19,9 +19,9 @@ defineProps<{
             class="size-5 shrink-0 text-black dark:text-white"
           />
 
-          <h3 class="min-w-0 text-lg font-semibold text-highlighted">
+          <h2 class="min-w-0 text-lg font-semibold text-highlighted">
             {{ lab.title }}
-          </h3>
+          </h2>
         </div>
 
         <UBadge

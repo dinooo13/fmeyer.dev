@@ -39,6 +39,7 @@ defineProps<{
         :talk="talk"
         variant="featured"
         :show-summary="true"
+        heading-level="h3"
         :primary-action="{
           label: 'View details',
           to: getTalkPath(talk)
