@@ -101,7 +101,7 @@ jobs:
       needs.changes.outputs.site == 'true' &&
       ((github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event_name == 'workflow_dispatch')
     needs: [changes, lint, typecheck, build]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     concurrency:
       group: deploy-production
     permissions:
@@ -123,15 +123,28 @@ jobs:
           name: site-output
           path: .output/public
 
+      - name: Install lftp
+        run: sudo apt-get update && sudo apt-get install -y lftp
+
       - name: Deploy via FTPS
-        uses: SamKirkland/FTP-Deploy-Action@a51268f67f6605236975928ae28b0f7e9971d50a # v4.3.6
-        with:
-          server: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          password: ${{ secrets.PASSWORD }}
-          protocol: ftps
-          local-dir: ./.output/public/
-          server-dir: ./httpdocs/
+        env:
+          FTP_HOST: ${{ secrets.HOST }}
+          FTP_USER: ${{ secrets.USERNAME }}
+          FTP_PASS: ${{ secrets.PASSWORD }}
+        run: |
+          lftp -u "$FTP_USER,$FTP_PASS" "$FTP_HOST" <<'EOF'
+          set ftp:ssl-force true
+          set ftp:ssl-protect-data true
+          set ssl:verify-certificate true
+          set net:max-retries 5
+          set net:reconnect-interval-base 5
+          set net:reconnect-interval-multiplier 1.5
+          set net:timeout 30
+          set mirror:use-pget-n 4
+          set mirror:parallel-directories yes
+          mirror --reverse --delete --continue --parallel=4 --verbose ./.output/public/ ./httpdocs/
+          bye
+          EOF
 
       - name: Finish deployment
         if: always()
@@ -151,7 +164,7 @@ jobs:
       github.event.pull_request.head.repo.full_name == github.repository &&
       needs.changes.outputs.site == 'true'
     needs: [changes, lint, typecheck, build]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     concurrency:
       group: preview-${{ github.event.pull_request.number }}
       cancel-in-progress: true
@@ -174,15 +187,29 @@ jobs:
           name: site-output
           path: .output/public
 
+      - name: Install lftp
+        run: sudo apt-get update && sudo apt-get install -y lftp
+
       - name: Deploy via FTPS
-        uses: SamKirkland/FTP-Deploy-Action@a51268f67f6605236975928ae28b0f7e9971d50a # v4.3.6
-        with:
-          server: ${{ secrets.HOST }}
-          username: ${{ secrets.SFTP_PREVIEW_USER }}
-          password: ${{ secrets.SFTP_PREVIEW_PASSWORD }}
-          protocol: ftps
-          local-dir: ./.output/public/
-          server-dir: ./previews/pr-${{ github.event.pull_request.number }}/
+        env:
+          FTP_HOST: ${{ secrets.HOST }}
+          FTP_USER: ${{ secrets.SFTP_PREVIEW_USER }}
+          FTP_PASS: ${{ secrets.SFTP_PREVIEW_PASSWORD }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          lftp -u "$FTP_USER,$FTP_PASS" "$FTP_HOST" <<EOF
+          set ftp:ssl-force true
+          set ftp:ssl-protect-data true
+          set ssl:verify-certificate true
+          set net:max-retries 5
+          set net:reconnect-interval-base 5
+          set net:reconnect-interval-multiplier 1.5
+          set net:timeout 30
+          set mirror:use-pget-n 4
+          set mirror:parallel-directories yes
+          mirror --reverse --delete --continue --parallel=4 --verbose ./.output/public/ ./previews/pr-${PR_NUMBER}/
+          bye
+          EOF
 
       - name: Finish deployment
         if: always()
@@ -200,7 +227,7 @@ jobs:
       github.event_name == 'pull_request' &&
       github.event.action == 'closed' &&
       github.event.pull_request.head.repo.full_name == github.repository
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     concurrency:
       group: preview-${{ github.event.pull_request.number }}
     permissions:
