@@ -69,7 +69,7 @@ jobs:
       - name: Generate static site
         env:
           NUXT_APP_BASE_URL: /pr-${{ github.event.pull_request.number }}/
-          NUXT_PUBLIC_SITE_URL: https://preview.fmeyer.dev/pr-${{ github.event.pull_request.number }}
+          NUXT_PUBLIC_SITE_URL: https://preview.fmeyer.dev
           NUXT_PUBLIC_NOINDEX: 'true'
         run: pnpm generate
 

@@ -9,10 +9,6 @@ export default defineNuxtConfig({
     'motion-v/nuxt'
   ],
 
-  devtools: {
-    enabled: true
-  },
-
   css: ['~/assets/css/main.css'],
 
   site: {
