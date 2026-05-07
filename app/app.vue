@@ -14,11 +14,6 @@ const profileImageUrl = new URL(
   runtimeConfig.public.siteUrl
 ).toString()
 
-const verificationMeta = computed(() => {
-  const token = runtimeConfig.public.googleSiteVerification
-  return token ? [{ name: 'google-site-verification', content: token }] : []
-})
-
 useHead({
   meta: [
     { charset: 'utf-8' },
@@ -30,8 +25,7 @@ useHead({
       content: runtimeConfig.public.noindex
         ? 'noindex, nofollow'
         : 'index, follow, max-image-preview:large'
-    },
-    ...verificationMeta.value
+    }
   ],
   link: [
     { rel: 'icon', href: `${baseURL}favicon.ico` },
