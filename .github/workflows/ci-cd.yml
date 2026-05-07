@@ -124,7 +124,9 @@ jobs:
           path: .output/public
 
       - name: Install lftp
-        run: sudo apt-get update && sudo apt-get install -y lftp
+        run: |
+          sudo apt-get install -y --no-install-recommends lftp \
+            || (sudo apt-get update && sudo apt-get install -y --no-install-recommends lftp)
 
       - name: Deploy via FTPS
         env:
@@ -188,7 +190,9 @@ jobs:
           path: .output/public
 
       - name: Install lftp
-        run: sudo apt-get update && sudo apt-get install -y lftp
+        run: |
+          sudo apt-get install -y --no-install-recommends lftp \
+            || (sudo apt-get update && sudo apt-get install -y --no-install-recommends lftp)
 
       - name: Deploy via FTPS
         env:
@@ -234,7 +238,9 @@ jobs:
       deployments: write
     steps:
       - name: Install lftp
-        run: sudo apt-get update && sudo apt-get install -y lftp
+        run: |
+          sudo apt-get install -y --no-install-recommends lftp \
+            || (sudo apt-get update && sudo apt-get install -y --no-install-recommends lftp)
 
       - name: Delete preview directory
         env:
