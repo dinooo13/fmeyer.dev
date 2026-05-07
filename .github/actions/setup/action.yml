@@ -1,5 +1,5 @@
 name: setup
-description: Install Node, pnpm, and project dependencies with caching.
+description: Install Node, pnpm via corepack, and project dependencies with caching.
 
 runs:
   using: composite
@@ -9,10 +9,9 @@ runs:
       with:
         node-version: 22
 
-    - name: Install pnpm
-      uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa # v4
-      with:
-        run_install: false
+    - name: Enable pnpm via Corepack
+      shell: bash
+      run: corepack enable
 
     - name: Resolve pnpm store path
       id: pnpm-store
