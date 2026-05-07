@@ -8,6 +8,7 @@ on:
     types: [opened, synchronize, reopened, closed]
 
 permissions:
+  administration: write
   contents: read
   deployments: write
   pull-requests: read
@@ -119,10 +120,9 @@ jobs:
           bye
           EOF
 
-      - name: Deactivate deployment
+      - name: Delete environment
         uses: bobheadxi/deployments@v1
         with:
-          step: deactivate-env
+          step: delete-env
           token: ${{ secrets.GITHUB_TOKEN }}
           env: preview-pr-${{ github.event.pull_request.number }}
-          desc: Preview removed
