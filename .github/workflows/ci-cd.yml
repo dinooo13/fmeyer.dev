@@ -112,11 +112,14 @@ jobs:
           NUXT_PUBLIC_NOINDEX: 'true'
         run: pnpm generate
 
-      - name: Save site output to cache
-        uses: actions/cache/save@v5
+      - name: Upload site artifact
+        uses: actions/upload-artifact@v7
         with:
+          name: site-output
           path: .output/public
-          key: site-output-${{ github.run_id }}-${{ github.run_attempt }}
+          retention-days: 1
+          compression-level: 0
+          if-no-files-found: error
 
   deploy-production:
     if: |
@@ -130,12 +133,11 @@ jobs:
       name: production
       url: https://fmeyer.dev
     steps:
-      - name: Restore site output from cache
-        uses: actions/cache/restore@v5
+      - name: Download site artifact
+        uses: actions/download-artifact@v8
         with:
+          name: site-output
           path: .output/public
-          key: site-output-${{ github.run_id }}-${{ github.run_attempt }}
-          fail-on-cache-miss: true
 
       - name: Install lftp
         run: |
@@ -177,12 +179,11 @@ jobs:
       name: preview
       url: https://preview.fmeyer.dev/pr-${{ github.event.pull_request.number }}/
     steps:
-      - name: Restore site output from cache
-        uses: actions/cache/restore@v5
+      - name: Download site artifact
+        uses: actions/download-artifact@v8
         with:
+          name: site-output
           path: .output/public
-          key: site-output-${{ github.run_id }}-${{ github.run_attempt }}
-          fail-on-cache-miss: true
 
       - name: Install lftp
         run: |
@@ -242,7 +243,7 @@ jobs:
           EOF
 
       - name: Deactivate preview deployments for this PR
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         with:
           script: |
             const prNumber = context.payload.pull_request.number;
