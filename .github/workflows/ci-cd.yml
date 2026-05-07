@@ -62,7 +62,7 @@ jobs:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - uses: ./.github/actions/setup
       - name: Cache ESLint
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: .eslintcache
           key: eslint-${{ runner.os }}-${{ runner.arch }}-${{ github.run_id }}
@@ -90,7 +90,7 @@ jobs:
       - uses: ./.github/actions/setup
 
       - name: Cache Nuxt build
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             .nuxt
@@ -113,7 +113,7 @@ jobs:
         run: pnpm generate
 
       - name: Upload site artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: site-output
           path: .output/public
@@ -129,21 +129,12 @@ jobs:
     runs-on: ubuntu-24.04-arm
     concurrency:
       group: deploy-production
-    permissions:
-      contents: read
-      deployments: write
+    environment:
+      name: production
+      url: https://fmeyer.dev
     steps:
-      - name: Start deployment
-        uses: bobheadxi/deployments@v1
-        id: deployment
-        with:
-          step: start
-          token: ${{ secrets.GITHUB_TOKEN }}
-          env: production
-          ref: ${{ github.sha }}
-
       - name: Download site artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: site-output
           path: .output/public
@@ -173,17 +164,6 @@ jobs:
           bye
           EOF
 
-      - name: Finish deployment
-        if: always()
-        uses: bobheadxi/deployments@v1
-        with:
-          step: finish
-          token: ${{ secrets.GITHUB_TOKEN }}
-          status: ${{ job.status }}
-          deployment_id: ${{ steps.deployment.outputs.deployment_id }}
-          env: ${{ steps.deployment.outputs.env }}
-          env_url: https://fmeyer.dev
-
   deploy-preview:
     if: |
       github.event_name == 'pull_request' &&
@@ -195,21 +175,12 @@ jobs:
     concurrency:
       group: preview-${{ github.event.pull_request.number }}
       cancel-in-progress: true
-    permissions:
-      contents: read
-      deployments: write
+    environment:
+      name: preview-pr-${{ github.event.pull_request.number }}
+      url: https://preview.fmeyer.dev/pr-${{ github.event.pull_request.number }}/
     steps:
-      - name: Start deployment
-        uses: bobheadxi/deployments@v1
-        id: deployment
-        with:
-          step: start
-          token: ${{ secrets.GITHUB_TOKEN }}
-          env: preview-pr-${{ github.event.pull_request.number }}
-          ref: ${{ github.event.pull_request.head.sha }}
-
       - name: Download site artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: site-output
           path: .output/public
@@ -240,17 +211,6 @@ jobs:
           bye
           EOF
 
-      - name: Finish deployment
-        if: always()
-        uses: bobheadxi/deployments@v1
-        with:
-          step: finish
-          token: ${{ secrets.GITHUB_TOKEN }}
-          status: ${{ job.status }}
-          deployment_id: ${{ steps.deployment.outputs.deployment_id }}
-          env: ${{ steps.deployment.outputs.env }}
-          env_url: https://preview.fmeyer.dev/pr-${{ github.event.pull_request.number }}/
-
   cleanup-preview:
     if: |
       github.event_name == 'pull_request' &&
@@ -261,6 +221,7 @@ jobs:
       group: preview-${{ github.event.pull_request.number }}
     permissions:
       deployments: write
+      administration: write
     steps:
       - name: Install lftp
         run: |
@@ -282,9 +243,40 @@ jobs:
           bye
           EOF
 
-      - name: Delete environment
-        uses: bobheadxi/deployments@v1
+      - name: Delete preview environment
+        uses: actions/github-script@v8
         with:
-          step: delete-env
-          token: ${{ secrets.GITHUB_TOKEN }}
-          env: preview-pr-${{ github.event.pull_request.number }}
+          script: |
+            const envName = `preview-pr-${context.payload.pull_request.number}`;
+            const { owner, repo } = context.repo;
+
+            const deployments = await github.paginate(github.rest.repos.listDeployments, {
+              owner,
+              repo,
+              environment: envName,
+              per_page: 100
+            });
+
+            for (const d of deployments) {
+              await github.rest.repos.createDeploymentStatus({
+                owner,
+                repo,
+                deployment_id: d.id,
+                state: 'inactive'
+              });
+              await github.rest.repos.deleteDeployment({
+                owner,
+                repo,
+                deployment_id: d.id
+              });
+            }
+
+            try {
+              await github.request('DELETE /repos/{owner}/{repo}/environments/{name}', {
+                owner,
+                repo,
+                name: envName
+              });
+            } catch (e) {
+              if (e.status !== 404) throw e;
+            }
