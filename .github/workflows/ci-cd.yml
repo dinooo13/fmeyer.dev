@@ -221,7 +221,6 @@ jobs:
       group: preview-${{ github.event.pull_request.number }}
     permissions:
       deployments: write
-      administration: write
     steps:
       - name: Install lftp
         run: |
@@ -278,5 +277,10 @@ jobs:
                 name: envName
               });
             } catch (e) {
-              if (e.status !== 404) throw e;
+              if (e.status === 404) return;
+              if (e.status === 403) {
+                core.warning(`Cannot delete environment ${envName} — GITHUB_TOKEN lacks admin scope. Deployments deactivated; env record will remain in Settings.`);
+                return;
+              }
+              throw e;
             }
