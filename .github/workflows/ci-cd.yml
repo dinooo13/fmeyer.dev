@@ -78,9 +78,22 @@ jobs:
     if: github.event.action != 'closed' && (needs.changes.outputs.site == 'true' || github.event_name == 'workflow_dispatch')
     needs: changes
     runs-on: ubuntu-24.04-arm
+    env:
+      NUXT_TELEMETRY_DISABLED: '1'
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - uses: ./.github/actions/setup
+
+      - name: Cache Nuxt build
+        uses: actions/cache@v4
+        with:
+          path: |
+            .nuxt
+            .nitro
+            node_modules/.cache
+          key: nuxt-build-${{ runner.os }}-${{ runner.arch }}-${{ github.event_name == 'pull_request' && 'preview' || 'production' }}-${{ hashFiles('pnpm-lock.yaml', 'app/**', 'content/**', 'public/**', 'nuxt.config.ts', 'content.config.ts', 'tsconfig.json') }}
+          restore-keys: |
+            nuxt-build-${{ runner.os }}-${{ runner.arch }}-${{ github.event_name == 'pull_request' && 'preview' || 'production' }}-
 
       - name: Generate static site (production)
         if: github.event_name != 'pull_request'
