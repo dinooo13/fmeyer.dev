@@ -37,11 +37,9 @@
 @keyframes hero-enter {
   from {
     transform: scale(1.08);
-    filter: blur(14px);
   }
   to {
     transform: scale(1);
-    filter: blur(0px);
   }
 }
 
