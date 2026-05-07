@@ -6,7 +6,7 @@ on:
   pull_request_review_comment:
     types: [created]
   issues:
-    types: [opened, assigned]
+    types: [opened, assigned, labeled]
   pull_request_review:
     types: [submitted]
 
@@ -16,7 +16,7 @@ jobs:
       (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@claude')) ||
       (github.event_name == 'pull_request_review_comment' && contains(github.event.comment.body, '@claude')) ||
       (github.event_name == 'pull_request_review' && contains(github.event.review.body, '@claude')) ||
-      (github.event_name == 'issues' && (contains(github.event.issue.body, '@claude') || contains(github.event.issue.title, '@claude')))
+      (github.event_name == 'issues' && github.event.action != 'labeled' && (contains(github.event.issue.body, '@claude') || contains(github.event.issue.title, '@claude')))
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -24,6 +24,7 @@ jobs:
       issues: write
       id-token: write
       actions: read # Required for Claude to read CI results on PRs
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -34,25 +35,60 @@ jobs:
         id: claude
         uses: anthropics/claude-code-action@v1
         with:
-          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          claude_args: |
+            --max-turns 50
+            --model claude-sonnet-4-6
 
-          # Optional: Customize the trigger phrase (default: @claude)
-          # trigger_phrase: "/claude"
+  factory:
+    if: github.event_name == 'issues' && github.event.action == 'labeled' && github.event.label.name == 'ai-factory'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+      id-token: write
+      actions: read
 
-          # Optional: Trigger when specific user is assigned to an issue
-          # assignee_trigger: "claude-bot"
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
 
-          # Optional: Configure Claude's behavior with CLI arguments
-          # claude_args: |
-          #   --model claude-opus-4-6
-          #   --max-turns 10
-          #   --allowedTools "Bash(pnpm install),Bash(pnpm run build),Bash(pnpm run lint:*)"
-          #   --system-prompt "Follow coding standards in CLAUDE.md."
+      - name: Run AI factory
+        id: factory
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          label_trigger: ai-factory
+          claude_args: |
+            --max-turns 50
+            --model claude-sonnet-4-6
+          prompt: |
+            You are operating as the "AI factory" for this repository. Issue
+            #${{ github.event.issue.number }} ("${{ github.event.issue.title }}")
+            has just been labeled `ai-factory`, meaning the maintainer wants you
+            to ship it end-to-end.
 
-          # Optional: Advanced settings configuration
-          # settings: |
-          #   {
-          #     "env": {
-          #       "NODE_ENV": "test"
-          #     }
-          #   }
+            Workflow:
+            1. Read the issue body and any linked context. Read CLAUDE.md for
+               repo conventions before doing anything else.
+            2. Post a short plan as a comment on issue
+               #${{ github.event.issue.number }}: scope, files you will touch,
+               and risks. Keep it under 200 words.
+            3. Implement on a new branch (the action will create one for you,
+               or use `claude/issue-${{ github.event.issue.number }}-<slug>`).
+            4. Before pushing, run `pnpm install`, `pnpm lint`, `pnpm typecheck`,
+               and `pnpm generate` locally. Fix anything that fails. Do NOT push
+               or open a PR while any of these are red.
+            5. Commit with a clear message, push, and open a PR whose body
+               includes `Closes #${{ github.event.issue.number }}`.
+            6. Request review from `dinooo13` and enable squash auto-merge with
+               `gh pr merge --auto --squash <pr-number>` so the PR merges itself
+               once approval and CI both land.
+            7. Comment on the issue with the PR link.
+
+            If the issue is too ambiguous to implement safely, skip steps 3-7
+            and instead comment on the issue with specific clarifying questions.
+            Never open a PR you are not confident in.
