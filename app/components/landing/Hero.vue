@@ -15,10 +15,6 @@ const avatarSrc = computed(() => colorMode.value === 'dark'
   : global.picture?.light
 )
 
-const heroInitial = { scale: 1.1, opacity: 0, filter: 'blur(20px)' }
-const heroAnimate = { scale: 1, opacity: 1, filter: 'blur(0px)' }
-const heroTransition = (delay: number) => ({ duration: 0.6, delay })
-
 defineProps<{
   page: HeroPage
 }>()
@@ -34,11 +30,7 @@ defineProps<{
     }"
   >
     <template #headline>
-      <Motion
-        :initial="heroInitial"
-        :animate="heroAnimate"
-        :transition="heroTransition(0.1)"
-      >
+      <div class="hero-enter hero-enter-1">
         <NuxtImg
           class="size-18 rounded-full object-cover ring ring-default ring-offset-3 ring-offset-(--ui-bg)"
           :src="avatarSrc"
@@ -49,57 +41,40 @@ defineProps<{
           densities="x1 x2"
           fit="cover"
           loading="eager"
+          fetchpriority="high"
         />
-      </Motion>
+      </div>
     </template>
 
     <template #title>
       <div class="space-y-4 text-center">
-        <Motion
-          :initial="heroInitial"
-          :animate="heroAnimate"
-          :transition="heroTransition(0.1)"
-        >
+        <div class="hero-enter hero-enter-1">
           <p class="text-sm font-medium uppercase tracking-[0.28em] text-muted">
             {{ page.hero.name }}
           </p>
-        </Motion>
+        </div>
 
-        <Motion
-          :initial="heroInitial"
-          :animate="heroAnimate"
-          :transition="heroTransition(0.2)"
-        >
+        <div class="hero-enter hero-enter-2">
           <h1>{{ page.hero.role }}</h1>
-        </Motion>
+        </div>
       </div>
     </template>
 
     <template #description>
-      <Motion
-        :initial="heroInitial"
-        :animate="heroAnimate"
-        :transition="heroTransition(0.35)"
-      >
+      <div class="hero-enter hero-enter-3">
         {{ page.hero.intro }}
-      </Motion>
+      </div>
     </template>
 
     <template #links>
-      <Motion
-        :initial="heroInitial"
-        :animate="heroAnimate"
-        :transition="heroTransition(0.5)"
-      >
-        <div class="flex flex-wrap items-center justify-center gap-3">
-          <UButton
-            v-for="link of footer?.links"
-            :key="link['aria-label'] || link.to"
-            v-bind="{ size: 'xs', color: 'neutral', variant: 'ghost', ...link }"
-            class="text-highlighted hover:text-highlighted"
-          />
-        </div>
-      </Motion>
+      <div class="hero-enter hero-enter-4 flex flex-wrap items-center justify-center gap-3">
+        <UButton
+          v-for="link of footer?.links"
+          :key="link['aria-label'] || link.to"
+          v-bind="{ size: 'xs', color: 'neutral', variant: 'ghost', ...link }"
+          class="text-highlighted hover:text-highlighted"
+        />
+      </div>
     </template>
   </UPageHero>
 </template>

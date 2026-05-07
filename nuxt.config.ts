@@ -26,6 +26,10 @@ export default defineNuxtConfig({
     }
   },
 
+  experimental: {
+    payloadExtraction: false
+  },
+
   compatibilityDate: '2025-03-01',
 
   nitro: {
