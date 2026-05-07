@@ -217,7 +217,9 @@ const resourceKindLabels: Record<ResolvedTalkResource['kind'], string> = {
             <div class="mt-auto">
               <UButton
                 :to="resource.href"
+                external
                 target="_blank"
+                rel="noopener noreferrer"
                 color="neutral"
                 icon="i-lucide-file-text"
                 label="Open resource"

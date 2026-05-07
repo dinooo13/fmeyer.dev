@@ -2,11 +2,17 @@
 const route = useRoute()
 const runtimeConfig = useRuntimeConfig()
 const colorMode = useColorMode()
+const baseURL = runtimeConfig.app.baseURL
 
 const color = computed(() => colorMode.value === 'dark' ? '#020618' : 'white')
+const basePrefix = baseURL.replace(/\/$/, '')
 const canonicalUrl = computed(() => {
-  return new URL(route.path || '/', runtimeConfig.public.siteUrl).toString()
+  return new URL(`${basePrefix}${route.path || '/'}`, runtimeConfig.public.siteUrl).toString()
 })
+const profileImageUrl = new URL(
+  `${baseURL}profile/fabian-meyer-portrait.jpg`,
+  runtimeConfig.public.siteUrl
+).toString()
 
 const verificationMeta = computed(() => {
   const token = runtimeConfig.public.googleSiteVerification
@@ -28,7 +34,7 @@ useHead({
     ...verificationMeta.value
   ],
   link: [
-    { rel: 'icon', href: '/favicon.ico' },
+    { rel: 'icon', href: `${baseURL}favicon.ico` },
     { rel: 'canonical', href: canonicalUrl }
   ],
   htmlAttrs: {
@@ -54,7 +60,7 @@ useSchemaOrg([
   defineWebPage(),
   definePerson({
     name: 'Fabian Meyer',
-    image: '/profile/fabian-meyer-portrait.jpg',
+    image: profileImageUrl,
     jobTitle: 'Chapter Lead Vue, Software Engineer, AI Mentor',
     worksFor: { name: 'eventim Tech GmbH' },
     sameAs: [
