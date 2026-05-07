@@ -1,0 +1,228 @@
+name: ci-cd
+
+# Unified pipeline:
+#   - lint, typecheck, build run in parallel on every push and PR.
+#   - build is gated by paths-filter; only runs when site files changed.
+#   - deploy-production runs on push to main when site changed; reuses build artifact.
+#   - deploy-preview runs on same-repo PRs when site changed; reuses build artifact.
+#   - cleanup-preview runs on PR close.
+#
+# preview.fmeyer.dev must be configured in the hosting panel to serve from
+# ./previews/. Each PR is deployed to ./previews/pr-<n>/ and removed on close.
+
+on:
+  push:
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Cancel superseded PR runs; never cancel branch pushes (avoid killing FTP mid-upload).
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  changes:
+    if: github.event.action != 'closed'
+    runs-on: ubuntu-24.04-arm
+    outputs:
+      site: ${{ steps.filter.outputs.site }}
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            site:
+              - 'app/**'
+              - 'content/**'
+              - 'public/**'
+              - 'nuxt.config.ts'
+              - 'content.config.ts'
+              - 'package.json'
+              - 'pnpm-lock.yaml'
+              - 'tsconfig.json'
+
+  lint:
+    if: github.event.action != 'closed'
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: ./.github/actions/setup
+      - run: pnpm run lint
+
+  typecheck:
+    if: github.event.action != 'closed'
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: ./.github/actions/setup
+      - run: pnpm run typecheck
+
+  build:
+    if: github.event.action != 'closed' && (needs.changes.outputs.site == 'true' || github.event_name == 'workflow_dispatch')
+    needs: changes
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: ./.github/actions/setup
+
+      - name: Generate static site (production)
+        if: github.event_name != 'pull_request'
+        run: pnpm generate
+
+      - name: Generate static site (preview)
+        if: github.event_name == 'pull_request'
+        env:
+          NUXT_APP_BASE_URL: /pr-${{ github.event.pull_request.number }}/
+          NUXT_PUBLIC_SITE_URL: https://preview.fmeyer.dev
+          NUXT_PUBLIC_NOINDEX: 'true'
+        run: pnpm generate
+
+      - name: Upload site artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-output
+          path: .output/public
+          retention-days: 1
+          compression-level: 0
+          if-no-files-found: error
+
+  deploy-production:
+    if: |
+      needs.changes.outputs.site == 'true' &&
+      ((github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event_name == 'workflow_dispatch')
+    needs: [changes, lint, typecheck, build]
+    runs-on: ubuntu-latest
+    concurrency:
+      group: deploy-production
+    permissions:
+      contents: read
+      deployments: write
+    steps:
+      - name: Start deployment
+        uses: bobheadxi/deployments@v1
+        id: deployment
+        with:
+          step: start
+          token: ${{ secrets.GITHUB_TOKEN }}
+          env: production
+          ref: ${{ github.sha }}
+
+      - name: Download site artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: site-output
+          path: .output/public
+
+      - name: Deploy via FTPS
+        uses: SamKirkland/FTP-Deploy-Action@a51268f67f6605236975928ae28b0f7e9971d50a # v4.3.6
+        with:
+          server: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          protocol: ftps
+          local-dir: ./.output/public/
+          server-dir: ./httpdocs/
+
+      - name: Finish deployment
+        if: always()
+        uses: bobheadxi/deployments@v1
+        with:
+          step: finish
+          token: ${{ secrets.GITHUB_TOKEN }}
+          status: ${{ job.status }}
+          deployment_id: ${{ steps.deployment.outputs.deployment_id }}
+          env: ${{ steps.deployment.outputs.env }}
+          env_url: https://fmeyer.dev
+
+  deploy-preview:
+    if: |
+      github.event_name == 'pull_request' &&
+      github.event.action != 'closed' &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      needs.changes.outputs.site == 'true'
+    needs: [changes, lint, typecheck, build]
+    runs-on: ubuntu-latest
+    concurrency:
+      group: preview-${{ github.event.pull_request.number }}
+      cancel-in-progress: true
+    permissions:
+      contents: read
+      deployments: write
+    steps:
+      - name: Start deployment
+        uses: bobheadxi/deployments@v1
+        id: deployment
+        with:
+          step: start
+          token: ${{ secrets.GITHUB_TOKEN }}
+          env: preview-pr-${{ github.event.pull_request.number }}
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Download site artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: site-output
+          path: .output/public
+
+      - name: Deploy via FTPS
+        uses: SamKirkland/FTP-Deploy-Action@a51268f67f6605236975928ae28b0f7e9971d50a # v4.3.6
+        with:
+          server: ${{ secrets.HOST }}
+          username: ${{ secrets.SFTP_PREVIEW_USER }}
+          password: ${{ secrets.SFTP_PREVIEW_PASSWORD }}
+          protocol: ftps
+          local-dir: ./.output/public/
+          server-dir: ./previews/pr-${{ github.event.pull_request.number }}/
+
+      - name: Finish deployment
+        if: always()
+        uses: bobheadxi/deployments@v1
+        with:
+          step: finish
+          token: ${{ secrets.GITHUB_TOKEN }}
+          status: ${{ job.status }}
+          deployment_id: ${{ steps.deployment.outputs.deployment_id }}
+          env: ${{ steps.deployment.outputs.env }}
+          env_url: https://preview.fmeyer.dev/pr-${{ github.event.pull_request.number }}/
+
+  cleanup-preview:
+    if: |
+      github.event_name == 'pull_request' &&
+      github.event.action == 'closed' &&
+      github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    concurrency:
+      group: preview-${{ github.event.pull_request.number }}
+    permissions:
+      deployments: write
+    steps:
+      - name: Install lftp
+        run: sudo apt-get update && sudo apt-get install -y lftp
+
+      - name: Delete preview directory
+        env:
+          FTP_HOST: ${{ secrets.HOST }}
+          FTP_USER: ${{ secrets.SFTP_PREVIEW_USER }}
+          FTP_PASS: ${{ secrets.SFTP_PREVIEW_PASSWORD }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          lftp -u "$FTP_USER,$FTP_PASS" "$FTP_HOST" <<EOF
+          set ftp:ssl-force true
+          set ftp:ssl-protect-data true
+          set cmd:fail-exit no
+          rm -r ./previews/pr-${PR_NUMBER}
+          bye
+          EOF
+
+      - name: Delete environment
+        uses: bobheadxi/deployments@v1
+        with:
+          step: delete-env
+          token: ${{ secrets.GITHUB_TOKEN }}
+          env: preview-pr-${{ github.event.pull_request.number }}
