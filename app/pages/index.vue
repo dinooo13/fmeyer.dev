@@ -26,6 +26,18 @@ if (!page.value) {
 usePageSeo(page.value)
 
 defineOgImage('NuxtSeoSatori')
+
+const runtimeConfig = useRuntimeConfig()
+const identityId = `${runtimeConfig.public.siteUrl.replace(/\/$/, '')}/#identity`
+
+useSchemaOrg([
+  defineWebPage({
+    '@type': 'ProfilePage',
+    'dateCreated': '2026-03-12T19:45:05+01:00',
+    'dateModified': new Date().toISOString(),
+    'mainEntity': { '@id': identityId }
+  })
+])
 </script>
 
 <template>

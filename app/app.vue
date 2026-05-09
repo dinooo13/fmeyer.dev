@@ -9,10 +9,6 @@ const basePrefix = baseURL.replace(/\/$/, '')
 const canonicalUrl = computed(() => {
   return new URL(`${basePrefix}${route.path || '/'}`, runtimeConfig.public.siteUrl).toString()
 })
-const profileImageUrl = new URL(
-  `${baseURL}profile/fabian-meyer-portrait.jpg`,
-  runtimeConfig.public.siteUrl
-).toString()
 
 useHead({
   meta: [
@@ -51,17 +47,7 @@ useSchemaOrg([
     description: 'Personal site of Fabian Meyer — Leader, software engineer and AI mentor at eventim Tech.',
     inLanguage: 'en'
   }),
-  defineWebPage(),
-  definePerson({
-    name: 'Fabian Meyer',
-    image: profileImageUrl,
-    jobTitle: 'Chapter Lead Vue, Software Engineer, AI Mentor',
-    worksFor: { name: 'eventim Tech GmbH' },
-    sameAs: [
-      'https://github.com/dinooo13',
-      'https://linkedin.com/in/fabian-meyer-02038813a'
-    ]
-  })
+  defineWebPage()
 ])
 </script>
 
