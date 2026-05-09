@@ -177,7 +177,9 @@ jobs:
       cancel-in-progress: true
     environment:
       name: preview
-      url: https://preview.fmeyer.dev/pr-${{ github.event.pull_request.number }}/
+    permissions:
+      contents: read
+      deployments: write
     steps:
       - name: Download site artifact
         uses: actions/download-artifact@v8
@@ -210,6 +212,38 @@ jobs:
           mirror --reverse --delete --continue --parallel=4 --verbose ./.output/public/ ./previews/pr-${PR_NUMBER}/
           bye
           EOF
+
+      - name: Set deployment URL
+        uses: actions/github-script@v9
+        with:
+          script: |
+            const prNumber = context.payload.pull_request.number;
+            const url = `https://preview.fmeyer.dev/pr-${prNumber}/`;
+            const sha = context.payload.pull_request.head.sha;
+            const { owner, repo } = context.repo;
+
+            const deployments = await github.paginate(github.rest.repos.listDeployments, {
+              owner,
+              repo,
+              environment: 'preview',
+              sha,
+              per_page: 100
+            });
+            deployments.sort((a, b) => b.id - a.id);
+            const deployment = deployments[0];
+            if (!deployment) {
+              core.setFailed('No deployment found for this PR head SHA in the preview environment');
+              return;
+            }
+
+            await github.rest.repos.createDeploymentStatus({
+              owner,
+              repo,
+              deployment_id: deployment.id,
+              state: 'success',
+              environment_url: url,
+              log_url: `${context.serverUrl}/${owner}/${repo}/actions/runs/${context.runId}`
+            });
 
   cleanup-preview:
     if: |
