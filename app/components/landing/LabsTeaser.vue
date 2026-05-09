@@ -69,8 +69,9 @@ defineProps<{
             color="neutral"
             size="sm"
             icon="i-lucide-arrow-right"
-            label="View details"
-          />
+          >
+            View details<span class="sr-only"> for {{ lab.title }}</span>
+          </UButton>
         </div>
       </div>
     </UCard>

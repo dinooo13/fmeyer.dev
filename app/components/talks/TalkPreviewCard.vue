@@ -137,8 +137,9 @@ const subtitle = computed(() => {
           color="neutral"
           size="sm"
           icon="i-lucide-arrow-right"
-          :label="primaryAction.label"
-        />
+        >
+          {{ primaryAction.label }}<span class="sr-only"> for {{ talk?.title }}</span>
+        </UButton>
       </div>
     </div>
 

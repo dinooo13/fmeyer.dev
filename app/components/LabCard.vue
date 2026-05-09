@@ -72,8 +72,9 @@ defineProps<{
           icon="i-lucide-external-link"
           color="neutral"
           size="sm"
-          label="Demo"
-        />
+        >
+          Demo<span class="sr-only"> of {{ lab.title }}</span>
+        </UButton>
         <UButton
           v-if="lab.repoUrl"
           :to="lab.repoUrl"
@@ -82,8 +83,9 @@ defineProps<{
           icon="i-simple-icons-github"
           color="neutral"
           size="sm"
-          label="Repository"
-        />
+        >
+          Repository<span class="sr-only"> for {{ lab.title }}</span>
+        </UButton>
       </div>
     </div>
   </UCard>
