@@ -60,6 +60,7 @@ export default defineNuxtConfig({
       name: 'Fabian Meyer',
       url: process.env.NUXT_PUBLIC_SITE_URL || 'https://fmeyer.dev',
       image: '/profile/fabian-meyer-portrait.jpg',
+      description: 'Chapter Lead Vue, software engineer, and AI mentor at eventim Tech. Leads the Vue chapter, provides technical leadership for the Tixx Online Shop, and helps teams apply agentic engineering with measurable customer impact.',
       jobTitle: 'Chapter Lead Vue, Software Engineer, AI Mentor',
       worksFor: {
         '@type': 'Organization',
