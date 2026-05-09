@@ -243,7 +243,7 @@ The `pnpm.overrides` block in `package.json` pins specific transitive dependenci
 | `lodash@<=4.17.23 → >=4.18.0` | [GHSA-r5fr-rjxr-66jc](https://github.com/advisories/GHSA-r5fr-rjxr-66jc), [GHSA-f23m-r3pf-42rh](https://github.com/advisories/GHSA-f23m-r3pf-42rh) — code injection via `_.template`, prototype pollution. |
 | `defu@<=6.1.4 → >=6.1.5` | [GHSA-737v-mqg7-c878](https://github.com/advisories/GHSA-737v-mqg7-c878) — prototype pollution via `__proto__` key. |
 | `vite@>=7.0.0 <=7.3.1 → >=7.3.2` | [GHSA-v2wj-q39q-566r](https://github.com/advisories/GHSA-v2wj-q39q-566r), [GHSA-p9ff-h696-f583](https://github.com/advisories/GHSA-p9ff-h696-f583), [GHSA-4w7w-66w2-5vf9](https://github.com/advisories/GHSA-4w7w-66w2-5vf9) — `server.fs.deny` bypass, arbitrary file read, path traversal in optimized deps. |
-| `unhead@<2.1.13 → >=2.1.13` | [GHSA-95h2-gj7x-gx9w](https://github.com/advisories/GHSA-95h2-gj7x-gx9w) — `hasDangerousProtocol()` bypass. |
+| `unhead@<2.1.13 → >=2.1.13 <3` | [GHSA-95h2-gj7x-gx9w](https://github.com/advisories/GHSA-95h2-gj7x-gx9w) — `hasDangerousProtocol()` bypass. Upper bound keeps transitive `unhead` consumers (`@unhead/vue`, `@unhead/schema-org`) on the same v2 instance; without it the override pushes `@unhead/vue`'s `unhead` dep up to v3 while `@unhead/schema-org` stays on v2, splitting the head registry and producing empty JSON-LD on prerender. |
 | `simple-git@<3.36.0 → >=3.36.0` | RCE in `simple-git` ≤3.35. |
 
 After bumping a direct dependency, run `pnpm audit` and remove any override that the upstream now resolves on its own.
