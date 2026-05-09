@@ -25,19 +25,14 @@ defineOgImage('NuxtSeoSatori')
 <template>
   <UPage v-if="page">
     <UPageHero
+      :title="page.title"
       :description="page.description"
       :ui="{
-        title: '!mx-0 max-w-3xl text-left',
+        title: '!mx-0 max-w-3xl text-left text-3xl font-bold tracking-tight text-highlighted sm:text-4xl lg:text-5xl',
         description: '!mx-0 max-w-2xl text-left',
         links: 'justify-start'
       }"
     >
-      <template #title>
-        <h1 class="text-3xl font-bold tracking-tight text-highlighted sm:text-4xl lg:text-5xl">
-          {{ page.title }}
-        </h1>
-      </template>
-
       <template #links>
         <div
           v-if="page.links?.length"
