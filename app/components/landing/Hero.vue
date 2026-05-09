@@ -34,7 +34,7 @@ defineProps<{
         <NuxtImg
           class="size-18 rounded-full object-cover ring ring-default ring-offset-3 ring-offset-(--ui-bg)"
           :src="avatarSrc"
-          :alt="global.picture?.alt ?? 'Profile picture'"
+          alt=""
           width="72"
           height="72"
           sizes="72px"
