@@ -34,7 +34,7 @@ defineProps<{
         <NuxtImg
           class="size-18 rounded-full object-cover ring ring-default ring-offset-3 ring-offset-(--ui-bg)"
           :src="avatarSrc"
-          aria-labelledby="hero-name"
+          alt=""
           width="72"
           height="72"
           sizes="72px"
@@ -49,10 +49,7 @@ defineProps<{
     <template #title>
       <div class="space-y-4 text-center">
         <div class="hero-enter hero-enter-1">
-          <p
-            id="hero-name"
-            class="text-sm font-medium uppercase tracking-[0.28em] text-muted"
-          >
+          <p class="text-sm font-medium uppercase tracking-[0.28em] text-muted">
             {{ page.hero.name }}
           </p>
         </div>
