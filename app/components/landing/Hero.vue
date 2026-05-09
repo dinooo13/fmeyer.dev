@@ -67,14 +67,22 @@ defineProps<{
     </template>
 
     <template #links>
-      <div class="hero-enter hero-enter-4 flex flex-wrap items-center justify-center gap-3">
-        <UButton
-          v-for="link of footer?.links"
-          :key="link['aria-label'] || link.to"
-          v-bind="{ size: 'xs', color: 'neutral', variant: 'ghost', ...link }"
-          class="text-highlighted hover:text-highlighted"
-        />
-      </div>
+      <nav
+        aria-label="Social and contact links"
+        class="hero-enter hero-enter-4"
+      >
+        <ul class="flex flex-wrap items-center justify-center gap-3">
+          <li
+            v-for="link of footer?.links"
+            :key="link['aria-label'] || link.to"
+          >
+            <UButton
+              v-bind="{ size: 'xs', color: 'neutral', variant: 'ghost', ...link }"
+              class="text-highlighted hover:text-highlighted"
+            />
+          </li>
+        </ul>
+      </nav>
     </template>
   </UPageHero>
 </template>

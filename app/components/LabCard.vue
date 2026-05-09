@@ -62,6 +62,7 @@ defineProps<{
           color="neutral"
           size="sm"
           label="View details"
+          :aria-label="`View details for ${lab.title}`"
         />
         <UButton
           v-if="lab.url"
