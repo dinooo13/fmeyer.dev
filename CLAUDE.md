@@ -12,6 +12,7 @@ Personal website and portfolio for [fmeyer.dev](https://fmeyer.dev), built with 
 - **UI**: `@nuxt/ui` v4 (Tailwind CSS v4, component library)
 - **Content**: `@nuxt/content` v3 (YAML-based content collections)
 - **Images**: `@nuxt/image`, `nuxt-og-image`
+- **SEO**: `@nuxtjs/seo` (robots, sitemap, schema-org, OG images)
 - **Animations**: `motion-v`
 - **Icons**: `@iconify-json/lucide` (prefix `i-lucide-`) and `@iconify-json/simple-icons` (prefix `i-simple-icons-`)
 - **Language**: TypeScript
@@ -23,16 +24,18 @@ Personal website and portfolio for [fmeyer.dev](https://fmeyer.dev), built with 
 ```
 fmeyer.dev/
 ├── app/                        # Nuxt application code
-│   ├── app.vue                 # Root app component (global head, SEO, canonical URL)
+│   ├── app.vue                 # Root app component (global SEO, skip link, canonical URL, JSON-LD)
 │   ├── app.config.ts           # Runtime app config (profile pic, email, footer links, UI theme)
-│   ├── assets/css/main.css     # Global CSS
+│   ├── assets/css/main.css     # Global CSS (animations, prefers-reduced-motion)
 │   ├── composables/
 │   │   └── usePageSeo.ts       # Sets useSeoMeta from a content page's seo/title/description
 │   ├── components/
-│   │   ├── AppHeader.vue       # Floating pill navigation bar
-│   │   ├── AppFooter.vue       # Footer with social links
+│   │   ├── AppHeader.vue       # Floating pill navigation bar (role="banner")
+│   │   ├── AppFooter.vue       # Footer with social links (role="contentinfo")
 │   │   ├── ColorModeButton.vue # Dark/light mode toggle
 │   │   ├── LabCard.vue         # Card for a lab entry in the grid
+│   │   ├── OgImage/
+│   │   │   └── NuxtSeoSatori.satori.vue  # OG image template
 │   │   ├── landing/            # Landing page section components
 │   │   │   ├── Hero.vue
 │   │   │   ├── Focus.vue
@@ -72,7 +75,7 @@ fmeyer.dev/
 │   ├── profile/                # Profile photo
 │   └── robots.txt
 ├── content.config.ts           # Nuxt Content collection schemas (Zod)
-├── nuxt.config.ts              # Nuxt config (modules, site URL, Nitro prerender, ESLint stylistic)
+├── nuxt.config.ts              # Nuxt config (modules, site URL, schema-org identity, Nitro prerender, ESLint stylistic)
 ├── eslint.config.mjs           # ESLint config (extends Nuxt's generated config)
 ├── tsconfig.json               # TypeScript config
 ├── renovate.json               # Renovate dependency update config
@@ -94,13 +97,16 @@ pnpm typecheck      # Run Nuxt type checking (vue-tsc)
 
 ## Environment variables
 
-Copy `.env.example` to `.env` for local overrides. The only variable is:
+Copy `.env.example` to `.env` for local overrides:
 
 ```
 NUXT_PUBLIC_SITE_URL=https://fmeyer.dev
+NUXT_PUBLIC_NOINDEX=false
 ```
 
-This is used by `nuxt-og-image` during static generation. For `pnpm dev` it defaults correctly without a `.env` file.
+`NUXT_PUBLIC_SITE_URL` is required by `nuxt-og-image` during static generation. For `pnpm dev` it defaults correctly without a `.env` file.
+
+`NUXT_PUBLIC_NOINDEX=true` switches the global robots meta to `noindex, nofollow` — used for preview/staging deployments.
 
 ## Content collections
 
@@ -196,11 +202,68 @@ resources:                 # optional list of linked assets
 - Shared button type is in `app/utils/types.ts` (`ContentButton`).
 - Utility functions are auto-imported from `app/utils/` — no explicit imports needed in Vue files (though explicit imports are used in other `.ts` files).
 
-### SEO
+### SEO and structured data
 
-- Call `usePageSeo(page)` at the top of each page, passing the content collection result. It reads `page.seo.title` / `page.seo.description` with fallback to `page.title` / `page.description`.
-- Call `defineOgImage()` on each page to generate an OG image.
+This site targets strong Lighthouse SEO scores and Google rich results. Every page must meet the following bar:
+
+- Call `usePageSeo(page)` at the top of every page. It reads `page.seo.title` / `page.seo.description` with fallback to `page.title` / `page.description` and sets both plain and OG variants.
+- Call `defineOgImage('NuxtSeoSatori')` on every page to generate a social preview image.
 - The global title template is `%s - fmeyer.dev` (set in `app.vue`).
+- Canonical URLs are computed dynamically per route in `app.vue` and injected via `useSeoMeta`.
+- `@nuxtjs/seo` handles robots, sitemap (`autoLastmod: true`), and schema-org globally.
+
+**JSON-LD / schema-org**
+
+- The global `Person` identity is defined once in `nuxt.config.ts` under `schemaOrg.identity`. Do not duplicate it elsewhere.
+- `app.vue` registers `defineWebSite` and `defineWebPage` for every route.
+- The homepage registers a `ProfilePage` schema (`useSchemaOrg([defineWebPage({ '@type': 'ProfilePage', ... })])`) with a `mainEntity` reference to the identity anchor (`#identity`) and a live `dateModified: new Date().toISOString()`.
+- When adding new page types, extend schema-org appropriately (e.g., `Article`, `Event`) using `useSchemaOrg` in the page component.
+
+### Performance
+
+Performance directly affects user experience and Lighthouse scores. Follow these rules rigorously:
+
+**Animations**
+- Use CSS-only entrance animations for above-the-fold elements. Do **not** use `motion-v` with `initial: { opacity: 0 }` on LCP-critical elements — it hides them until JS hydrates and breaks Lighthouse LCP measurement.
+- Animate with `transform` only (e.g., `scale`, `translateY`). Avoid animating `opacity`, `filter`, or layout properties above the fold — non-transform animations force main-thread repaints and increase Total Blocking Time.
+- Staggered entrance classes (`.hero-enter-1` through `.hero-enter-4` in `main.css`) use `animation-delay` so the browser schedules them without blocking.
+- Always include a `@media (prefers-reduced-motion: reduce)` block that sets `animation-duration: 0.01ms` and disables view-transition animations. This is in `main.css` — keep it up to date when adding new animations.
+
+**Images**
+- Hero / above-the-fold images: use `loading="eager"` and `fetchpriority="high"` on `<NuxtImg>`.
+- Below-the-fold images: use `loading="lazy"`.
+- Always supply `sizes` and `densities` on `<NuxtImg>` so `@nuxt/image` generates the correct `srcset`.
+- Decorative images (profile photo next to the name) must have `alt=""` (WCAG H67) — empty string, not omitted.
+
+**Build**
+- `experimental.payloadExtraction: false` is set in `nuxt.config.ts`. This inlines `useAsyncData` payload into the HTML instead of writing a separate JSON file, eliminating an extra network round-trip before hydration.
+- Nitro prerender crawls all links from `/` — ensure every page is reachable via an anchor so it gets prerendered.
+
+### Accessibility
+
+This site targets WCAG 2.1 AA compliance. Every change must preserve or improve the accessibility baseline:
+
+**Landmarks and skip navigation**
+- `app.vue` has a skip-to-main-content link as the first focusable element. It uses `sr-only focus:not-sr-only` to appear only on keyboard focus. Do not remove it.
+- `<UMain id="main-content" tabindex="-1">` in `app.vue` is the skip-link target. Keep `id` and `tabindex="-1"` in sync.
+- `AppHeader` carries `role="banner"`, `AppFooter` carries `role="contentinfo"`. Maintain these on any structural refactor.
+
+**Semantic HTML**
+- Wrap groups of navigation links in `<nav aria-label="...">` with `<ul>` / `<li>` children. Do not render link lists as bare `<div>` stacks.
+- Use `<ul aria-label="...">` for content grids (lab grid, talk list). Render `<Motion as="li">` so the grid is a proper list.
+- Action button groups on detail pages (back, demo, repo) go in `<nav aria-label="..."><ul class="list-none p-0">...</ul></nav>`.
+
+**Interactive elements**
+- Toggle buttons (e.g., "Show more experience" in `WorkExperience.vue`) must have `:aria-expanded` bound to state and `:aria-controls` pointing to the controlled element's `id`. The button label must also change to reflect state.
+- Never use a `<div>` or `<span>` as a click target without `role="button"`, `tabindex="0"`, and keyboard handler.
+
+**Screen-reader link text**
+- When a button label is generic (e.g., "View details", "Learn more"), append `<span class="sr-only"> for {{ item.title }}</span>` inside the label slot. This gives screen reader users context without changing the visual design.
+- Pattern used in `LabCard.vue` and `TalkPreviewCard.vue` — follow the same pattern for any new cards.
+
+**Color contrast**
+- Nuxt UI's `color="success" variant="soft"` renders green text on green background (~2:1 contrast ratio) — it does **not** meet WCAG AA (4.5:1). Use `color="neutral" variant="soft"` for status badges where the meaning is conveyed by text, not colour alone.
+- Before using any colour variant for informational text, verify it meets 4.5:1 against its background in both light and dark mode.
 
 ### ESLint
 
@@ -215,6 +278,22 @@ Run `pnpm lint:fix` before committing if you change formatting.
 - Labs are sorted by `date` descending, then alphabetically by `title`. Use `sortLabs()`.
 - Talks are sorted by `date` descending (undated entries come after dated ones, `placeholder: true` last). Use `sortTalks()`.
 - Slugs are derived from the YAML filename stem (last path segment). If no stem is available, a slug is generated from the title.
+
+## Quality checklist
+
+Before considering any change done, verify:
+
+- [ ] `pnpm lint` passes with no errors
+- [ ] `pnpm typecheck` passes with no errors
+- [ ] New above-the-fold elements do not use `opacity: 0` initial states (LCP impact)
+- [ ] New animations have `@media (prefers-reduced-motion: reduce)` coverage in `main.css`
+- [ ] New images have correct `loading`, `fetchpriority`, `alt`, `sizes`, and `densities` attributes
+- [ ] New interactive elements have correct ARIA attributes (landmarks, expanded state, controls)
+- [ ] New link groups use `<nav>` + `<ul>` + `<li>` structure
+- [ ] Generic button labels have `<span class="sr-only">` context
+- [ ] Status/info badges use `color="neutral"` — not `color="success"` or other low-contrast variants
+- [ ] New pages call `usePageSeo(page)` and `defineOgImage('NuxtSeoSatori')`
+- [ ] New page types add appropriate `useSchemaOrg(...)` structured data
 
 ## Deployment
 

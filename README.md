@@ -7,6 +7,8 @@ Personal website and portfolio for [fmeyer.dev](https://fmeyer.dev), built with 
 - Nuxt 4
 - `@nuxt/ui`
 - `@nuxt/content`
+- `@nuxt/image`
+- `@nuxtjs/seo` (robots, sitemap, schema-org, OG images)
 - TypeScript
 - pnpm
 - GitHub Actions for CI and deployment
@@ -57,12 +59,12 @@ The app runs on [http://localhost:3000](http://localhost:3000).
 
 ## Content structure
 
-Content is defined with Nuxt Content collections in [`content.config.ts`](/Users/fmeyer/Developer/personal/fmeyer.dev/content.config.ts).
+Content is defined with Nuxt Content collections in [`content.config.ts`](content.config.ts).
 
-- [`content/index.yml`](/Users/fmeyer/Developer/personal/fmeyer.dev/content/index.yml) drives the homepage content.
-- [`content/labs.yml`](/Users/fmeyer/Developer/personal/fmeyer.dev/content/labs.yml) defines the overview page for labs.
-- [`content/labs/`](/Users/fmeyer/Developer/personal/fmeyer.dev/content/labs) contains individual lab entries.
-- [`content/speaking.yml`](/Users/fmeyer/Developer/personal/fmeyer.dev/content/speaking.yml) defines the speaking landing page.
-- [`content/speaking/`](/Users/fmeyer/Developer/personal/fmeyer.dev/content/speaking) contains individual talk entries.
+- [`content/index.yml`](content/index.yml) drives the homepage content.
+- [`content/labs.yml`](content/labs.yml) defines the overview page for labs.
+- [`content/labs/`](content/labs) contains individual lab entries.
+- [`content/speaking.yml`](content/speaking.yml) defines the speaking landing page.
+- [`content/speaking/`](content/speaking) contains individual talk entries.
 
-Static assets live in [`public/`](/Users/fmeyer/Developer/personal/fmeyer.dev/public), and the Nuxt application code lives in [`app/`](/Users/fmeyer/Developer/personal/fmeyer.dev/app).
+Static assets live in [`public/`](public), and the Nuxt application code lives in [`app/`](app).
