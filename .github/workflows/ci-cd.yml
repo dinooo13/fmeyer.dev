@@ -163,46 +163,6 @@ jobs:
           bye
           EOF
 
-  set-production-url:
-    if: |
-      needs.changes.outputs.site == 'true' &&
-      ((github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event_name == 'workflow_dispatch')
-    needs: [changes, deploy-production]
-    runs-on: ubuntu-24.04-arm
-    permissions:
-      deployments: write
-    steps:
-      - name: Set deployment URL
-        uses: actions/github-script@v9
-        with:
-          script: |
-            const url = 'https://fmeyer.dev';
-            const sha = context.sha;
-            const { owner, repo } = context.repo;
-
-            const deployments = await github.paginate(github.rest.repos.listDeployments, {
-              owner,
-              repo,
-              environment: 'production',
-              sha,
-              per_page: 100
-            });
-            deployments.sort((a, b) => b.id - a.id);
-            const deployment = deployments[0];
-            if (!deployment) {
-              core.setFailed('No deployment found for this SHA in the production environment');
-              return;
-            }
-
-            await github.rest.repos.createDeploymentStatus({
-              owner,
-              repo,
-              deployment_id: deployment.id,
-              state: 'success',
-              environment_url: url,
-              log_url: `${context.serverUrl}/${owner}/${repo}/actions/runs/${context.runId}`
-            });
-
   deploy-preview:
     if: |
       github.event_name == 'pull_request' &&
@@ -252,12 +212,11 @@ jobs:
           bye
           EOF
 
-  set-preview-url:
+  set-environment-url:
+    needs: [deploy-production, deploy-preview]
     if: |
-      github.event_name == 'pull_request' &&
-      github.event.action != 'closed' &&
-      github.event.pull_request.head.repo.full_name == github.repository
-    needs: deploy-preview
+      !cancelled() &&
+      (needs.deploy-production.result == 'success' || needs.deploy-preview.result == 'success')
     runs-on: ubuntu-24.04-arm
     permissions:
       deployments: write
@@ -266,22 +225,25 @@ jobs:
         uses: actions/github-script@v9
         with:
           script: |
-            const prNumber = context.payload.pull_request.number;
-            const url = `https://preview.fmeyer.dev/pr-${prNumber}/`;
-            const sha = context.payload.pull_request.head.sha;
+            const isPreview = context.eventName === 'pull_request';
+            const env = isPreview ? 'preview' : 'production';
+            const sha = isPreview ? context.payload.pull_request.head.sha : context.sha;
+            const url = isPreview
+              ? `https://preview.fmeyer.dev/pr-${context.payload.pull_request.number}/`
+              : 'https://fmeyer.dev';
             const { owner, repo } = context.repo;
 
             const deployments = await github.paginate(github.rest.repos.listDeployments, {
               owner,
               repo,
-              environment: 'preview',
+              environment: env,
               sha,
               per_page: 100
             });
             deployments.sort((a, b) => b.id - a.id);
             const deployment = deployments[0];
             if (!deployment) {
-              core.setFailed('No deployment found for this PR head SHA in the preview environment');
+              core.setFailed(`No deployment found for SHA ${sha} in ${env} environment`);
               return;
             }
 
