@@ -61,9 +61,9 @@ defineProps<{
           icon="i-lucide-arrow-right"
           color="neutral"
           size="sm"
-          label="View details"
-          :aria-label="`View details for ${lab.title}`"
-        />
+        >
+          View details<span class="sr-only"> for {{ lab.title }}</span>
+        </UButton>
         <UButton
           v-if="lab.url"
           :to="lab.url"
