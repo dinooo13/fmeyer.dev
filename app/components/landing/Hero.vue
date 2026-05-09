@@ -34,7 +34,6 @@ defineProps<{
         <NuxtImg
           class="size-18 rounded-full object-cover ring ring-default ring-offset-3 ring-offset-(--ui-bg)"
           :src="avatarSrc"
-          alt=""
           aria-labelledby="hero-name"
           width="72"
           height="72"
