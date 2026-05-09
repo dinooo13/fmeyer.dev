@@ -77,23 +77,28 @@ const resourceKindLabels: Record<ResolvedTalkResource['kind'], string> = {
       </template>
 
       <template #links>
-        <div class="flex flex-wrap items-center gap-3">
-          <UButton
-            to="/speaking"
-            color="neutral"
-            variant="outline"
-            icon="i-lucide-arrow-left"
-            label="Back to Speaking"
-          />
-          <UButton
-            v-if="talk.url"
-            :to="talk.url"
-            target="_blank"
-            color="neutral"
-            icon="i-lucide-external-link"
-            label="View organizer session"
-          />
-        </div>
+        <nav aria-label="Talk actions">
+          <ul class="flex flex-wrap items-center gap-3 list-none p-0">
+            <li>
+              <UButton
+                to="/speaking"
+                color="neutral"
+                variant="outline"
+                icon="i-lucide-arrow-left"
+                label="Back to Speaking"
+              />
+            </li>
+            <li v-if="talk.url">
+              <UButton
+                :to="talk.url"
+                target="_blank"
+                color="neutral"
+                icon="i-lucide-external-link"
+                label="View organizer session"
+              />
+            </li>
+          </ul>
+        </nav>
       </template>
 
       <template #default>
