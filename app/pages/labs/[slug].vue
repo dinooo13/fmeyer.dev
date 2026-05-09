@@ -50,31 +50,37 @@ const hasImage = computed(() => Boolean(lab.value?.image))
       </template>
 
       <template #links>
-        <div class="flex flex-wrap items-center gap-3">
-          <UButton
-            to="/labs"
-            color="neutral"
-            variant="outline"
-            icon="i-lucide-arrow-left"
-            label="Back to Labs"
-          />
-          <UButton
-            v-if="lab.url"
-            :to="lab.url"
-            target="_blank"
-            color="neutral"
-            icon="i-lucide-external-link"
-            label="Open demo"
-          />
-          <UButton
-            v-if="lab.repoUrl"
-            :to="lab.repoUrl"
-            target="_blank"
-            color="neutral"
-            icon="i-simple-icons-github"
-            label="View repository"
-          />
-        </div>
+        <nav aria-label="Lab actions">
+          <ul class="flex flex-wrap items-center gap-3 list-none p-0">
+            <li>
+              <UButton
+                to="/labs"
+                color="neutral"
+                variant="outline"
+                icon="i-lucide-arrow-left"
+                label="Back to Labs"
+              />
+            </li>
+            <li v-if="lab.url">
+              <UButton
+                :to="lab.url"
+                target="_blank"
+                color="neutral"
+                icon="i-lucide-external-link"
+                label="Open demo"
+              />
+            </li>
+            <li v-if="lab.repoUrl">
+              <UButton
+                :to="lab.repoUrl"
+                target="_blank"
+                color="neutral"
+                icon="i-simple-icons-github"
+                label="View repository"
+              />
+            </li>
+          </ul>
+        </nav>
       </template>
 
       <template #default>
