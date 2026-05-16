@@ -20,6 +20,26 @@ if (!page.value) {
 usePageSeo(page.value)
 
 defineOgImage('Default')
+
+const runtimeConfig = useRuntimeConfig()
+const siteUrl = runtimeConfig.public.siteUrl.replace(/\/$/, '')
+
+useSchemaOrg([
+  defineBreadcrumb({
+    itemListElement: [
+      { name: 'Home', item: `${siteUrl}/` },
+      { name: 'Labs', item: `${siteUrl}/labs` }
+    ]
+  }),
+  defineItemList({
+    itemListElement: (labs.value ?? []).map((lab, index) => ({
+      '@type': 'ListItem',
+      'position': index + 1,
+      'url': `${siteUrl}${getLabPath(lab)}`,
+      'name': lab.title
+    }))
+  })
+])
 </script>
 
 <template>

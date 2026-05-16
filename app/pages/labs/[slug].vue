@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { formatLabDate, labStatusIconMap, labStatusMap } from '../../utils/labs'
+import { buildLabCreativeWorkSchema, formatLabDate, labStatusIconMap, labStatusMap } from '../../utils/labs'
 
 const route = useRoute()
+const runtimeConfig = useRuntimeConfig()
 const slug = Array.isArray(route.params.slug) ? route.params.slug[0] : route.params.slug
 
 const { data: lab } = await useAsyncData(`lab-${slug}`, () => {
@@ -19,6 +20,21 @@ if (!lab.value) {
 usePageSeo(lab.value)
 
 defineOgImage('Default')
+
+const siteUrl = runtimeConfig.public.siteUrl.replace(/\/$/, '')
+const canonicalUrl = `${siteUrl}/labs/${slug}`
+const identityId = `${siteUrl}/#identity`
+
+useSchemaOrg([
+  defineBreadcrumb({
+    itemListElement: [
+      { name: 'Home', item: `${siteUrl}/` },
+      { name: 'Labs', item: `${siteUrl}/labs` },
+      { name: lab.value.title, item: canonicalUrl }
+    ]
+  }),
+  buildLabCreativeWorkSchema(lab.value, canonicalUrl, identityId)
+])
 
 const formattedDate = computed(() => formatLabDate(lab.value!.date))
 const hasImage = computed(() => Boolean(lab.value?.image))

@@ -67,3 +67,41 @@ export const formatLabDate = (value: string | Date) => {
     dateStyle: 'long'
   }).format(new Date(value))
 }
+
+const labStatusToCreativeWorkStatus: Record<LabStatus, string> = {
+  wip: 'WorkInProgress',
+  prototype: 'Prototype',
+  paused: 'OnHold'
+}
+
+const toIsoDate = (value: string | Date | undefined) => {
+  if (!value) return null
+
+  const date = value instanceof Date ? value : new Date(value)
+  return Number.isNaN(date.getTime()) ? null : date.toISOString()
+}
+
+export const buildLabCreativeWorkSchema = (lab: LabEntry, canonicalUrl: string, authorId: string) => {
+  const dateCreated = toIsoDate(lab.date)
+  const type = lab.repoUrl ? 'SoftwareSourceCode' : 'CreativeWork'
+
+  const schema: Record<string, unknown> = {
+    '@type': type,
+    'name': lab.title,
+    'headline': lab.title,
+    'description': lab.description,
+    'url': canonicalUrl,
+    'author': { '@id': authorId },
+    'creator': { '@id': authorId },
+    'creativeWorkStatus': labStatusToCreativeWorkStatus[lab.status],
+    'keywords': lab.tags.length ? lab.tags.join(', ') : undefined
+  }
+
+  if (dateCreated) schema.dateCreated = dateCreated
+  if (dateCreated) schema.datePublished = dateCreated
+  if (lab.repoUrl) schema.codeRepository = lab.repoUrl
+  if (lab.url) schema.sameAs = lab.url
+  if (lab.image) schema.image = lab.image
+
+  return Object.fromEntries(Object.entries(schema).filter(([, value]) => value !== undefined))
+}
