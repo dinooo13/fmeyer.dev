@@ -117,6 +117,10 @@ jobs:
         with:
           name: site-output
           path: .output/public
+          # Required so .htaccess (and any other dotfile in the output) is
+          # packed into the artifact — upload-artifact strips hidden files
+          # by default.
+          include-hidden-files: true
           retention-days: 1
           compression-level: 0
           if-no-files-found: error
