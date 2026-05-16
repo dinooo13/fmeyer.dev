@@ -78,15 +78,22 @@ export default defineNuxtConfig({
   },
 
   icon: {
-    // ColorModeButton builds icon names dynamically (`i-lucide-${...}`), so
-    // the build-time scanner can't pick them up — list them explicitly here.
+    // The build-time scanner only sees static literals. We need to cover:
+    //  - dynamic names in templates (ColorModeButton builds `i-lucide-${...}`)
+    //  - icons referenced inside @nuxt/ui (lives in node_modules, not scanned)
+    // YAML content under `content/` is picked up by `scan: true` (the
+    // scanner's default globs include .yml / .yaml).
     // `fallbackToApi: 'server-only'` keeps SSR/generate-time resolution but
     // blocks the runtime `api.iconify.design` request that CSP `connect-src
     // 'self'` would otherwise reject.
     clientBundle: {
+      scan: true,
       icons: [
         'lucide:sun',
-        'lucide:moon'
+        'lucide:moon',
+        'lucide:arrow-right',
+        'lucide:arrow-up-right',
+        'lucide:chevron-down'
       ]
     },
     fallbackToApi: 'server-only'
