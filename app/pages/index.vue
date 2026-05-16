@@ -25,7 +25,7 @@ if (!page.value) {
 
 usePageSeo(page.value)
 
-defineOgImage('NuxtSeoSatori')
+defineOgImage({ component: 'Default' })
 
 const runtimeConfig = useRuntimeConfig()
 const identityId = `${runtimeConfig.public.siteUrl.replace(/\/$/, '')}/#identity`

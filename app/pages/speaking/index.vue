@@ -19,7 +19,7 @@ if (!page.value) {
 
 usePageSeo(page.value)
 
-defineOgImage('NuxtSeoSatori')
+defineOgImage({ component: 'Default' })
 </script>
 
 <template>
