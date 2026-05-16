@@ -1,10 +1,8 @@
 <script setup lang="ts">
 const route = useRoute()
 const runtimeConfig = useRuntimeConfig()
-const colorMode = useColorMode()
 const baseURL = runtimeConfig.app.baseURL
 
-const color = computed(() => colorMode.value === 'dark' ? '#020618' : 'white')
 const basePrefix = baseURL.replace(/\/$/, '')
 const canonicalUrl = computed(() => {
   return new URL(`${basePrefix}${route.path || '/'}`, runtimeConfig.public.siteUrl).toString()
@@ -14,7 +12,8 @@ useHead({
   meta: [
     { charset: 'utf-8' },
     { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-    { key: 'theme-color', name: 'theme-color', content: color },
+    { key: 'theme-color-light', name: 'theme-color', media: '(prefers-color-scheme: light)', content: 'white' },
+    { key: 'theme-color-dark', name: 'theme-color', media: '(prefers-color-scheme: dark)', content: '#020618' },
     { name: 'author', content: 'Fabian Meyer' },
     {
       name: 'robots',
@@ -26,7 +25,9 @@ useHead({
   link: [
     { rel: 'icon', href: `${baseURL}favicon.ico` },
     { rel: 'canonical', href: canonicalUrl },
-    { rel: 'alternate', type: 'application/rss+xml', title: 'fmeyer.dev — Labs & Speaking', href: `${baseURL}rss.xml` }
+    { rel: 'alternate', type: 'application/rss+xml', title: 'fmeyer.dev — Labs & Speaking', href: `${baseURL}rss.xml` },
+    { rel: 'me', href: 'https://github.com/dinooo13' },
+    { rel: 'me', href: 'https://linkedin.com/in/fabian-meyer-02038813a' }
   ],
   htmlAttrs: {
     lang: 'en'
