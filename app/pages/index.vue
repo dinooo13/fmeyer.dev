@@ -25,8 +25,6 @@ if (!page.value) {
 
 usePageSeo(page.value)
 
-defineOgImage('Default')
-
 const runtimeConfig = useRuntimeConfig()
 const identityId = `${runtimeConfig.public.siteUrl.replace(/\/$/, '')}/#identity`
 

@@ -24,8 +24,6 @@ usePageSeo({
   description: talk.value.summary ?? talk.value.description
 })
 
-defineOgImage('Default')
-
 const siteUrl = runtimeConfig.public.siteUrl.replace(/\/$/, '')
 const canonicalUrl = `${siteUrl}/speaking/${slug}`
 const identityId = `${siteUrl}/#identity`

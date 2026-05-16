@@ -1,4 +1,6 @@
 // Nuxt config — https://nuxt.com/docs/api/configuration/nuxt-config
+import { generateContentArtifacts } from './build/generate-content-artifacts'
+
 export default defineNuxtConfig({
   modules: [
     '@nuxt/eslint',
@@ -64,6 +66,11 @@ export default defineNuxtConfig({
         } catch (err) {
           if ((err as NodeJS.ErrnoException).code !== 'ENOENT') throw err
         }
+
+        // Generate llms.txt, llms-full.txt, and rss.xml from YAML content so
+        // LLM crawlers and feed readers can pick up labs + talks without
+        // having to render the site.
+        await generateContentArtifacts(nitro)
       })
     }
   },

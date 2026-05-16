@@ -25,7 +25,8 @@ useHead({
   ],
   link: [
     { rel: 'icon', href: `${baseURL}favicon.ico` },
-    { rel: 'canonical', href: canonicalUrl }
+    { rel: 'canonical', href: canonicalUrl },
+    { rel: 'alternate', type: 'application/rss+xml', title: 'fmeyer.dev — Labs & Speaking', href: `${baseURL}rss.xml` }
   ],
   htmlAttrs: {
     lang: 'en'

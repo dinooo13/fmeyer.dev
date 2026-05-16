@@ -19,8 +19,6 @@ if (!page.value) {
 
 usePageSeo(page.value)
 
-defineOgImage('Default')
-
 const runtimeConfig = useRuntimeConfig()
 const siteUrl = runtimeConfig.public.siteUrl.replace(/\/$/, '')
 

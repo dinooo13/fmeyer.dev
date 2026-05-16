@@ -19,8 +19,6 @@ if (!lab.value) {
 
 usePageSeo(lab.value)
 
-defineOgImage('Default')
-
 const siteUrl = runtimeConfig.public.siteUrl.replace(/\/$/, '')
 const canonicalUrl = `${siteUrl}/labs/${slug}`
 const identityId = `${siteUrl}/#identity`
