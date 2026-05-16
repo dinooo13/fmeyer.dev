@@ -29,7 +29,8 @@
     "eslint": "^10.0.3",
     "satori": "^0.26.0",
     "typescript": "^5.9.3",
-    "vue-tsc": "^3.2.5"
+    "vue-tsc": "^3.2.5",
+    "yaml": "^2.9.0"
   },
   "pnpm": {
     "overrides": {

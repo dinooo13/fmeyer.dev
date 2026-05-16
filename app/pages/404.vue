@@ -11,7 +11,7 @@ useSeoMeta({
   robots: 'noindex, nofollow'
 })
 
-defineOgImage('NuxtSeoSatori')
+defineOgImage('Default')
 </script>
 
 <template>

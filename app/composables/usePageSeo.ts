@@ -15,6 +15,13 @@ export function usePageSeo(page: SeoInput) {
     title,
     ogTitle: title,
     description,
-    ogDescription: description
+    ogDescription: description,
+    ogImageAlt: title ? `${title} — fmeyer.dev` : 'fmeyer.dev',
+    twitterImageAlt: title ? `${title} — fmeyer.dev` : 'fmeyer.dev'
+  })
+
+  defineOgImage('Default', {
+    title: title ?? 'fmeyer.dev',
+    description: description ?? ''
   })
 }

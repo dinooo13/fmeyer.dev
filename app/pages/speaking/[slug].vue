@@ -1,13 +1,19 @@
 <script setup lang="ts">
-import { resolveTalkEntry, type ResolvedTalkResource } from '../../utils/speaking'
+import { buildTalkEventSchema, resolveTalkEntry, type ResolvedTalkResource } from '../../utils/speaking'
 
 const route = useRoute()
+const runtimeConfig = useRuntimeConfig()
 const slug = Array.isArray(route.params.slug) ? route.params.slug[0] : route.params.slug
 
 const { data: talk } = await useAsyncData(`talk-${slug}`, async () => {
   const entry = await queryCollection('talks').where('stem', '=', `speaking/${slug}`).first()
 
   return entry ? resolveTalkEntry(entry) : null
+})
+
+const { data: siblings } = await useAsyncData(`talk-siblings-${slug}`, async () => {
+  const entries = await queryCollection('talks').all()
+  return sortTalks(entries)
 })
 
 if (!talk.value) {
@@ -23,7 +29,20 @@ usePageSeo({
   description: talk.value.summary ?? talk.value.description
 })
 
-defineOgImage('NuxtSeoSatori')
+const siteUrl = runtimeConfig.public.siteUrl.replace(/\/$/, '')
+const canonicalUrl = `${siteUrl}/speaking/${slug}`
+const identityId = `${siteUrl}/#identity`
+
+useSchemaOrg([
+  defineBreadcrumb({
+    itemListElement: [
+      { name: 'Home', item: `${siteUrl}/` },
+      { name: 'Speaking', item: `${siteUrl}/speaking` },
+      { name: talk.value.title, item: canonicalUrl }
+    ]
+  }),
+  buildTalkEventSchema(talk.value, canonicalUrl, identityId)
+])
 
 const organizerSubtitle = computed(() => {
   if (!talk.value?.organizerTitle) {
@@ -43,196 +62,264 @@ const resourceKindLabels: Record<ResolvedTalkResource['kind'], string> = {
   handout: 'Handout',
   link: 'Link'
 }
+
+const isoDate = computed(() => {
+  if (!talk.value?.date) return undefined
+  const date = new Date(String(talk.value.date))
+  return Number.isNaN(date.getTime()) ? undefined : date.toISOString().slice(0, 10)
+})
+
+const relatedTalks = computed(() => {
+  const current = talk.value
+  return (siblings.value ?? [])
+    .filter(entry => entry.stem !== current?.stem)
+    .slice(0, 3)
+})
 </script>
 
 <template>
   <UPage v-if="talk">
-    <UPageHero
-      :ui="{
-        title: '!mx-0 max-w-3xl text-left',
-        description: '!mx-0 max-w-2xl text-left',
-        links: 'justify-start'
-      }"
-    >
-      <template #title>
-        <div class="max-w-3xl text-left">
-          <h1 class="text-3xl font-bold tracking-tight text-highlighted sm:text-4xl lg:text-5xl">
-            {{ talk.title }}
-          </h1>
-          <p
-            v-if="organizerSubtitle"
-            class="mt-3 max-w-2xl text-base leading-6 font-normal text-muted sm:text-lg sm:leading-7"
-          >
-            {{ organizerSubtitle }}
-          </p>
-        </div>
-      </template>
-
-      <template #description>
-        <div class="max-w-2xl text-left">
-          <p class="text-sm text-muted sm:text-base">
-            {{ talk.summary }}
-          </p>
-        </div>
-      </template>
-
-      <template #links>
-        <nav aria-label="Talk actions">
-          <ul class="flex flex-wrap items-center gap-3 list-none p-0">
-            <li>
-              <UButton
-                to="/speaking"
-                color="neutral"
-                variant="outline"
-                icon="i-lucide-arrow-left"
-                label="Back to Speaking"
-              />
-            </li>
-            <li v-if="talk.url">
-              <UButton
-                :to="talk.url"
-                target="_blank"
-                color="neutral"
-                icon="i-lucide-external-link"
-                label="View organizer session"
-              />
-            </li>
-          </ul>
-        </nav>
-      </template>
-
-      <template #default>
-        <div class="mt-8 grid gap-4 text-sm text-muted sm:grid-cols-2 lg:grid-cols-4">
-          <div>
-            <p class="font-medium text-highlighted">
-              Event
-            </p>
-            <p>{{ talk.event }}</p>
-          </div>
-          <div>
-            <p class="font-medium text-highlighted">
-              Date
-            </p>
-            <p>{{ talk.dateLabel }}</p>
-          </div>
-          <div>
-            <p class="font-medium text-highlighted">
-              Location
-            </p>
-            <p>{{ talk.location }}</p>
-          </div>
-          <div v-if="talk.language">
-            <p class="font-medium text-highlighted">
-              Language
-            </p>
-            <p>{{ talk.language }}</p>
-          </div>
-        </div>
-      </template>
-    </UPageHero>
-
-    <UPageSection
-      :ui="{
-        container: '!pt-0'
-      }"
-    >
-      <UCard
-        class="border border-default"
+    <article>
+      <UPageHero
         :ui="{
-          body: 'p-6 sm:p-8'
+          title: '!mx-0 max-w-3xl text-left',
+          description: '!mx-0 max-w-2xl text-left',
+          links: 'justify-start'
         }"
       >
-        <div class="space-y-6">
-          <div>
-            <p class="text-sm font-medium text-highlighted">
-              Summary
+        <template #title>
+          <div class="max-w-3xl text-left">
+            <h1 class="text-3xl font-bold tracking-tight text-highlighted sm:text-4xl lg:text-5xl">
+              {{ talk.title }}
+            </h1>
+            <p
+              v-if="organizerSubtitle"
+              class="mt-3 max-w-2xl text-base leading-6 font-normal text-muted sm:text-lg sm:leading-7"
+            >
+              {{ organizerSubtitle }}
             </p>
-            <p class="mt-2 text-sm text-muted">
+          </div>
+        </template>
+
+        <template #description>
+          <div class="max-w-2xl text-left">
+            <p class="text-sm text-muted sm:text-base">
               {{ talk.summary }}
             </p>
+            <p class="mt-3 text-sm text-muted">
+              By <NuxtLink
+                to="/#identity"
+                class="font-medium text-highlighted underline-offset-4 hover:underline"
+              >
+                Fabian Meyer
+              </NuxtLink>
+              <span class="mx-2">·</span>
+              <time
+                v-if="isoDate"
+                :datetime="isoDate"
+              >{{ talk.dateLabel }}</time>
+              <span v-else>{{ talk.dateLabel }}</span>
+            </p>
           </div>
+        </template>
 
-          <div>
-            <p class="text-sm font-medium text-highlighted">
-              Abstract
-            </p>
-            <p class="mt-2 whitespace-pre-line text-sm leading-7 text-muted">
-              {{ talk.description }}
-            </p>
+        <template #links>
+          <nav aria-label="Talk actions">
+            <ul class="flex flex-wrap items-center gap-3 list-none p-0">
+              <li>
+                <UButton
+                  to="/speaking"
+                  color="neutral"
+                  variant="outline"
+                  icon="i-lucide-arrow-left"
+                  label="Back to Speaking"
+                />
+              </li>
+              <li v-if="talk.url">
+                <UButton
+                  :to="talk.url"
+                  target="_blank"
+                  color="neutral"
+                  icon="i-lucide-external-link"
+                  label="View organizer session"
+                />
+              </li>
+            </ul>
+          </nav>
+        </template>
+
+        <template #default>
+          <div class="mt-8 grid gap-4 text-sm text-muted sm:grid-cols-2 lg:grid-cols-4">
+            <div>
+              <p class="font-medium text-highlighted">
+                Event
+              </p>
+              <p>{{ talk.event }}</p>
+            </div>
+            <div>
+              <p class="font-medium text-highlighted">
+                Date
+              </p>
+              <p>
+                <time
+                  v-if="isoDate"
+                  :datetime="isoDate"
+                >{{ talk.dateLabel }}</time>
+                <span v-else>{{ talk.dateLabel }}</span>
+              </p>
+            </div>
+            <div>
+              <p class="font-medium text-highlighted">
+                Location
+              </p>
+              <p>{{ talk.location }}</p>
+            </div>
+            <div v-if="talk.language">
+              <p class="font-medium text-highlighted">
+                Language
+              </p>
+              <p>{{ talk.language }}</p>
+            </div>
           </div>
+        </template>
+      </UPageHero>
+
+      <UPageSection
+        :ui="{
+          container: '!pt-0'
+        }"
+      >
+        <UCard
+          class="border border-default"
+          :ui="{
+            body: 'p-6 sm:p-8'
+          }"
+        >
+          <div class="space-y-6">
+            <div>
+              <p class="text-sm font-medium text-highlighted">
+                Summary
+              </p>
+              <p class="mt-2 text-sm text-muted">
+                {{ talk.summary }}
+              </p>
+            </div>
+
+            <div>
+              <p class="text-sm font-medium text-highlighted">
+                Abstract
+              </p>
+              <p class="mt-2 whitespace-pre-line text-sm leading-7 text-muted">
+                {{ talk.description }}
+              </p>
+            </div>
+          </div>
+        </UCard>
+      </UPageSection>
+
+      <UPageSection
+        v-if="talk.resources.length"
+        title="Resources"
+        description="Slides and supporting material for this talk."
+        :ui="{
+          container: '!pt-0',
+          title: 'text-left text-2xl font-semibold',
+          description: 'max-w-2xl text-left text-sm text-muted'
+        }"
+      >
+        <div class="grid gap-4 lg:grid-cols-2">
+          <UCard
+            v-for="resource in talk.resources"
+            :key="`${resource.kind}-${resource.title}`"
+            class="border border-default"
+            :ui="{
+              body: 'p-6 sm:p-8'
+            }"
+          >
+            <div class="flex h-full flex-col gap-5">
+              <div class="space-y-4">
+                <div class="flex flex-wrap items-center gap-2">
+                  <UBadge
+                    color="neutral"
+                    variant="soft"
+                    :label="resourceKindLabels[resource.kind]"
+                  />
+                  <UBadge
+                    v-if="resource.format"
+                    color="neutral"
+                    variant="outline"
+                    :label="resource.format"
+                  />
+                  <UBadge
+                    v-if="resource.pages"
+                    color="neutral"
+                    variant="outline"
+                    :label="`${resource.pages} pages`"
+                  />
+                </div>
+
+                <div class="space-y-2">
+                  <h2 class="text-lg font-semibold text-highlighted">
+                    {{ resource.title }}
+                  </h2>
+
+                  <p
+                    v-if="resource.description"
+                    class="text-sm text-muted"
+                  >
+                    {{ resource.description }}
+                  </p>
+                </div>
+              </div>
+
+              <div class="mt-auto">
+                <UButton
+                  :to="resource.href"
+                  external
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  color="neutral"
+                  icon="i-lucide-file-text"
+                  label="Open resource"
+                />
+              </div>
+            </div>
+          </UCard>
         </div>
-      </UCard>
-    </UPageSection>
+      </UPageSection>
+    </article>
 
     <UPageSection
-      v-if="talk.resources.length"
-      title="Resources"
-      description="Slides and supporting material for this talk."
+      v-if="relatedTalks.length"
+      title="More talks"
+      description="Other sessions in the speaking line-up."
       :ui="{
         container: '!pt-0',
         title: 'text-left text-2xl font-semibold',
         description: 'max-w-2xl text-left text-sm text-muted'
       }"
     >
-      <div class="grid gap-4 lg:grid-cols-2">
-        <UCard
-          v-for="resource in talk.resources"
-          :key="`${resource.kind}-${resource.title}`"
-          class="border border-default"
-          :ui="{
-            body: 'p-6 sm:p-8'
-          }"
+      <ul
+        class="space-y-6 list-none p-0"
+        aria-label="More talks"
+      >
+        <li
+          v-for="related in relatedTalks"
+          :key="`${related.title}-${related.event}`"
         >
-          <div class="flex h-full flex-col gap-5">
-            <div class="space-y-4">
-              <div class="flex flex-wrap items-center gap-2">
-                <UBadge
-                  color="neutral"
-                  variant="soft"
-                  :label="resourceKindLabels[resource.kind]"
-                />
-                <UBadge
-                  v-if="resource.format"
-                  color="neutral"
-                  variant="outline"
-                  :label="resource.format"
-                />
-                <UBadge
-                  v-if="resource.pages"
-                  color="neutral"
-                  variant="outline"
-                  :label="`${resource.pages} pages`"
-                />
-              </div>
-
-              <div class="space-y-2">
-                <h2 class="text-lg font-semibold text-highlighted">
-                  {{ resource.title }}
-                </h2>
-
-                <p
-                  v-if="resource.description"
-                  class="text-sm text-muted"
-                >
-                  {{ resource.description }}
-                </p>
-              </div>
-            </div>
-
-            <div class="mt-auto">
-              <UButton
-                :to="resource.href"
-                external
-                target="_blank"
-                rel="noopener noreferrer"
-                color="neutral"
-                icon="i-lucide-file-text"
-                label="Open resource"
-              />
-            </div>
-          </div>
-        </UCard>
-      </div>
+          <TalksTalkPreviewCard
+            :talk="related"
+            variant="list"
+            :show-summary="true"
+            :show-meta="true"
+            :heading-level="'h3'"
+            :primary-action="{
+              label: 'View details',
+              to: getTalkPath(related)
+            }"
+          />
+        </li>
+      </ul>
     </UPageSection>
   </UPage>
 </template>
