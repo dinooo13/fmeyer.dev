@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { resolveTalkEntry, type ResolvedTalkResource } from '../../utils/speaking'
+import { buildTalkEventSchema, resolveTalkEntry, type ResolvedTalkResource } from '../../utils/speaking'
 
 const route = useRoute()
+const runtimeConfig = useRuntimeConfig()
 const slug = Array.isArray(route.params.slug) ? route.params.slug[0] : route.params.slug
 
 const { data: talk } = await useAsyncData(`talk-${slug}`, async () => {
@@ -23,7 +24,22 @@ usePageSeo({
   description: talk.value.summary ?? talk.value.description
 })
 
-defineOgImage({ component: 'Default' })
+defineOgImage('Default')
+
+const siteUrl = runtimeConfig.public.siteUrl.replace(/\/$/, '')
+const canonicalUrl = `${siteUrl}/speaking/${slug}`
+const identityId = `${siteUrl}/#identity`
+
+useSchemaOrg([
+  defineBreadcrumb({
+    itemListElement: [
+      { name: 'Home', item: `${siteUrl}/` },
+      { name: 'Speaking', item: `${siteUrl}/speaking` },
+      { name: talk.value.title, item: canonicalUrl }
+    ]
+  }),
+  buildTalkEventSchema(talk.value, canonicalUrl, identityId)
+])
 
 const organizerSubtitle = computed(() => {
   if (!talk.value?.organizerTitle) {

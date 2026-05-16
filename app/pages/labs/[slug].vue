@@ -18,7 +18,7 @@ if (!lab.value) {
 
 usePageSeo(lab.value)
 
-defineOgImage({ component: 'Default' })
+defineOgImage('Default')
 
 const formattedDate = computed(() => formatLabDate(lab.value!.date))
 const hasImage = computed(() => Boolean(lab.value?.image))

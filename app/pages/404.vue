@@ -11,7 +11,7 @@ useSeoMeta({
   robots: 'noindex, nofollow'
 })
 
-defineOgImage({ component: 'Default' })
+defineOgImage('Default')
 </script>
 
 <template>

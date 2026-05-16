@@ -19,7 +19,7 @@ if (!page.value) {
 
 usePageSeo(page.value)
 
-defineOgImage({ component: 'Default' })
+defineOgImage('Default')
 </script>
 
 <template>
