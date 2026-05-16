@@ -9,6 +9,11 @@ const { data: lab } = await useAsyncData(`lab-${slug}`, () => {
   return queryCollection('labs').where('stem', '=', `labs/${slug}`).first()
 })
 
+const { data: siblings } = await useAsyncData(`lab-siblings-${slug}`, async () => {
+  const entries = await queryCollection('labs').all()
+  return sortLabs(entries)
+})
+
 if (!lab.value) {
   throw createError({
     statusCode: 404,
@@ -35,242 +40,303 @@ useSchemaOrg([
 ])
 
 const formattedDate = computed(() => formatLabDate(lab.value!.date))
+const isoDate = computed(() => new Date(lab.value!.date).toISOString().slice(0, 10))
 const hasImage = computed(() => Boolean(lab.value?.image))
+
+const relatedLabs = computed(() => {
+  const current = lab.value
+  const others = (siblings.value ?? []).filter(entry => entry.stem !== current?.stem)
+  if (!current) return others.slice(0, 3)
+  const currentTags = new Set(current.tags ?? [])
+
+  const overlapping = others
+    .map(entry => ({
+      entry,
+      overlap: (entry.tags ?? []).filter(tag => currentTags.has(tag)).length
+    }))
+    .filter(item => item.overlap > 0)
+    .sort((left, right) => right.overlap - left.overlap)
+    .map(item => item.entry)
+
+  const seen = new Set<string | undefined>()
+  const combined = [...overlapping, ...others].filter((entry) => {
+    if (seen.has(entry.stem)) return false
+    seen.add(entry.stem)
+    return true
+  })
+
+  return combined.slice(0, 3)
+})
 </script>
 
 <template>
   <UPage v-if="lab">
-    <UPageHero
-      :ui="{
-        title: '!mx-0 max-w-3xl text-left',
-        description: '!mx-0 max-w-2xl text-left',
-        links: 'justify-start'
-      }"
-    >
-      <template #title>
-        <div class="max-w-3xl text-left">
-          <h1 class="text-3xl font-bold tracking-tight text-highlighted sm:text-4xl lg:text-5xl">
-            {{ lab.title }}
-          </h1>
-        </div>
-      </template>
+    <article>
+      <UPageHero
+        :ui="{
+          title: '!mx-0 max-w-3xl text-left',
+          description: '!mx-0 max-w-2xl text-left',
+          links: 'justify-start'
+        }"
+      >
+        <template #title>
+          <div class="max-w-3xl text-left">
+            <h1 class="text-3xl font-bold tracking-tight text-highlighted sm:text-4xl lg:text-5xl">
+              {{ lab.title }}
+            </h1>
+          </div>
+        </template>
 
-      <template #description>
-        <div class="max-w-2xl text-left">
-          <p class="text-sm text-muted sm:text-base">
-            {{ lab.description }}
-          </p>
-        </div>
-      </template>
+        <template #description>
+          <div class="max-w-2xl text-left">
+            <p class="text-sm text-muted sm:text-base">
+              {{ lab.description }}
+            </p>
+            <p class="mt-3 text-sm text-muted">
+              By <NuxtLink
+                to="/#identity"
+                class="font-medium text-highlighted underline-offset-4 hover:underline"
+              >
+                Fabian Meyer
+              </NuxtLink>
+              <span class="mx-2">·</span>
+              <time :datetime="isoDate">{{ formattedDate }}</time>
+            </p>
+          </div>
+        </template>
 
-      <template #links>
-        <nav aria-label="Lab actions">
-          <ul class="flex flex-wrap items-center gap-3 list-none p-0">
-            <li>
-              <UButton
-                to="/labs"
-                color="neutral"
-                variant="outline"
-                icon="i-lucide-arrow-left"
-                label="Back to Labs"
-              />
-            </li>
-            <li v-if="lab.url">
-              <UButton
-                :to="lab.url"
-                target="_blank"
-                color="neutral"
-                icon="i-lucide-external-link"
-                label="Open demo"
-              />
-            </li>
-            <li v-if="lab.repoUrl">
-              <UButton
-                :to="lab.repoUrl"
-                target="_blank"
-                color="neutral"
-                icon="i-simple-icons-github"
-                label="View repository"
-              />
-            </li>
-          </ul>
-        </nav>
-      </template>
+        <template #links>
+          <nav aria-label="Lab actions">
+            <ul class="flex flex-wrap items-center gap-3 list-none p-0">
+              <li>
+                <UButton
+                  to="/labs"
+                  color="neutral"
+                  variant="outline"
+                  icon="i-lucide-arrow-left"
+                  label="Back to Labs"
+                />
+              </li>
+              <li v-if="lab.url">
+                <UButton
+                  :to="lab.url"
+                  target="_blank"
+                  color="neutral"
+                  icon="i-lucide-external-link"
+                  label="Open demo"
+                />
+              </li>
+              <li v-if="lab.repoUrl">
+                <UButton
+                  :to="lab.repoUrl"
+                  target="_blank"
+                  color="neutral"
+                  icon="i-simple-icons-github"
+                  label="View repository"
+                />
+              </li>
+            </ul>
+          </nav>
+        </template>
 
-      <template #default>
-        <div
-          :class="[
-            'mt-8 grid gap-6',
-            hasImage ? 'lg:grid-cols-[minmax(0,1fr)_20rem]' : 'lg:grid-cols-[20rem]'
-          ]"
-        >
+        <template #default>
+          <div
+            :class="[
+              'mt-8 grid gap-6',
+              hasImage ? 'lg:grid-cols-[minmax(0,1fr)_20rem]' : 'lg:grid-cols-[20rem]'
+            ]"
+          >
+            <UCard
+              v-if="hasImage"
+              class="overflow-hidden border border-default"
+              :ui="{
+                body: 'p-0'
+              }"
+            >
+              <NuxtImg
+                :src="lab.image"
+                :alt="`${lab.title} project preview`"
+                class="h-full w-full object-cover"
+                loading="lazy"
+              />
+            </UCard>
+
+            <UCard
+              class="border border-default"
+              :ui="{
+                body: 'p-6'
+              }"
+            >
+              <div class="space-y-5 text-sm text-muted">
+                <div>
+                  <p class="font-medium text-highlighted">
+                    Status
+                  </p>
+                  <div class="mt-2">
+                    <UBadge
+                      :label="labStatusMap[lab.status].label"
+                      :icon="labStatusIconMap[lab.status]"
+                      :color="labStatusMap[lab.status].color"
+                      variant="soft"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <p class="font-medium text-highlighted">
+                    Date
+                  </p>
+                  <p class="mt-2">
+                    <time :datetime="isoDate">{{ formattedDate }}</time>
+                  </p>
+                </div>
+
+                <div>
+                  <p class="font-medium text-highlighted">
+                    Tags
+                  </p>
+                  <div class="mt-2 flex flex-wrap gap-2">
+                    <UBadge
+                      v-for="tag in lab.tags"
+                      :key="tag"
+                      :label="tag"
+                      color="neutral"
+                      variant="outline"
+                    />
+                  </div>
+                </div>
+              </div>
+            </UCard>
+          </div>
+        </template>
+      </UPageHero>
+
+      <UPageSection
+        :ui="{
+          container: '!pt-0'
+        }"
+      >
+        <div class="grid gap-4 lg:grid-cols-3">
           <UCard
-            v-if="hasImage"
-            class="overflow-hidden border border-default"
+            class="border border-default"
             :ui="{
-              body: 'p-0'
+              body: 'p-6 sm:p-8'
             }"
           >
-            <NuxtImg
-              :src="lab.image"
-              :alt="`${lab.title} project preview`"
-              class="h-full w-full object-cover"
-              loading="lazy"
-            />
+            <div class="space-y-3">
+              <h2 class="text-lg font-semibold text-highlighted">
+                Overview
+              </h2>
+              <p class="text-sm leading-7 text-muted">
+                {{ lab.description }}
+              </p>
+            </div>
           </UCard>
 
           <UCard
             class="border border-default"
             :ui="{
-              body: 'p-6'
+              body: 'p-6 sm:p-8'
             }"
           >
-            <div class="space-y-5 text-sm text-muted">
-              <div>
-                <p class="font-medium text-highlighted">
-                  Status
-                </p>
-                <div class="mt-2">
-                  <UBadge
-                    :label="labStatusMap[lab.status].label"
-                    :icon="labStatusIconMap[lab.status]"
-                    :color="labStatusMap[lab.status].color"
-                    variant="soft"
-                  />
-                </div>
-              </div>
+            <div class="space-y-3">
+              <h2 class="text-lg font-semibold text-highlighted">
+                Challenge
+              </h2>
+              <p class="text-sm leading-7 text-muted">
+                {{ lab.challenge }}
+              </p>
+            </div>
+          </UCard>
 
-              <div>
-                <p class="font-medium text-highlighted">
-                  Date
-                </p>
-                <p class="mt-2">
-                  {{ formattedDate }}
-                </p>
-              </div>
-
-              <div>
-                <p class="font-medium text-highlighted">
-                  Tags
-                </p>
-                <div class="mt-2 flex flex-wrap gap-2">
-                  <UBadge
-                    v-for="tag in lab.tags"
-                    :key="tag"
-                    :label="tag"
-                    color="neutral"
-                    variant="outline"
-                  />
-                </div>
-              </div>
+          <UCard
+            class="border border-default"
+            :ui="{
+              body: 'p-6 sm:p-8'
+            }"
+          >
+            <div class="space-y-3">
+              <h2 class="text-lg font-semibold text-highlighted">
+                Approach
+              </h2>
+              <p class="text-sm leading-7 text-muted">
+                {{ lab.approach }}
+              </p>
             </div>
           </UCard>
         </div>
-      </template>
-    </UPageHero>
+      </UPageSection>
+
+      <UPageSection
+        :ui="{
+          container: '!pt-0'
+        }"
+      >
+        <div class="grid gap-4 lg:grid-cols-[minmax(0,1fr)_22rem]">
+          <UCard
+            class="border border-default"
+            :ui="{
+              body: 'p-6 sm:p-8'
+            }"
+          >
+            <div class="space-y-4">
+              <h2 class="text-lg font-semibold text-highlighted">
+                Next steps
+              </h2>
+              <ul class="space-y-3 text-sm leading-7 text-muted">
+                <li
+                  v-for="step in lab.nextSteps"
+                  :key="step"
+                  class="flex gap-3"
+                >
+                  <span class="mt-2 size-1.5 shrink-0 rounded-full bg-default" />
+                  <span>{{ step }}</span>
+                </li>
+              </ul>
+            </div>
+          </UCard>
+
+          <UCard
+            v-if="lab.note"
+            class="border border-default"
+            :ui="{
+              body: 'p-6 sm:p-8'
+            }"
+          >
+            <div class="space-y-3">
+              <h2 class="text-lg font-semibold text-highlighted">
+                Note
+              </h2>
+              <p class="text-sm leading-7 text-muted">
+                {{ lab.note }}
+              </p>
+            </div>
+          </UCard>
+        </div>
+      </UPageSection>
+    </article>
 
     <UPageSection
+      v-if="relatedLabs.length"
+      title="Related labs"
+      description="More projects from the same playground."
       :ui="{
-        container: '!pt-0'
+        container: '!pt-0',
+        title: 'text-left text-2xl font-semibold',
+        description: 'max-w-2xl text-left text-sm text-muted'
       }"
     >
-      <div class="grid gap-4 lg:grid-cols-3">
-        <UCard
-          class="border border-default"
-          :ui="{
-            body: 'p-6 sm:p-8'
-          }"
+      <ul
+        class="grid gap-6 lg:grid-cols-3 list-none p-0"
+        aria-label="Related lab projects"
+      >
+        <li
+          v-for="related in relatedLabs"
+          :key="related.title"
         >
-          <div class="space-y-3">
-            <h2 class="text-lg font-semibold text-highlighted">
-              Overview
-            </h2>
-            <p class="text-sm leading-7 text-muted">
-              {{ lab.description }}
-            </p>
-          </div>
-        </UCard>
-
-        <UCard
-          class="border border-default"
-          :ui="{
-            body: 'p-6 sm:p-8'
-          }"
-        >
-          <div class="space-y-3">
-            <h2 class="text-lg font-semibold text-highlighted">
-              Challenge
-            </h2>
-            <p class="text-sm leading-7 text-muted">
-              {{ lab.challenge }}
-            </p>
-          </div>
-        </UCard>
-
-        <UCard
-          class="border border-default"
-          :ui="{
-            body: 'p-6 sm:p-8'
-          }"
-        >
-          <div class="space-y-3">
-            <h2 class="text-lg font-semibold text-highlighted">
-              Approach
-            </h2>
-            <p class="text-sm leading-7 text-muted">
-              {{ lab.approach }}
-            </p>
-          </div>
-        </UCard>
-      </div>
-    </UPageSection>
-
-    <UPageSection
-      :ui="{
-        container: '!pt-0'
-      }"
-    >
-      <div class="grid gap-4 lg:grid-cols-[minmax(0,1fr)_22rem]">
-        <UCard
-          class="border border-default"
-          :ui="{
-            body: 'p-6 sm:p-8'
-          }"
-        >
-          <div class="space-y-4">
-            <h2 class="text-lg font-semibold text-highlighted">
-              Next steps
-            </h2>
-            <ul class="space-y-3 text-sm leading-7 text-muted">
-              <li
-                v-for="step in lab.nextSteps"
-                :key="step"
-                class="flex gap-3"
-              >
-                <span class="mt-2 size-1.5 shrink-0 rounded-full bg-default" />
-                <span>{{ step }}</span>
-              </li>
-            </ul>
-          </div>
-        </UCard>
-
-        <UCard
-          v-if="lab.note"
-          class="border border-default"
-          :ui="{
-            body: 'p-6 sm:p-8'
-          }"
-        >
-          <div class="space-y-3">
-            <h2 class="text-lg font-semibold text-highlighted">
-              Note
-            </h2>
-            <p class="text-sm leading-7 text-muted">
-              {{ lab.note }}
-            </p>
-          </div>
-        </UCard>
-      </div>
+          <LabCard :lab="related" />
+        </li>
+      </ul>
     </UPageSection>
   </UPage>
 </template>
