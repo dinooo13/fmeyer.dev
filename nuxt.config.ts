@@ -34,9 +34,37 @@ export default defineNuxtConfig({
   nitro: {
     prerender: {
       routes: [
-        '/'
+        '/',
+        '/404',
+        '/410'
       ],
       crawlLinks: true
+    }
+  },
+
+  hooks: {
+    'nitro:init'(nitro) {
+      // Resolve __BASE__ in public/.htaccess.tpl using the runtime base URL
+      // and write the result to .output/public/.htaccess. Templating happens at
+      // generate time so production (/) and preview (/pr-<n>/) builds each get
+      // the correct ErrorDocument and RewriteBase paths.
+      if (nitro.options.dev) return
+      nitro.hooks.hook('close', async () => {
+        const { promises: fs } = await import('node:fs')
+        const { resolve } = await import('node:path')
+        const baseURL = nitro.options.runtimeConfig.app.baseURL || '/'
+        const templatePath = resolve(nitro.options.rootDir, 'public/.htaccess.tpl')
+        const outputDir = nitro.options.output.publicDir
+        const outputPath = resolve(outputDir, '.htaccess')
+        const leakedTemplate = resolve(outputDir, '.htaccess.tpl')
+        try {
+          const tpl = await fs.readFile(templatePath, 'utf8')
+          await fs.writeFile(outputPath, tpl.replaceAll('__BASE__', baseURL))
+          await fs.rm(leakedTemplate, { force: true })
+        } catch (err) {
+          if ((err as NodeJS.ErrnoException).code !== 'ENOENT') throw err
+        }
+      })
     }
   },
 
@@ -75,6 +103,7 @@ export default defineNuxtConfig({
 
   sitemap: {
     autoLastmod: true,
-    xsl: false
+    xsl: false,
+    exclude: ['/404', '/410']
   }
 })
