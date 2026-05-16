@@ -77,6 +77,21 @@ export default defineNuxtConfig({
     }
   },
 
+  icon: {
+    // ColorModeButton builds icon names dynamically (`i-lucide-${...}`), so
+    // the build-time scanner can't pick them up — list them explicitly here.
+    // `fallbackToApi: 'server-only'` keeps SSR/generate-time resolution but
+    // blocks the runtime `api.iconify.design` request that CSP `connect-src
+    // 'self'` would otherwise reject.
+    clientBundle: {
+      icons: [
+        'lucide:sun',
+        'lucide:moon'
+      ]
+    },
+    fallbackToApi: 'server-only'
+  },
+
   robots: {
     disallow: [],
     sitemap: '/sitemap.xml'
