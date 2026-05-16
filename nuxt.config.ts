@@ -81,13 +81,16 @@ export default defineNuxtConfig({
     // The build-time scanner only sees static literals. We need to cover:
     //  - dynamic names in templates (ColorModeButton builds `i-lucide-${...}`)
     //  - icons referenced inside @nuxt/ui (lives in node_modules, not scanned)
-    // YAML content under `content/` is picked up by `scan: true` (the
-    // scanner's default globs include .yml / .yaml).
+    // The default scanner globs cover .vue / .yml / .md etc., but not .ts —
+    // and several status / nav icons (labs.ts, links.ts, app.config.ts) live
+    // there. Extend the globs to include .ts (and .mts for safety).
     // `fallbackToApi: 'server-only'` keeps SSR/generate-time resolution but
     // blocks the runtime `api.iconify.design` request that CSP `connect-src
     // 'self'` would otherwise reject.
     clientBundle: {
-      scan: true,
+      scan: {
+        globInclude: ['**/*.{vue,jsx,tsx,ts,mts,md,mdc,mdx,yml,yaml}']
+      },
       icons: [
         'lucide:sun',
         'lucide:moon',
