@@ -18,6 +18,11 @@ time: "12:00"
 duration: 45 min
 format: Talk
 language: German
-url: https://www.rheinwerk-verlag.de/konferenzen/coding-mit-ki/
+url: https://www.rheinwerk-verlag.de/konferenzen/coding-mit-ki/#vortrag-spec-driven-development
 eventUrl: https://www.rheinwerk-verlag.de/konferenzen/coding-mit-ki/
-placeholder: true
+resources:
+  - kind: slides
+    title: Slides
+    asset: spec-driven-development-in-practice-slides
+    format: PDF
+    pages: 13
