@@ -1,7 +1,9 @@
 import onboardingYourAgentSlides from '../assets/Onboarding Your Agent.pdf'
+import sddInDerPraxisSlides from '../assets/SDD in der Praxis.pdf'
 
 export const talkAssetRegistry = {
-  'onboarding-your-agent-slides': onboardingYourAgentSlides
+  'onboarding-your-agent-slides': onboardingYourAgentSlides,
+  'spec-driven-development-in-practice-slides': sddInDerPraxisSlides
 } as const
 
 export type TalkAssetKey = keyof typeof talkAssetRegistry
