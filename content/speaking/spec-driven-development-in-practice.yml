@@ -25,7 +25,7 @@ resources:
     title: Slides
     asset: spec-driven-development-in-practice-slides
     format: PDF
-    pages: 13
+    pages: 25
   - kind: link
     title: Starter skills repository
     url: https://github.com/dinooo13/rheinwerk-starter-skills
