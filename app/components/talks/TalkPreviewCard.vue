@@ -18,7 +18,10 @@ const props = withDefaults(defineProps<{
   headingLevel: 'h2'
 })
 
-const badgeLabel = computed(() => props.talk?.placeholder ? 'Upcoming' : 'Talk')
+const badgeLabel = computed(() => {
+  if (props.talk?.placeholder) return 'Upcoming'
+  return props.talk?.format ?? 'Talk'
+})
 const badgeColor = computed(() => props.variant === 'featured' ? 'neutral' : 'warning')
 const subtitle = computed(() => {
   const organizerTitle = props.talk?.organizerTitle?.trim()

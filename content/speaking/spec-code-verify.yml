@@ -21,4 +21,12 @@ format: Workshop
 language: German
 url: https://www.rheinwerk-verlag.de/konferenzen/coding-mit-ki/#workshop-spec-code-verify
 eventUrl: https://www.rheinwerk-verlag.de/konferenzen/coding-mit-ki/
-placeholder: true
+resources:
+  - kind: slides
+    title: Slides
+    asset: spec-code-verify-slides
+    format: PDF
+    pages: 25
+  - kind: link
+    title: Starter skills repository
+    url: https://github.com/dinooo13/rheinwerk-starter-skills
