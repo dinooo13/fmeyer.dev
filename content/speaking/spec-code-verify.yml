@@ -27,3 +27,6 @@ resources:
     asset: spec-code-verify-slides
     format: PDF
     pages: 25
+  - kind: link
+    title: Starter skills repository
+    url: https://github.com/dinooo13/rheinwerk-starter-skills
