@@ -1,0 +1,23 @@
+title: "Spec-Driven Development with AI Coding Agents: From Prompt to Process"
+summary: A four-hour live online course on building a structured Spec, Code, Verify workflow for coding agents like Claude Code, Cursor, or Copilot — from skills and subagents to a software factory that turns specs into verified software.
+description: >-
+  Coding agents are powerful, but ad-hoc prompting doesn't hold up in real
+  project work. In this live online course you learn how to establish a
+  structured Spec-Driven Development workflow with coding agents such as
+  Claude Code, Cursor, or Copilot. We cover skills, subagents, hooks, and
+  persistent project context, and how to connect agents to Jira, GitLab, and
+  GitHub via CLI or MCP. Live demos contrast classic prompting with the SDD
+  approach, and the course closes with the idea of a software factory that
+  turns specifications into verified software.
+event: Rheinwerk Online-Kurs
+organizerTitle: "Spec-Driven Development mit KI-Coding-Agenten − vom Prompt zum Prozess"
+location: Online
+topic: Spec-Driven Development
+date: 2026-11-17
+dateLabel: "November 17, 2026 · 09:00"
+time: "09:00"
+duration: 4 hours (09:00–13:00 CET)
+format: Online Course
+language: German
+url: https://www.rheinwerk-verlag.de/online-kurse/spec-driven-development/
+eventUrl: https://www.rheinwerk-verlag.de/online-kurse/

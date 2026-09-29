@@ -46,7 +46,7 @@ useSeoMeta({
 useSchemaOrg([
   defineWebSite({
     name: 'fmeyer.dev',
-    description: 'Personal site of Fabian Meyer — Leader, software engineer and AI mentor at eventim Tech.',
+    description: 'Personal site of Fabian Meyer — Staff Agentic Engineer at Cordes & Graefe KG.',
     inLanguage: 'en'
   }),
   defineWebPage()

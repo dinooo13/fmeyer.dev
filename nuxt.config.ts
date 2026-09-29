@@ -16,7 +16,7 @@ export default defineNuxtConfig({
   site: {
     url: process.env.NUXT_PUBLIC_SITE_URL || 'https://fmeyer.dev',
     name: 'fmeyer.dev',
-    description: 'Fabian Meyer — Leader, software engineer and AI mentor at eventim Tech. Vue chapter leadership, agentic engineering, and frontend craft.',
+    description: 'Fabian Meyer — Staff Agentic Engineer at Cordes & Graefe KG, moving the organisation to agentic engineering.',
     defaultLocale: 'en'
   },
 
@@ -120,11 +120,11 @@ export default defineNuxtConfig({
       name: 'Fabian Meyer',
       url: process.env.NUXT_PUBLIC_SITE_URL || 'https://fmeyer.dev',
       image: '/profile/fabian-meyer-portrait.jpg',
-      description: 'Chapter Lead Vue, software engineer, and AI mentor at eventim Tech. Leads the Vue chapter, provides technical leadership for the Tixx Online Shop, and helps teams apply agentic engineering with measurable customer impact.',
-      jobTitle: 'Chapter Lead Vue, Software Engineer, AI Mentor',
+      description: 'Staff Agentic Engineer at Cordes & Graefe KG. Leads the organisation-wide move to agentic engineering, building agent-ready tooling, spec-driven development workflows, and enabling engineers to work effectively with agents.',
+      jobTitle: 'Staff Agentic Engineer',
       worksFor: {
         '@type': 'Organization',
-        'name': 'eventim Tech GmbH'
+        'name': 'Cordes & Graefe KG'
       },
       sameAs: [
         'https://github.com/dinooo13',
