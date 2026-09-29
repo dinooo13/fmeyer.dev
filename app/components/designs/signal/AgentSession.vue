@@ -15,7 +15,7 @@ const steps = [
 ]
 
 const pladder = computed(() => props.labs.find(lab => getLabSlug(lab) === 'pladder'))
-const latency = computed(() => pladder.value?.description.match(/about (\d+)\s*ms/i)?.[1])
+const benchmark = computed(() => pladder.value?.metrics?.find(metric => metric.unit === 'ms'))
 
 const workshop = computed(() => props.talks.find(talk => /workshop/i.test(talk.format ?? '')))
 </script>
@@ -75,7 +75,7 @@ const workshop = computed(() => props.talks.find(talk => /workshop/i.test(talk.f
             <span class="t-ok">→</span> reviewable result, ready for human review
           </p>
 
-          <template v-if="pladder && latency">
+          <template v-if="pladder && benchmark">
             <p
               class="t-line pt-3"
               style="animation-delay: 0.95s"
@@ -86,7 +86,7 @@ const workshop = computed(() => props.talks.find(talk => /workshop/i.test(talk.f
               class="t-line grid grid-cols-[minmax(0,1fr)_auto] gap-x-2"
               style="animation-delay: 1.1s"
             >
-              <span><span class="t-dim">release-to-paste</span> <span class="t-verify">~{{ latency }} ms</span></span>
+              <span><span class="t-dim">{{ benchmark.label.replaceAll(' ', '-') }}</span> <span class="t-verify">{{ benchmark.value }} {{ benchmark.unit }}</span></span>
               <span class="t-ok">✓ on device</span>
             </p>
           </template>

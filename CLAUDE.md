@@ -141,6 +141,12 @@ image: /path/to/image.jpg  # optional, goes in public/
 url: https://...           # optional live demo URL
 repoUrl: https://...       # optional GitHub repo URL
 note: ...                  # optional note shown on detail page
+metrics:                   # optional headline numbers (used by design explorations)
+  - value: "~300"
+    unit: ms               # optional
+    label: release to paste
+highlights:                # optional short selling points
+  - On device
 ```
 
 The slug used for the URL is derived from the filename (e.g., `my-project.yml` → `/labs/my-project`).

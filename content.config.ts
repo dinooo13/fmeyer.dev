@@ -96,7 +96,13 @@ export default defineContentConfig({
         tags: z.array(z.string()),
         date: z.date(),
         order: z.number().int().optional(),
-        note: z.string().optional()
+        note: z.string().optional(),
+        metrics: z.array(z.object({
+          value: z.string().nonempty(),
+          unit: z.string().optional(),
+          label: z.string().nonempty()
+        })).optional(),
+        highlights: z.array(z.string().nonempty()).optional()
       })
     }),
     pages: defineCollection({

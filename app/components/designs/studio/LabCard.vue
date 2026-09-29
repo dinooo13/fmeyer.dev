@@ -14,7 +14,7 @@ const status = computed(() => labStatusMap[props.lab.status])
 const statusIcon = computed(() => labStatusIconMap[props.lab.status])
 const isoDate = computed(() => new Date(props.lab.date).toISOString().slice(0, 10))
 const lead = computed(() => props.lab.description.split(/(?<=\.)\s/)[0] ?? props.lab.description)
-const latency = computed(() => props.lab.description.match(/(\d+)\s?ms/)?.[1])
+const metric = computed(() => props.lab.metrics?.[0])
 const rest = computed(() => props.lab.description.slice(lead.value.length).trim())
 </script>
 
@@ -171,9 +171,9 @@ const rest = computed(() => props.lab.description.slice(lead.value.length).trim(
           />
         </span>
         <span
-          v-if="latency"
+          v-if="metric"
           class="studio-display studio-ink rounded-full bg-(--studio-card) px-4 py-1.5 text-xl font-extrabold shadow-sm"
-        >~{{ latency }}&thinsp;ms</span>
+        >{{ metric.value }}<template v-if="metric.unit">&thinsp;{{ metric.unit }}</template></span>
       </div>
     </div>
   </article>

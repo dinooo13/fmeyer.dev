@@ -25,24 +25,13 @@ const careerStartYear = computed(() => careerStart.value?.split(' ').at(-1))
 
 const featuredLab = computed(() => props.labs[0])
 const moreLabs = computed(() => props.labs.slice(1))
-// The featured tile highlights a latency figure and a few perks when the
-// description states them (e.g. "about 300 ms", "on device", "offline").
-// Any other project falls back to its tags, so the tile never renders empty.
-const latency = computed(() => featuredLab.value?.description.match(/(\d+)\s?ms\b/)?.[1])
-const latencyLabel = computed(() => {
-  const text = `${featuredLab.value?.challenge ?? ''} ${featuredLab.value?.approach ?? ''}`
-  return /release-to-paste/i.test(text) ? 'release to paste' : 'latency'
-})
+// The featured tile shows the lab's first metric and its highlights; labs
+// without highlights fall back to their tags, so the tile never renders empty.
+const featuredMetric = computed(() => featuredLab.value?.metrics?.[0])
 const featuredPitch = computed(() => featuredLab.value?.description.split(/(?<=\.)\s/)[0])
 const featuredPills = computed(() => {
-  const description = featuredLab.value?.description ?? ''
-  const perks = [
-    /on device/i.test(description) ? 'On device' : null,
-    /offline/i.test(description) ? 'Offline' : null,
-    /MIT licensed/i.test(description) ? 'MIT licensed' : null
-  ].filter((value): value is string => Boolean(value))
-
-  return perks.length >= 2 ? perks : (featuredLab.value?.tags ?? []).slice(0, 3)
+  const highlights = featuredLab.value?.highlights ?? []
+  return (highlights.length ? highlights : featuredLab.value?.tags ?? []).slice(0, 3)
 })
 const featuredIsAudio = computed(() => /^i-lucide-(mic|audio|speech|volume)/.test(featuredLab.value?.icon ?? ''))
 
@@ -313,15 +302,15 @@ const hiddenCount = computed(() => Math.max(experience.value.length - collapsedC
         </p>
 
         <div
-          v-if="latency || featuredPills.length"
+          v-if="featuredMetric || featuredPills.length"
           class="mt-auto flex flex-wrap items-center gap-2"
         >
           <p
-            v-if="latency"
+            v-if="featuredMetric"
             class="mr-2 flex items-baseline gap-1.5"
           >
-            <span class="studio-display studio-ink text-3xl font-extrabold">~{{ latency }}&thinsp;ms</span>
-            <span class="text-sm font-medium text-toned">{{ latencyLabel }}</span>
+            <span class="studio-display studio-ink text-3xl font-extrabold">{{ featuredMetric.value }}<template v-if="featuredMetric.unit">&thinsp;{{ featuredMetric.unit }}</template></span>
+            <span class="text-sm font-medium text-toned">{{ featuredMetric.label }}</span>
           </p>
           <ul
             v-if="featuredPills.length"

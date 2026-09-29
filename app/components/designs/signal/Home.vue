@@ -19,27 +19,16 @@ const intro = computed(() => {
   return match ? { lead: match[1], rest: match[2] } : { lead: text, rest: '' }
 })
 
-const numberWords: Record<string, number> = {
-  two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8, nine: 9, ten: 10
-}
-
 type Stat = { value: string, unit?: string, label: string, source: string }
 
 const stats = computed<Stat[]>(() => {
   const items: Stat[] = []
-  const findLab = (slug: string) => props.labs.find(lab => getLabSlug(lab) === slug)
 
-  const pladder = findLab('pladder')
-  const latency = pladder?.description.match(/about (\d+)\s*ms/i)?.[1]
-  if (pladder && latency) {
-    items.push({ value: `~${latency}`, unit: 'ms', label: 'release-to-paste, fully on device', source: pladder.title })
-  }
-
-  const factory = findLab('habit-tracker')
-  const stageWord = factory?.description.match(/\b(\w+)-stage agent software factory/i)?.[1]?.toLowerCase()
-  const stages = stageWord ? numberWords[stageWord] ?? Number(stageWord) : undefined
-  if (factory && stages) {
-    items.push({ value: String(stages), unit: 'agents', label: 'run the factory that builds it', source: factory.title })
+  // Headline numbers come from each lab's `metrics` (first one per lab, two labs max).
+  for (const lab of props.labs) {
+    const metric = lab.metrics?.[0]
+    if (!metric || items.length >= 2) continue
+    items.push({ value: metric.value, unit: metric.unit, label: metric.label, source: lab.title })
   }
 
   if (props.talks.length) {

@@ -17,6 +17,14 @@ export type LabEntry = {
   date: string | Date
   order?: number
   note?: string
+  metrics?: LabMetric[]
+  highlights?: string[]
+}
+
+export type LabMetric = {
+  value: string
+  unit?: string
+  label: string
 }
 
 // Neutral on purpose: Nuxt UI's soft warning/info badges miss WCAG AA contrast,
