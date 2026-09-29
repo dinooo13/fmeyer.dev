@@ -27,4 +27,6 @@ ErrorDocument 410 __BASE__410/index.html
     RewriteRule ^tags(/.*)?$  - [G,L,NC]
     RewriteRule ^en(/.*)?$    - [G,L,NC]
     RewriteRule ^legal/?$     - [G,L,NC]
+    RewriteRule ^labs/watch-wise/?$    - [G,L,NC]
+    RewriteRule ^labs/tv-show-bingo/?$ - [G,L,NC]
 </IfModule>

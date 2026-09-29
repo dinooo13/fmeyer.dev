@@ -1,17 +1,18 @@
 title: Habit Tracker
-description: Habit tracking app focused on atomic daily routines, progress visibility, and a simple flow that makes consistency easier to keep up over time. The idea is to keep the product lightweight while still making momentum and streaks feel tangible. It is one of the more product-minded side projects, with room to evolve into a sharper daily-use tool.
-challenge: Habit tools often become overloaded with dashboards, settings, and complexity that gets in the way of daily use. The core challenge here is keeping the experience lightweight enough for repetition while still making progress visible and motivating over time.
-approach: The product is framed around a narrow daily loop with fast check-ins, clear streak visibility, and a smaller set of interactions that reinforce consistency instead of feature discovery. That lets the project stay product-minded while leaving room to sharpen onboarding, retention cues, and routine design later.
+description: A local-first habit tracker based on Atomic Habits, built end to end by a seven-stage agent software factory. Plan habits around the identity you want to build, work through a focused daily queue, reflect on misses, and get coaching grounded in the four laws of behavior change. It installs as a PWA, works offline, and keeps all data on your device.
+challenge: Habit apps tend to bury the daily routine under dashboards, and generic AI coaching is hard to trust. The bigger experiment is the process. Can a product be built and maintained by agents running on a schedule, with humans only approving plans and merging, and still hold a real engineering bar?
+approach: Requirements live in GitHub issues. Seven scheduled agents (triage, planner, implementer, rebaser, reviewer, QA tester, and docs auditor) move each issue through a label state machine from plan to a reviewed and tested pull request, with human gates on plan approval and merge. A machine-checked factory manifest describes the pipeline and declares an idempotency guard for every stage. The output holds up, with 24 architecture decision records, Vitest and Playwright suites, versioned Zod-validated IndexedDB storage with migrations, cross-tab sync, and deterministic coaching that needs no LLM at runtime.
 nextSteps:
-  - Refine the core daily tracking flow so logging habits feels faster and more obvious on repeat visits.
-  - Explore lightweight progress summaries that reinforce consistency without turning the UI into a dashboard.
-  - Test which habit and streak mechanics actually improve retention before expanding the feature set.
+  - Make the factory portable so other repositories can run the same pipeline.
+  - Turn the descriptive factory manifest into the source of truth that configures the live agent routines.
+  - Keep refining the daily queue and coaching based on real use.
 icon: i-lucide-calendar-check
 status: wip
 url: https://habits.fmeyer.dev
 repoUrl: https://github.com/dinooo13/habit-tracker
 tags:
-  - Vue
-  - Productivity
-  - Habits
+  - Nuxt
+  - PWA
+  - Software factory
+  - Agentic engineering
 date: 2026-02-22T15:06:22Z
