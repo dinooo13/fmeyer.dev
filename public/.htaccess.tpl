@@ -29,4 +29,5 @@ ErrorDocument 410 __BASE__410/index.html
     RewriteRule ^legal/?$     - [G,L,NC]
     RewriteRule ^labs/watch-wise/?$    - [G,L,NC]
     RewriteRule ^labs/tv-show-bingo/?$ - [G,L,NC]
+    RewriteRule ^labs/fmeyer-dev/?$    - [G,L,NC]
 </IfModule>
