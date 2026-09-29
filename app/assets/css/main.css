@@ -1,16 +1,15 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
+@import "./signal.css";
 
 @source "../../../content/**/*";
 
 @theme static {
-  --font-sans: 'Public Sans', sans-serif;
-  --font-serif: 'Instrument Serif', serif;
+  --font-sans: 'Geist', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'Geist Mono', ui-monospace, 'SFMono-Regular', monospace;
 }
 
 :root {
-  --ui-container: var(--container-4xl);
-
   ::selection {
     color: #282a30;
     background-color: #c8c8c8;
@@ -33,24 +32,6 @@
 [id="main-content"]:focus {
   outline: none;
 }
-
-@keyframes hero-enter {
-  from {
-    transform: scale(1.08);
-  }
-  to {
-    transform: scale(1);
-  }
-}
-
-.hero-enter {
-  animation: hero-enter 0.6s ease both;
-}
-
-.hero-enter-1 { animation-delay: 0.1s; }
-.hero-enter-2 { animation-delay: 0.2s; }
-.hero-enter-3 { animation-delay: 0.35s; }
-.hero-enter-4 { animation-delay: 0.5s; }
 
 @media (prefers-reduced-motion: reduce) {
   *,

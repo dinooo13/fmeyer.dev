@@ -19,18 +19,15 @@ export type LabEntry = {
   note?: string
 }
 
-export const labStatusMap: Record<LabStatus, { label: string, color: 'warning' | 'info' | 'neutral' }> = {
+export const labStatusMap: Record<LabStatus, { label: string }> = {
   wip: {
-    label: 'WIP',
-    color: 'warning'
+    label: 'WIP'
   },
   prototype: {
-    label: 'Prototype',
-    color: 'info'
+    label: 'Prototype'
   },
   paused: {
-    label: 'Paused',
-    color: 'neutral'
+    label: 'Paused'
   }
 }
 

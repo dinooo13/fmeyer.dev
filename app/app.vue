@@ -4,6 +4,7 @@ const runtimeConfig = useRuntimeConfig()
 const baseURL = runtimeConfig.app.baseURL
 
 const basePrefix = baseURL.replace(/\/$/, '')
+
 const canonicalUrl = computed(() => {
   return new URL(`${basePrefix}${route.path || '/'}`, runtimeConfig.public.siteUrl).toString()
 })
@@ -11,9 +12,12 @@ const canonicalUrl = computed(() => {
 useHead({
   meta: [
     { charset: 'utf-8' },
+    // No `key` on the theme-color pair: unhead treats same-name theme-color tags
+    // as an array and matches them to the prerendered pair by position. Custom
+    // keys made the client insert a second pair after hydration.
+    { name: 'theme-color', media: '(prefers-color-scheme: light)', content: '#fbfcfe' },
+    { name: 'theme-color', media: '(prefers-color-scheme: dark)', content: '#07090f' },
     { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-    { key: 'theme-color-light', name: 'theme-color', media: '(prefers-color-scheme: light)', content: 'white' },
-    { key: 'theme-color-dark', name: 'theme-color', media: '(prefers-color-scheme: dark)', content: '#020618' },
     { name: 'author', content: 'Fabian Meyer' },
     {
       name: 'robots',

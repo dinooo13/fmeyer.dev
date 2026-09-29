@@ -3,16 +3,16 @@ const { data: page } = await useAsyncData('index', () => {
   return queryCollection('index').first()
 })
 
-const { data: latestLab } = await useAsyncData('latest-lab', async () => {
+const { data: labs } = await useAsyncData('home-labs', async () => {
   const entries = await queryCollection('labs').all()
 
-  return sortLabs(entries)[0]
+  return sortLabs(entries)
 })
 
-const { data: latestTalk } = await useAsyncData('latest-talk', async () => {
+const { data: talks } = await useAsyncData('home-talks', async () => {
   const entries = await queryCollection('talks').all()
 
-  return getLatestTalk(entries)
+  return sortTalks(entries)
 })
 
 if (!page.value) {
@@ -39,17 +39,10 @@ useSchemaOrg([
 </script>
 
 <template>
-  <UPage v-if="page">
-    <LandingHero :page />
-    <LandingFocus :page />
-    <LandingWorkExperience :page />
-    <LandingLabsTeaser
-      :section="page.labs"
-      :lab="latestLab"
-    />
-    <LandingSpeakingTeaser
-      :section="page.speaking"
-      :talk="latestTalk"
-    />
-  </UPage>
+  <HomeView
+    v-if="page"
+    :page
+    :labs="labs ?? []"
+    :talks="talks ?? []"
+  />
 </template>

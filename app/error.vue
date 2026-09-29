@@ -21,19 +21,15 @@ useSeoMeta({
 </script>
 
 <template>
-  <div>
-    <AppHeader :links="navLinks" />
-
+  <NuxtLayout>
     <UMain>
-      <UContainer>
+      <UContainer class="pt-24 sm:pt-32">
         <UPage>
           <UError :error="error" />
         </UPage>
       </UContainer>
     </UMain>
 
-    <AppFooter />
-
     <UToaster />
-  </div>
+  </NuxtLayout>
 </template>
