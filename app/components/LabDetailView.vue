@@ -31,7 +31,7 @@ const urlParts = (value: string) => displayUrl(value).split(/(?<=\/)/)
 // The three content fields read as one pipeline: input, build, output.
 const stages = computed(() => [
   { id: 'challenge', index: '01', label: 'input', title: 'Challenge', text: props.lab.challenge, tone: 'is-blue' },
-  { id: 'approach', index: '02', label: 'build', title: 'Approach', text: props.lab.approach, tone: 'is-violet' }
+  { id: 'approach', index: '02', label: 'build', title: 'Approach', text: props.lab.approach, tone: 'is-azure' }
 ])
 
 const reveal = {
@@ -266,7 +266,7 @@ const reveal = {
 
           <Motion
             as="li"
-            class="signal-stage is-cyan"
+            class="signal-stage is-teal"
             v-bind="reveal"
           >
             <section

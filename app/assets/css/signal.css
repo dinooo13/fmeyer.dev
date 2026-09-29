@@ -37,14 +37,14 @@
   --signal-glass-border: rgb(15 23 42 / 0.08);
   --signal-grid: rgb(15 23 42 / 0.07);
   --signal-aurora-1: rgb(59 130 246 / 0.26);
-  --signal-aurora-2: rgb(139 92 246 / 0.22);
-  --signal-aurora-3: rgb(6 182 212 / 0.16);
+  --signal-aurora-2: rgb(14 165 233 / 0.2);
+  --signal-aurora-3: rgb(20 184 166 / 0.16);
   --signal-name-from: #0b1020;
-  --signal-name-via: #3b2bb5;
-  --signal-name-to: #0b6d8a;
-  --signal-blue: #2150d4;
-  --signal-violet: #6d3fd6;
-  --signal-cyan: #0b6d8a;
+  --signal-name-via: #1d4ed8;
+  --signal-name-to: #0f766e;
+  --signal-blue: #1d4ed8;
+  --signal-azure: #0369a1;
+  --signal-teal: #0f766e;
   --signal-ok: #047857;
   --signal-glow: rgb(33 80 212 / 0.16);
   --signal-shadow: 0 1px 2px rgb(15 23 42 / 0.04), 0 12px 32px -12px rgb(15 23 42 / 0.12);
@@ -82,14 +82,14 @@
   --signal-glass-border: rgb(255 255 255 / 0.08);
   --signal-grid: rgb(148 163 184 / 0.075);
   --signal-aurora-1: rgb(59 110 246 / 0.34);
-  --signal-aurora-2: rgb(139 92 246 / 0.30);
-  --signal-aurora-3: rgb(56 189 248 / 0.20);
+  --signal-aurora-2: rgb(14 165 233 / 0.26);
+  --signal-aurora-3: rgb(45 212 191 / 0.2);
   --signal-name-from: #ffffff;
-  --signal-name-via: #c9ceff;
-  --signal-name-to: #9eeefc;
-  --signal-blue: #82acff;
-  --signal-violet: #b69cff;
-  --signal-cyan: #67e3f5;
+  --signal-name-via: #6f9dff;
+  --signal-name-to: #2dd4bf;
+  --signal-blue: #6f9dff;
+  --signal-azure: #38bdf8;
+  --signal-teal: #2dd4bf;
   --signal-ok: #4ade80;
   --signal-glow: rgb(130 172 255 / 0.18);
   --signal-shadow: 0 1px 0 rgb(255 255 255 / 0.04) inset, 0 20px 40px -20px rgb(0 0 0 / 0.6);
@@ -186,7 +186,7 @@ body {
   letter-spacing: 0.02em;
   color: #ffffff;
   background:
-    linear-gradient(135deg, #2150d4, #1f6fd1 55%, #0b6d8a);
+    linear-gradient(135deg, #1d4ed8, #0369a1 55%, #0f766e);
   box-shadow: 0 0 0 1px rgb(255 255 255 / 0.15) inset, 0 4px 14px -4px rgb(59 130 246 / 0.6);
 }
 
@@ -201,7 +201,7 @@ body {
 /* ------------------------------------------------------------------ */
 
 .signal-name {
-  background-image: linear-gradient(100deg, var(--signal-name-from) 0%, var(--signal-name-from) 30%, var(--signal-name-via) 62%, var(--signal-name-to) 100%);
+  background-image: linear-gradient(100deg, var(--signal-name-from) 0%, var(--signal-name-from) 22%, var(--signal-name-via) 58%, var(--signal-name-to) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -211,7 +211,7 @@ body {
 }
 
 .signal-gradient-text {
-  background-image: linear-gradient(90deg, var(--signal-blue), var(--signal-violet) 55%, var(--signal-cyan));
+  background-image: linear-gradient(90deg, var(--signal-blue), var(--signal-azure) 55%, var(--signal-teal));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -311,7 +311,7 @@ body {
   overflow: hidden;
   border-radius: 1rem;
   padding: 1px;
-  background: linear-gradient(160deg, rgb(130 172 255 / 0.55), rgb(182 156 255 / 0.25) 40%, rgb(103 227 245 / 0.35));
+  background: linear-gradient(160deg, rgb(130 172 255 / 0.55), rgb(125 211 252 / 0.25) 40%, rgb(45 212 191 / 0.35));
   box-shadow: 0 30px 80px -30px rgb(37 99 235 / 0.55), 0 0 0 1px rgb(255 255 255 / 0.02);
 }
 
@@ -325,7 +325,7 @@ body {
   aspect-ratio: 1;
   margin-left: -100%;
   margin-top: -100%;
-  background: conic-gradient(from 0deg, transparent 0deg, rgb(130 172 255 / 0.9) 40deg, transparent 90deg, transparent 180deg, rgb(103 227 245 / 0.8) 220deg, transparent 270deg);
+  background: conic-gradient(from 0deg, transparent 0deg, rgb(130 172 255 / 0.9) 40deg, transparent 90deg, transparent 180deg, rgb(45 212 191 / 0.8) 220deg, transparent 270deg);
   animation: signal-orbit 9s linear infinite;
 }
 
@@ -339,7 +339,7 @@ body {
   position: relative;
   border-radius: calc(1rem - 1px);
   background:
-    radial-gradient(120% 60% at 100% 0%, rgb(109 63 214 / 0.14), transparent 60%),
+    radial-gradient(120% 60% at 100% 0%, rgb(14 116 144 / 0.14), transparent 60%),
     radial-gradient(90% 60% at 0% 100%, rgb(33 80 212 / 0.14), transparent 60%),
     var(--signal-term-bg);
   color: var(--signal-term-text);
@@ -350,17 +350,17 @@ body {
    heavy shadow, so it reads as a deliberate inset rather than a hole. */
 :root:not(.dark) .signal-terminal {
   padding: 1.5px;
-  background: linear-gradient(150deg, #2150d4, #6d3fd6 50%, #0b8fb0);
+  background: linear-gradient(150deg, #1d4ed8, #0284c7 50%, #0d9488);
   box-shadow:
     0 0 0 5px rgb(33 80 212 / 0.07),
     0 2px 4px rgb(15 23 42 / 0.06),
-    0 28px 60px -28px rgb(59 43 181 / 0.5);
+    0 28px 60px -28px rgb(29 78 216 / 0.45);
 }
 
 :root:not(.dark) .signal-terminal-inner {
   border-radius: calc(1rem - 1.5px);
   background:
-    radial-gradient(120% 60% at 100% 0%, rgb(109 63 214 / 0.22), transparent 60%),
+    radial-gradient(120% 60% at 100% 0%, rgb(14 116 144 / 0.22), transparent 60%),
     radial-gradient(90% 60% at 0% 100%, rgb(33 80 212 / 0.2), transparent 60%),
     #0d1222;
 }
@@ -368,8 +368,8 @@ body {
 .signal-terminal .t-dim { color: var(--signal-term-dim); }
 .signal-terminal .t-prompt { color: #82acff; }
 .signal-terminal .t-spec { color: #82acff; }
-.signal-terminal .t-code { color: #c3aefe; }
-.signal-terminal .t-verify { color: #67e3f5; }
+.signal-terminal .t-code { color: #38bdf8; }
+.signal-terminal .t-verify { color: #2dd4bf; }
 .signal-terminal .t-ok { color: #4ade80; }
 .signal-terminal .t-strong { color: #f5f7fb; }
 
@@ -442,7 +442,7 @@ body {
 .signal-card::after {
   inset: -1px;
   padding: 1px;
-  background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 0%), rgb(130 172 255 / 0.95), rgb(182 156 255 / 0.5) 35%, transparent 70%);
+  background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 0%), rgb(130 172 255 / 0.95), rgb(125 211 252 / 0.5) 35%, transparent 70%);
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
   mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
@@ -467,7 +467,7 @@ body {
   color: var(--signal-blue);
   background:
     linear-gradient(var(--signal-card-solid), var(--signal-card-solid)) padding-box,
-    linear-gradient(145deg, rgb(130 172 255 / 0.7), rgb(182 156 255 / 0.35), rgb(103 227 245 / 0.55)) border-box;
+    linear-gradient(145deg, rgb(130 172 255 / 0.7), rgb(125 211 252 / 0.35), rgb(45 212 191 / 0.55)) border-box;
   border: 1px solid transparent;
   box-shadow: 0 8px 24px -10px rgb(59 130 246 / 0.55);
 }
@@ -506,7 +506,7 @@ body {
   top: 0.75rem;
   bottom: 0.75rem;
   width: 1px;
-  background: linear-gradient(180deg, var(--signal-blue), var(--signal-violet) 30%, var(--ui-border-accented) 60%, transparent);
+  background: linear-gradient(180deg, var(--signal-blue), var(--signal-azure) 30%, var(--ui-border-accented) 60%, transparent);
 }
 
 .signal-node {
@@ -534,7 +534,7 @@ body {
 }
 
 .signal-node--current::after {
-  background: linear-gradient(135deg, var(--signal-blue), var(--signal-cyan));
+  background: linear-gradient(135deg, var(--signal-blue), var(--signal-teal));
 }
 
 .signal-node--current::before {
@@ -643,7 +643,7 @@ body {
   position: absolute;
   inset: -1px 1.25rem auto;
   height: 1px;
-  background: linear-gradient(90deg, transparent, var(--signal-blue), var(--signal-violet), var(--signal-cyan), transparent);
+  background: linear-gradient(90deg, transparent, var(--signal-blue), var(--signal-azure), var(--signal-teal), transparent);
 }
 
 .signal-spec-head {
@@ -724,7 +724,7 @@ body {
   top: 0.75rem;
   bottom: 0;
   width: 1px;
-  background: linear-gradient(180deg, var(--signal-blue), var(--signal-violet) 45%, var(--signal-cyan) 80%, transparent);
+  background: linear-gradient(180deg, var(--signal-blue), var(--signal-azure) 45%, var(--signal-teal) 80%, transparent);
   opacity: 0.7;
 }
 
@@ -740,8 +740,8 @@ body {
   }
 }
 
-.signal-stage.is-violet { --stage: var(--signal-violet); }
-.signal-stage.is-cyan { --stage: var(--signal-cyan); }
+.signal-stage.is-azure { --stage: var(--signal-azure); }
+.signal-stage.is-teal { --stage: var(--signal-teal); }
 
 .signal-stage::before {
   content: '';
