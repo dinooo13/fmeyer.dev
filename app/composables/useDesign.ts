@@ -32,11 +32,14 @@ export const useDesign = () => {
     if (id === design.value) return
 
     if (import.meta.client && document.startViewTransition && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      document.startViewTransition(async () => {
+      const transition = document.startViewTransition(async () => {
         const rendered = waitForPage()
         applyDesign(id)
         await rendered
       })
+      // `ready` rejects when the browser skips the animation (e.g. hidden tab);
+      // the design has still been applied, so there is nothing to handle.
+      transition.ready.catch(() => {})
       return
     }
 
