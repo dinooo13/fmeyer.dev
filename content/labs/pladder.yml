@@ -1,0 +1,17 @@
+title: Pladder
+description: Push-to-talk dictation for macOS, built for talking to coding agents. Hold a key, speak, let go, and about 300 ms later the prompt is in Claude Code, Codex, Cursor or OpenCode. It runs entirely on device, works offline in 25 languages, and is free and MIT licensed.
+challenge: Prompts for agents keep getting longer, and speaking is three to four times faster than typing. Dictation has always given that advantage back in the wait after you stop talking, and cloud tools add a subscription, an account, and the question of where your audio ends up. The goal is release-to-paste latency close to zero on the slowest supported Mac, without a single word leaving the machine.
+approach: Pladder runs NVIDIA's Parakeet TDT v3 on the Neural Engine and transcribes while you are still speaking, so an M1 pastes in about 300 ms whether you spoke for five seconds or five minutes. Everything else was moved off the critical path, and every change to it ships with a before-and-after benchmark. Around that core sits a polished menu bar app with a Liquid Glass pill, a send key that pastes and presses Return in one motion, a dictionary that learns your project's jargon, filler-word removal, spoken punctuation, and a CLI so other tools can use it for speech-to-text.
+nextSteps:
+  - Ship a signed download so installing no longer means building from source.
+  - Graduate the experimental on-device polish step that turns "wait, no, Friday" into "Friday".
+  - Keep pushing release-to-paste latency down, with a benchmark for every change.
+icon: i-lucide-mic
+status: wip
+repoUrl: https://github.com/dinooo13/pladder
+tags:
+  - Swift
+  - macOS
+  - On-device AI
+  - Speech-to-text
+date: 2026-09-09T21:51:23Z
