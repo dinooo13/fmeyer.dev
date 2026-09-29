@@ -61,8 +61,9 @@ const resourceKinds: Record<ResolvedTalkResource['kind'], { label: string, icon:
 }
 
 // External links show where they lead; bundled assets are served by this site.
+// Production builds resolve bundled assets to absolute /_nuxt/ URLs, so check the path too.
 const resourceHost = (href: string) => {
-  if (!/^https?:\/\//.test(href)) return 'fmeyer.dev'
+  if (!/^https?:\/\//.test(href) || href.includes('/_nuxt/')) return 'fmeyer.dev'
   try {
     const url = new URL(href)
     return `${url.host}${url.pathname}`.replace(/\/$/, '')
