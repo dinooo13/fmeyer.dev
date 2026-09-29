@@ -10,6 +10,12 @@ const featuredLab = computed(() => props.labs[0])
 const otherLabs = computed(() => props.labs.slice(1))
 
 const openSource = computed(() => props.labs.filter(lab => lab.repoUrl).length)
+
+const reveal = {
+  initial: { opacity: 0, transform: 'translateY(16px)' },
+  whileInView: { opacity: 1, transform: 'translateY(0)' },
+  inViewOptions: { once: true, amount: 0.15 }
+}
 </script>
 
 <template>
@@ -63,16 +69,18 @@ const openSource = computed(() => props.labs.filter(lab => lab.repoUrl).length)
           heading-level="h2"
         />
       </li>
-      <li
-        v-for="lab in otherLabs"
+      <Motion
+        v-for="(lab, index) in otherLabs"
         :key="lab.title"
-        class="signal-reveal"
+        as="li"
+        v-bind="reveal"
+        :transition="{ delay: index * 0.08 }"
       >
         <LabCard
           :lab
           heading-level="h2"
         />
-      </li>
+      </Motion>
     </ul>
   </div>
 </template>

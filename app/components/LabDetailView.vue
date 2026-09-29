@@ -33,6 +33,12 @@ const stages = computed(() => [
   { id: 'challenge', index: '01', label: 'input', title: 'Challenge', text: props.lab.challenge, tone: 'is-blue' },
   { id: 'approach', index: '02', label: 'build', title: 'Approach', text: props.lab.approach, tone: 'is-azure' }
 ])
+
+const reveal = {
+  initial: { opacity: 0, transform: 'translateY(16px)' },
+  whileInView: { opacity: 1, transform: 'translateY(0)' },
+  inViewOptions: { once: true, amount: 0.15 }
+}
 </script>
 
 <template>
@@ -228,11 +234,13 @@ const stages = computed(() => [
           class="signal-pipeline"
           :aria-label="`${lab.title}: challenge, approach and next steps`"
         >
-          <li
+          <Motion
             v-for="stage in stages"
             :key="stage.id"
-            class="signal-reveal signal-stage"
+            as="li"
+            class="signal-stage"
             :class="stage.tone"
+            v-bind="reveal"
           >
             <section
               :aria-labelledby="`signal-stage-${stage.id}`"
@@ -254,10 +262,12 @@ const stages = computed(() => [
                 </p>
               </div>
             </section>
-          </li>
+          </Motion>
 
-          <li
-            class="signal-reveal signal-stage is-teal"
+          <Motion
+            as="li"
+            class="signal-stage is-teal"
+            v-bind="reveal"
           >
             <section
               aria-labelledby="signal-stage-next"
@@ -349,7 +359,7 @@ const stages = computed(() => [
                 </aside>
               </div>
             </section>
-          </li>
+          </Motion>
         </ol>
       </div>
     </article>
@@ -372,13 +382,15 @@ const stages = computed(() => [
         class="mt-10 grid gap-5 md:grid-cols-2"
         aria-label="Related lab projects"
       >
-        <li
-          v-for="entry in related"
+        <Motion
+          v-for="(entry, index) in related"
           :key="entry.title"
-          class="signal-reveal"
+          as="li"
+          v-bind="reveal"
+          :transition="{ delay: index * 0.08 }"
         >
           <LabCard :lab="entry" />
-        </li>
+        </Motion>
       </ul>
     </section>
   </div>

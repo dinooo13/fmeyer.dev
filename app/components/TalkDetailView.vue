@@ -73,6 +73,12 @@ const resourceHost = (href: string) => {
     return href
   }
 }
+
+const reveal = {
+  initial: { opacity: 0, transform: 'translateY(16px)' },
+  whileInView: { opacity: 1, transform: 'translateY(0)' },
+  inViewOptions: { once: true, amount: 0.15 }
+}
 </script>
 
 <template>
@@ -270,10 +276,12 @@ const resourceHost = (href: string) => {
               class="mt-6 grid gap-4 md:grid-cols-2"
               :aria-label="`Resources for ${talk.title}`"
             >
-              <li
-                v-for="resource in talk.resources"
+              <Motion
+                v-for="(resource, index) in talk.resources"
                 :key="`${resource.kind}-${resource.title}`"
-                class="signal-reveal"
+                as="li"
+                v-bind="reveal"
+                :transition="{ delay: index * 0.08 }"
               >
                 <div class="signal-card signal-resource flex h-full flex-col p-6">
                   <div class="flex items-start justify-between gap-4">
@@ -331,7 +339,7 @@ const resourceHost = (href: string) => {
                     {{ resourceHost(resource.href) }}
                   </p>
                 </div>
-              </li>
+              </Motion>
             </ul>
           </div>
         </div>
@@ -356,13 +364,15 @@ const resourceHost = (href: string) => {
         class="signal-stats mt-10 divide-y divide-(--ui-border) overflow-hidden"
         aria-label="More talks"
       >
-        <li
-          v-for="entry in related"
+        <Motion
+          v-for="(entry, index) in related"
           :key="`${entry.title}-${entry.event}`"
-          class="signal-reveal"
+          as="li"
+          v-bind="reveal"
+          :transition="{ delay: index * 0.06 }"
         >
           <TalkRow :talk="entry" />
-        </li>
+        </Motion>
       </ul>
     </section>
   </div>

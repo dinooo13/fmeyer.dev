@@ -56,6 +56,12 @@ const onPointerMove = (event: PointerEvent) => {
   target.style.setProperty('--mx', `${event.clientX - rect.left}px`)
   target.style.setProperty('--my', `${event.clientY - rect.top}px`)
 }
+
+const reveal = {
+  initial: { opacity: 0, transform: 'translateY(16px)' },
+  whileInView: { opacity: 1, transform: 'translateY(0)' },
+  inViewOptions: { once: true, amount: 0.15 }
+}
 </script>
 
 <template>
@@ -177,11 +183,13 @@ const onPointerMove = (event: PointerEvent) => {
         class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-6"
         :aria-label="page.focus.title"
       >
-        <li
+        <Motion
           v-for="(item, index) in page.focus.items"
           :key="item.title"
+          as="li"
           :class="focusSpans[index % focusSpans.length]"
-          class="signal-reveal"
+          v-bind="reveal"
+          :transition="{ delay: index * 0.06 }"
         >
           <div
             class="signal-card flex h-full flex-col gap-8 p-6 sm:p-7"
@@ -236,7 +244,7 @@ const onPointerMove = (event: PointerEvent) => {
               </ul>
             </div>
           </div>
-        </li>
+        </Motion>
       </ul>
     </section>
 
@@ -263,10 +271,13 @@ const onPointerMove = (event: PointerEvent) => {
             class="signal-timeline space-y-10"
             :aria-label="page.experience.title"
           >
-            <li
+            <Motion
               v-for="(item, index) in visibleExperience"
               :key="`${item.title}-${item.period}`"
-              class="signal-reveal relative pl-10"
+              as="li"
+              class="relative pl-10"
+              v-bind="reveal"
+              :transition="{ delay: index * 0.06 }"
             >
               <span
                 class="signal-node"
@@ -309,7 +320,7 @@ const onPointerMove = (event: PointerEvent) => {
                   <span>{{ highlight }}</span>
                 </li>
               </ul>
-            </li>
+            </Motion>
           </ol>
 
           <UButton
@@ -347,13 +358,15 @@ const onPointerMove = (event: PointerEvent) => {
         class="signal-stats mt-12 divide-y divide-(--ui-border) overflow-hidden"
         aria-label="Talks and workshops"
       >
-        <li
-          v-for="talk in talks"
+        <Motion
+          v-for="(talk, index) in talks"
           :key="`${talk.title}-${talk.event}`"
-          class="signal-reveal"
+          as="li"
+          v-bind="reveal"
+          :transition="{ delay: index * 0.06 }"
         >
           <TalkRow :talk />
-        </li>
+        </Motion>
       </ul>
     </section>
 
@@ -376,21 +389,25 @@ const onPointerMove = (event: PointerEvent) => {
         class="mt-12 grid gap-5 md:grid-cols-2"
         aria-label="Lab projects"
       >
-        <li
-          class="signal-reveal md:col-span-2"
+        <Motion
+          as="li"
+          class="md:col-span-2"
+          v-bind="reveal"
         >
           <LabCard
             :lab="featuredLab"
             featured
           />
-        </li>
-        <li
-          v-for="lab in otherLabs"
+        </Motion>
+        <Motion
+          v-for="(lab, index) in otherLabs"
           :key="lab.title"
-          class="signal-reveal"
+          as="li"
+          v-bind="reveal"
+          :transition="{ delay: index * 0.08 }"
         >
           <LabCard :lab />
-        </li>
+        </Motion>
       </ul>
     </section>
   </div>
