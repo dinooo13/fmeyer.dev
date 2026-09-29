@@ -21,14 +21,14 @@ const isActive = (to: unknown) => {
         <UContainer class="flex h-16 items-center justify-between gap-4 sm:h-[4.5rem]">
           <NuxtLink
             to="/"
-            class="ed-serif shrink-0 text-[1.625rem] leading-none text-highlighted sm:text-[1.875rem]"
+            class="ed-serif shrink-0 text-[1.4375rem] leading-none text-highlighted min-[380px]:text-[1.625rem] sm:text-[1.875rem]"
           >
             fmeyer<span class="text-primary">.</span>dev
           </NuxtLink>
 
-          <div class="flex items-center gap-2 sm:gap-6">
+          <div class="flex items-center gap-1 min-[380px]:gap-2 sm:gap-6">
             <nav aria-label="Primary">
-              <ul class="flex list-none items-center gap-4 p-0 sm:gap-8">
+              <ul class="flex list-none items-center gap-3 p-0 min-[380px]:gap-4 sm:gap-8">
                 <li
                   v-for="link in navLinks"
                   :key="String(link.to)"

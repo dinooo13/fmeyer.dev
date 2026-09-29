@@ -2,7 +2,7 @@
 const props = withDefaults(defineProps<{
   talk: TalkEntry
   tint?: 'blue' | 'amber' | 'violet' | 'emerald' | 'rose'
-  variant?: 'compact' | 'wide'
+  variant?: 'compact' | 'wide' | 'stacked'
   headingLevel?: 'h2' | 'h3'
   highlight?: boolean
 }>(), {
@@ -20,23 +20,37 @@ const meta = computed(() => {
 
 <template>
   <article
-    class="studio-tile studio-lift group flex h-full flex-row gap-4 p-5 sm:gap-6 sm:p-7"
-    :class="[`studio-tint-${tint}`, highlight ? 'studio-tinted' : '']"
+    class="studio-tile studio-lift group flex h-full gap-4 p-5 sm:gap-6 sm:p-7"
+    :class="[`studio-tint-${tint}`, highlight ? 'studio-tinted' : '', variant === 'stacked' ? 'flex-col sm:gap-5' : 'flex-row']"
   >
-    <DesignsStudioDateBlock
-      :date="talk.date"
-      :label="talk.dateLabel"
-      :size="variant === 'wide' ? 'lg' : 'md'"
-    />
+    <div
+      class="flex items-center gap-4"
+      :class="variant === 'stacked' ? '' : 'self-start'"
+    >
+      <DesignsStudioDateBlock
+        :date="talk.date"
+        :label="talk.dateLabel"
+        :size="variant === 'wide' ? 'lg' : 'md'"
+      />
+      <p
+        v-if="variant === 'stacked'"
+        class="studio-ink text-sm font-semibold text-balance"
+      >
+        {{ talk.event }}
+      </p>
+    </div>
 
     <div class="flex min-w-0 flex-1 flex-col">
-      <p class="studio-ink text-sm font-semibold">
+      <p
+        v-if="variant !== 'stacked'"
+        class="studio-ink mb-1.5 text-sm font-semibold"
+      >
         {{ talk.event }}
       </p>
       <component
         :is="headingLevel"
-        class="studio-display mt-1.5 font-bold text-balance text-highlighted"
-        :class="variant === 'wide' ? 'text-xl sm:text-3xl' : 'text-lg sm:text-2xl'"
+        class="studio-display font-bold text-balance text-highlighted"
+        :class="variant === 'wide' ? 'text-xl sm:text-3xl' : variant === 'stacked' ? 'text-xl sm:text-2xl leading-tight' : 'text-lg sm:text-2xl'"
       >
         <NuxtLink
           :to="getTalkPath(talk)"

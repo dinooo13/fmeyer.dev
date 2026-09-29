@@ -21,8 +21,8 @@ export const designBootScript = `(function(){try{var ids=${JSON.stringify(design
 // The explorations only render on the client, so the static build never sees
 // their <NuxtImg> sizes. Prerender them explicitly so previews don't 404.
 const designPortraitSizes = [
-  '1x1', '2x2', '28x28', '44x44', '56x56', '88x88', '360x450', '480x600', '720x900',
-  '960x1200', '538x495', '680x626', '1076x990', '1360x1252'
+  '1x1', '2x2', '28x28', '44x44', '56x56', '88x88', '170x213', '218x273', '340x426', '360x450',
+  '436x546', '720x900', '538x495', '680x626', '1076x990', '1360x1252'
 ]
 
 export const designPrerenderRoutes = designPortraitSizes.map(size => `/_ipx/fit_cover&s_${size}/profile/fabian-meyer-portrait.jpg`)

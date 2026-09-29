@@ -131,8 +131,14 @@
     position: relative;
     display: inline-block;
     padding-block: 0.25rem;
-    font-size: 0.9375rem;
+    font-size: 0.875rem;
     color: var(--ui-text-toned);
+  }
+
+  @media (min-width: 380px) {
+    [data-design="editorial"] .ed-nav-link {
+      font-size: 0.9375rem;
+    }
   }
 
   [data-design="editorial"] .ed-nav-link::after {
@@ -309,7 +315,7 @@
   [data-design="editorial"] .ed-page-title {
     font-family: 'Instrument Serif', 'Iowan Old Style', Georgia, serif;
     font-weight: 400;
-    font-size: clamp(5.5rem, 24vw, 15rem);
+    font-size: clamp(4.5rem, 21vw, 15rem);
     line-height: 0.8;
     letter-spacing: -0.04em;
     color: var(--ui-text-highlighted);
@@ -361,107 +367,147 @@
     color: var(--ed-accent);
   }
 
-}
+  /* ------------------------------------------------------------------ */
+  /* Detail pages (lab report, talk feature)                             */
+  /* ------------------------------------------------------------------ */
 
-/* ------------------------------------------------------------------ */
-/* Detail pages (/labs/[slug], /speaking/[slug]) keep their Nuxt UI    */
-/* markup; restyle them here so they read as part of the same issue.   */
-/* ------------------------------------------------------------------ */
-
-/* The detail pages nest their <h1> inside UPageHero's title <h1>, so only
-   style the innermost one (em-based letter-spacing would otherwise inherit
-   as a fixed length into the subtitle). */
-[data-design="editorial"] #main-content > :not(.ed-page) h1:not(:has(h1)) {
-  font-family: 'Instrument Serif', 'Iowan Old Style', Georgia, serif;
-  font-weight: 400;
-  font-size: clamp(3.5rem, 9vw, 7.5rem);
-  line-height: 0.92;
-  letter-spacing: -0.03em;
-  text-wrap: balance;
-}
-
-[data-design="editorial"] #main-content > :not(.ed-page) [data-slot='title'] h1 + p {
-  max-width: 40rem;
-  margin-top: 1rem;
-  font-family: 'Instrument Serif', 'Iowan Old Style', Georgia, serif;
-  font-size: 1.625rem;
-  line-height: 1.2;
-  letter-spacing: normal;
-  color: var(--ui-text-highlighted);
-}
-
-[data-design="editorial"] #main-content > :not(.ed-page) h2 {
-  font-family: 'Instrument Serif', 'Iowan Old Style', Georgia, serif;
-  font-weight: 400;
-  font-size: 2rem;
-  line-height: 1.05;
-  letter-spacing: -0.01em;
-}
-
-[data-design="editorial"] #main-content > :not(.ed-page) h3 {
-  font-family: 'Instrument Serif', 'Iowan Old Style', Georgia, serif;
-  font-weight: 400;
-  font-size: 1.75rem;
-  line-height: 1.1;
-}
-
-[data-design="editorial"] #main-content > :not(.ed-page) [data-slot='root']:has(> [data-slot='body']) {
-  border: 0;
-  border-top: 1px solid var(--ui-border-accented);
-  border-radius: 0;
-  background: transparent;
-  box-shadow: none;
-}
-
-[data-design="editorial"] #main-content > :not(.ed-page) [data-slot='root'] > [data-slot='body'] {
-  padding-inline: 0;
-}
-
-[data-design="editorial"] #main-content > :not(.ed-page) [data-slot='body'] p.leading-7,
-[data-design="editorial"] #main-content > :not(.ed-page) [data-slot='body'] ul.leading-7 {
-  font-size: 1rem;
-  line-height: 1.75;
-  color: var(--ui-text-toned);
-}
-
-/* Standfirst: the first description paragraph under a detail title. */
-[data-design="editorial"] #main-content > :not(.ed-page) article [data-slot='description'] > div > p:first-child {
-  max-width: 40rem;
-  font-family: 'Instrument Serif', 'Iowan Old Style', Georgia, serif;
-  font-size: clamp(1.375rem, 2.2vw, 1.75rem);
-  font-style: italic;
-  line-height: 1.25;
-  color: var(--ui-text-toned);
-}
-
-/* Lab detail: stack the three skinny columns into editorial rows with a
-   side heading, and lay the status card out as a horizontal meta strip. */
-@media (min-width: 1024px) {
-  [data-design="editorial"] #main-content > :not(.ed-page) .lg\:grid-cols-3:not(ul) {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 0;
+  [data-design="editorial"] .ed-back-link {
+    color: var(--ui-text-toned);
+    transition: color 0.2s ease;
   }
 
-  [data-design="editorial"] #main-content > :not(.ed-page) .lg\:grid-cols-3:not(ul) [data-slot='body'] > div,
-  [data-design="editorial"] #main-content > :not(.ed-page) .lg\:grid-cols-\[minmax\(0\2c 1fr\)_22rem\] [data-slot='body'] > div {
+  [data-design="editorial"] .ed-back-link:hover {
+    color: var(--ed-accent);
+  }
+
+  [data-design="editorial"] .ed-back-link:hover .ed-link-arrow-left,
+  [data-design="editorial"] .ed-back-link:focus-visible .ed-link-arrow-left {
+    transform: translateX(-0.3em);
+  }
+
+  [data-design="editorial"] .ed-detail-title {
+    font-family: 'Instrument Serif', 'Iowan Old Style', Georgia, serif;
+    font-weight: 400;
+    font-size: clamp(4rem, 22vw, 12rem);
+    line-height: 0.84;
+    letter-spacing: -0.035em;
+    text-wrap: balance;
+    color: var(--ui-text-highlighted);
+  }
+
+  /* Talk titles run to a full sentence, so they get a smaller cut. */
+  [data-design="editorial"] .ed-detail-title-long {
+    font-size: clamp(2.875rem, 7.4vw, 6.5rem);
+    line-height: 0.94;
+    letter-spacing: -0.025em;
+  }
+
+  /* Hairline meta strip: cells divided by rules, not boxes. */
+  [data-design="editorial"] .ed-meta-strip > div {
+    padding: 1rem 1rem 1.125rem 0;
+  }
+
+  [data-design="editorial"] .ed-meta-strip > div:nth-child(even) {
+    padding-left: 1rem;
+    border-left: 1px solid var(--ui-border-accented);
+  }
+
+  [data-design="editorial"] .ed-meta-strip > div:nth-child(n + 3) {
+    border-top: 1px solid var(--ui-border-accented);
+  }
+
+  [data-design="editorial"] .ed-meta-strip dd,
+  [data-design="editorial"] .ed-facts dd {
+    margin-top: 0.5rem;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    color: var(--ui-text-highlighted);
+  }
+
+  @media (min-width: 1024px) {
+    [data-design="editorial"] .ed-meta-strip > div,
+    [data-design="editorial"] .ed-meta-strip > div:nth-child(n + 3) {
+      padding: 1.125rem 1.5rem 1.25rem;
+      border-top: 0;
+    }
+
+    [data-design="editorial"] .ed-meta-strip > div:first-child {
+      padding-left: 0;
+    }
+
+    [data-design="editorial"] .ed-meta-strip > div:not(:first-child) {
+      border-left: 1px solid var(--ui-border-accented);
+    }
+  }
+
+  /* Margin column of facts. */
+  [data-design="editorial"] .ed-facts > div {
+    padding-block: 0.875rem 1rem;
+    border-top: 1px solid var(--ui-border-accented);
+  }
+
+  /* Numbered feature sections: heading in the margin, copy in the measure. */
+  [data-design="editorial"] .ed-feature-section {
     display: grid;
-    grid-template-columns: 16rem minmax(0, 44rem);
-    gap: 2rem;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 1.75rem 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--ed-rule);
   }
 
-  [data-design="editorial"] #main-content > :not(.ed-page) .lg\:grid-cols-\[minmax\(0\2c 1fr\)_22rem\] {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 0;
+  [data-design="editorial"] .ed-feature-margin,
+  [data-design="editorial"] .ed-feature-body {
+    grid-column: 1 / -1;
   }
 
-  [data-design="editorial"] #main-content > :not(.ed-page) .lg\:grid-cols-\[20rem\] {
-    grid-template-columns: minmax(0, 1fr);
+  @media (min-width: 1024px) {
+    [data-design="editorial"] .ed-feature-section {
+      padding-top: 1.75rem;
+    }
+
+    [data-design="editorial"] .ed-feature-margin {
+      grid-column: 1 / span 4;
+    }
+
+    [data-design="editorial"] .ed-feature-body {
+      grid-column: 5 / span 7;
+      padding-top: 0.25rem;
+    }
   }
 
-  [data-design="editorial"] #main-content > :not(.ed-page) .lg\:grid-cols-\[20rem\] [data-slot='body'] > .space-y-5 {
-    display: flex;
-    gap: 4rem;
+  [data-design="editorial"] .ed-feature-heading {
+    margin-top: 0.75rem;
+    font-family: 'Instrument Serif', 'Iowan Old Style', Georgia, serif;
+    font-weight: 400;
+    font-size: clamp(2.5rem, 4.4vw, 3.75rem);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    color: var(--ui-text-highlighted);
   }
+
+  [data-design="editorial"] .ed-body-copy {
+    font-size: 1.0625rem;
+    line-height: 1.8;
+    color: var(--ui-text-toned);
+    text-wrap: pretty;
+  }
+
+  @media (min-width: 640px) {
+    [data-design="editorial"] .ed-body-copy {
+      font-size: 1.125rem;
+    }
+  }
+
+  /* Three-line drop cap in the accent. */
+  [data-design="editorial"] .ed-dropcap::first-letter {
+    float: left;
+    margin: 0.06em 0.1em 0 -0.02em;
+    font-family: 'Instrument Serif', 'Iowan Old Style', Georgia, serif;
+    font-size: 5.1em;
+    line-height: 0.8;
+    color: var(--ed-accent);
+  }
+
 }
 
 /* ------------------------------------------------------------------ */
@@ -478,6 +524,7 @@
 
   [data-design="editorial"] .ed-nav-link::after,
   [data-design="editorial"] .ed-link-arrow,
+  [data-design="editorial"] .ed-back-link,
   [data-design="editorial"] .ed-row-shift,
   [data-design="editorial"] .ed-row-arrow {
     transition: none;

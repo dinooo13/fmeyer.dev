@@ -119,7 +119,7 @@ const reveal = {
     >
       <div class="grid items-center gap-12 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:gap-14">
         <div>
-          <div class="signal-rise signal-rise-1 flex flex-wrap items-center gap-3">
+          <div class="signal-rise signal-rise-1 flex items-center gap-2.5 sm:gap-3">
             <NuxtImg
               :src="global.picture.dark"
               alt=""
@@ -130,11 +130,11 @@ const reveal = {
               fit="cover"
               loading="eager"
               fetchpriority="high"
-              class="size-11 rounded-full object-cover ring-2 ring-(--ui-bg) outline outline-(--ui-border-accented)"
+              class="size-10 shrink-0 rounded-full object-cover ring-2 ring-(--ui-bg) outline outline-(--ui-border-accented) sm:size-11"
             />
             <p
               v-if="current"
-              class="signal-chip text-[0.8rem] text-toned"
+              class="signal-chip signal-chip--now min-w-0 text-[0.75rem] text-toned sm:text-[0.8rem]"
             >
               <span
                 class="signal-live"
@@ -145,9 +145,9 @@ const reveal = {
                 class="h-3 w-px bg-(--ui-border-accented)"
                 aria-hidden="true"
               />
-              <span>{{ current.organization }}<span
+              <span class="min-w-0">{{ current.organization }}<span
                 v-if="since"
-                class="text-muted"
+                class="whitespace-nowrap text-muted"
               > · since {{ since }}</span></span>
             </p>
           </div>

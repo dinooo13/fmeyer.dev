@@ -35,6 +35,10 @@ const firstRole = computed(() => experience.value.at(-1))
 const currentRole = computed(() => experience.value[0])
 const yearOf = (period?: string) => period?.match(/\d{4}/)?.[0]
 const startYear = computed(() => yearOf(firstRole.value?.period))
+
+// The first role is a German apprenticeship ("Ausbildung …"); name it in
+// English rather than quoting the full vocational title.
+const shortRoleTitle = (title?: string) => title?.startsWith('Ausbildung') ? 'apprentice' : title
 const currentYear = computed(() => yearOf(currentRole.value?.period))
 
 const metaItems = computed(() => [
@@ -92,14 +96,39 @@ const numerals = ['i', 'ii', 'iii', 'iv', 'v', 'vi']
           aria-hidden="true"
         />
 
-        <div class="grid grid-cols-12 gap-x-6 gap-y-12 pt-8 lg:pt-10">
-          <div class="col-span-12 lg:col-span-7">
-            <p class="ed-serif ed-enter-rise-sm ed-delay-2 text-[clamp(2.125rem,4vw,3.25rem)] leading-[1] text-highlighted italic">
-              {{ role.title }}<template v-if="role.org">
-                <br><span class="text-muted">at</span> {{ role.org }}
-              </template>
-            </p>
+        <div class="grid grid-cols-12 items-start gap-x-5 pt-8 sm:gap-x-6 lg:pt-10">
+          <p class="ed-serif ed-enter-rise-sm ed-delay-2 col-span-7 self-end text-[clamp(1.625rem,7.2vw,2.25rem)] leading-[1] sm:text-[clamp(2.125rem,4vw,3.25rem)] text-highlighted italic sm:col-span-7 lg:self-start">
+            {{ role.title }}<template v-if="role.org">
+              <br class="hidden sm:inline"> <span class="text-muted">at</span> <span class="whitespace-nowrap">{{ role.org }}</span>
+            </template>
+          </p>
 
+          <!-- On small screens the portrait sits beside the role line so it
+               lands in the first screen; from lg it becomes the tall plate. -->
+          <figure class="ed-enter-rise-sm ed-delay-1 col-span-5 sm:col-span-4 sm:col-start-9 lg:col-span-4 lg:col-start-9 lg:row-span-2">
+            <div class="ed-portrait-frame">
+              <div class="ed-portrait-crop">
+                <NuxtImg
+                  :src="global.picture?.light"
+                  alt=""
+                  width="440"
+                  height="550"
+                  sizes="170px sm:34vw lg:360px"
+                  densities="x1 x2"
+                  fit="cover"
+                  loading="eager"
+                  fetchpriority="high"
+                  class="ed-enter-settle aspect-[4/5] w-full object-cover"
+                />
+              </div>
+            </div>
+            <figcaption class="ed-kicker mt-2 flex justify-between gap-4 sm:mt-3">
+              <span aria-hidden="true">Fig. 01</span>
+              <span class="hidden sm:inline">{{ page.hero.name }}</span>
+            </figcaption>
+          </figure>
+
+          <div class="col-span-12 lg:col-span-7">
             <p class="ed-enter-rise-sm ed-delay-3 mt-8 max-w-[36rem] text-lg leading-8 text-toned sm:mt-10">
               <span class="font-medium text-highlighted">{{ intro.lead }}</span>
               {{ intro.rest }}
@@ -124,31 +153,6 @@ const numerals = ['i', 'ii', 'iii', 'iv', 'v', 'vi']
               </ul>
               <DesignsEditorialSocialLinks />
             </div>
-          </div>
-
-          <div class="col-span-12 sm:col-span-9 lg:col-span-4 lg:col-start-9">
-            <figure class="ed-enter-rise-sm ed-delay-1">
-              <div class="ed-portrait-frame">
-                <div class="ed-portrait-crop">
-                  <NuxtImg
-                    :src="global.picture?.light"
-                    alt=""
-                    width="440"
-                    height="550"
-                    sizes="100vw sm:75vw lg:360px"
-                    densities="x1 x2"
-                    fit="cover"
-                    loading="eager"
-                    fetchpriority="high"
-                    class="ed-enter-settle aspect-[4/5] w-full object-cover"
-                  />
-                </div>
-              </div>
-              <figcaption class="ed-kicker mt-3 flex justify-between gap-4">
-                <span aria-hidden="true">Fig. 01</span>
-                <span>{{ page.hero.name }}</span>
-              </figcaption>
-            </figure>
           </div>
         </div>
       </UContainer>
@@ -238,7 +242,7 @@ const numerals = ['i', 'ii', 'iii', 'iv', 'v', 'vi']
               >→</span><span class="sr-only">to</span> {{ currentYear }}
             </h3>
             <p class="mt-4 text-[0.9375rem] leading-7 text-toned">
-              From {{ firstRole.title }} to {{ currentRole.title }}.
+              From {{ shortRoleTitle(firstRole.title) }} to {{ currentRole.title }}.
             </p>
           </Motion>
         </ul>

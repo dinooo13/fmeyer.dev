@@ -25,20 +25,26 @@ const careerStartYear = computed(() => careerStart.value?.split(' ').at(-1))
 
 const featuredLab = computed(() => props.labs[0])
 const moreLabs = computed(() => props.labs.slice(1))
-const latency = computed(() => featuredLab.value?.description.match(/(\d+)\s?ms/)?.[1])
+// The featured tile highlights a latency figure and a few perks when the
+// description states them (e.g. "about 300 ms", "on device", "offline").
+// Any other project falls back to its tags, so the tile never renders empty.
+const latency = computed(() => featuredLab.value?.description.match(/(\d+)\s?ms\b/)?.[1])
 const latencyLabel = computed(() => {
   const text = `${featuredLab.value?.challenge ?? ''} ${featuredLab.value?.approach ?? ''}`
   return /release-to-paste/i.test(text) ? 'release to paste' : 'latency'
 })
 const featuredPitch = computed(() => featuredLab.value?.description.split(/(?<=\.)\s/)[0])
-const featuredPerks = computed(() => {
+const featuredPills = computed(() => {
   const description = featuredLab.value?.description ?? ''
-  return [
+  const perks = [
     /on device/i.test(description) ? 'On device' : null,
     /offline/i.test(description) ? 'Offline' : null,
     /MIT licensed/i.test(description) ? 'MIT licensed' : null
   ].filter((value): value is string => Boolean(value))
+
+  return perks.length >= 2 ? perks : (featuredLab.value?.tags ?? []).slice(0, 3)
 })
+const featuredIsAudio = computed(() => /^i-lucide-(mic|audio|speech|volume)/.test(featuredLab.value?.icon ?? ''))
 
 const latestTalk = computed(() => getLatestTalk(props.talks))
 const latestTalkUpcoming = computed(() => {
@@ -74,7 +80,7 @@ const hiddenCount = computed(() => Math.max(experience.value.length - collapsedC
     >
       <!-- Intro -->
       <div
-        class="studio-tile studio-glass studio-enter studio-tint-blue flex flex-col justify-between gap-7 p-7 sm:p-9 md:col-span-2 lg:row-span-2"
+        class="studio-tile studio-glass studio-enter studio-tint-blue flex flex-col justify-between gap-7 p-7 sm:p-9 md:col-span-2 lg:row-span-2 lg:gap-6 lg:p-8"
         style="--studio-i: 0"
       >
         <div>
@@ -87,17 +93,17 @@ const hiddenCount = computed(() => Math.max(experience.value.length - collapsedC
           </p>
           <h1
             id="studio-hero-name"
-            class="studio-display mt-5 text-[3.4rem] leading-[0.9] font-extrabold text-highlighted sm:text-7xl lg:text-[4.75rem]"
+            class="studio-display mt-5 text-[3.4rem] leading-[0.9] lg:mt-4 font-extrabold text-highlighted sm:text-7xl lg:text-[4.75rem]"
           >
             {{ page.hero.name }}
           </h1>
-          <p class="mt-5 max-w-xl text-base leading-7 text-pretty text-toned sm:text-[1.0625rem]">
+          <p class="mt-5 max-w-xl text-base leading-7 text-pretty text-toned sm:text-[1.0625rem] lg:mt-4">
             {{ page.hero.intro }}
           </p>
         </div>
 
         <div class="flex flex-col gap-6">
-          <dl class="grid grid-cols-3 gap-3 border-t border-(--ui-border) pt-5">
+          <dl class="grid grid-cols-3 gap-3 border-t border-(--ui-border) pt-5 lg:grid-cols-[repeat(3,auto)] lg:justify-start lg:gap-x-10">
             <div class="flex flex-col">
               <dt class="text-xs font-medium text-muted sm:text-sm">
                 Lab projects
@@ -259,33 +265,37 @@ const hiddenCount = computed(() => Math.max(experience.value.length - collapsedC
       <!-- Featured lab -->
       <article
         v-if="featuredLab"
-        class="studio-tile studio-tinted studio-tint-violet studio-enter studio-lift group flex flex-col gap-5 overflow-hidden p-6 sm:p-7 md:col-span-2 md:row-start-4 lg:col-start-1 lg:row-start-3"
+        class="studio-tile studio-tinted studio-tint-violet studio-enter studio-lift group flex flex-col gap-5 overflow-hidden p-6 sm:p-7 md:col-span-2 md:row-start-4 lg:p-6 lg:col-start-1 lg:row-start-3"
         style="--studio-i: 4"
       >
         <div class="flex items-start justify-between gap-4">
-          <div class="flex items-center gap-3">
+          <div class="flex min-w-0 items-center gap-3">
             <span class="studio-chip size-12 rounded-2xl">
               <UIcon
                 :name="featuredLab.icon || 'i-lucide-box'"
                 class="size-6"
               />
             </span>
-            <div>
+            <div class="min-w-0">
               <h2 class="text-xs font-semibold tracking-wide text-toned uppercase">
                 Featured lab
               </h2>
               <h3 class="studio-display text-2xl font-bold text-highlighted sm:text-3xl">
                 <NuxtLink
                   :to="getLabPath(featuredLab)"
-                  class="studio-stretched"
+                  class="studio-stretched inline-flex items-center gap-2"
                 >
                   {{ featuredLab.title }}
+                  <UIcon
+                    name="i-lucide-arrow-right"
+                    class="studio-arrow studio-ink size-5 shrink-0 sm:size-6"
+                  />
                 </NuxtLink>
               </h3>
             </div>
           </div>
           <div
-            v-if="featuredLab.icon === 'i-lucide-mic'"
+            v-if="featuredIsAudio"
             class="flex h-10 items-center gap-[3px] pt-1"
             aria-hidden="true"
           >
@@ -298,42 +308,41 @@ const hiddenCount = computed(() => Math.max(experience.value.length - collapsedC
           </div>
         </div>
 
-        <p class="text-base font-medium text-pretty text-toned">
+        <p class="line-clamp-3 text-base font-medium text-pretty text-toned">
           {{ featuredPitch }}
         </p>
 
-        <div class="mt-auto flex flex-wrap items-end justify-between gap-4">
-          <div class="flex flex-wrap items-center gap-2">
-            <p
-              v-if="latency"
-              class="mr-2 flex items-baseline gap-1.5"
-            >
-              <span class="studio-display studio-ink text-3xl font-extrabold">~{{ latency }}&thinsp;ms</span>
-              <span class="text-sm font-medium text-toned">{{ latencyLabel }}</span>
-            </p>
-            <span
-              v-for="perk in featuredPerks"
-              :key="perk"
-              class="studio-pill"
-            >{{ perk }}</span>
-          </div>
-          <span
-            class="studio-ink inline-flex items-center gap-1.5 text-sm font-semibold"
-            aria-hidden="true"
+        <div
+          v-if="latency || featuredPills.length"
+          class="mt-auto flex flex-wrap items-center gap-2"
+        >
+          <p
+            v-if="latency"
+            class="mr-2 flex items-baseline gap-1.5"
           >
-            View lab
-            <UIcon
-              name="i-lucide-arrow-right"
-              class="studio-arrow size-4"
-            />
-          </span>
+            <span class="studio-display studio-ink text-3xl font-extrabold">~{{ latency }}&thinsp;ms</span>
+            <span class="text-sm font-medium text-toned">{{ latencyLabel }}</span>
+          </p>
+          <ul
+            v-if="featuredPills.length"
+            class="flex flex-wrap gap-2"
+            :aria-label="`${featuredLab.title} highlights`"
+          >
+            <li
+              v-for="pill in featuredPills"
+              :key="pill"
+              class="studio-pill"
+            >
+              {{ pill }}
+            </li>
+          </ul>
         </div>
       </article>
 
       <!-- Latest talk -->
       <article
         v-if="latestTalk"
-        class="studio-tile studio-tinted studio-tint-emerald studio-enter studio-lift group flex flex-col gap-5 p-6 sm:p-7 md:col-span-2 md:row-start-5 lg:col-start-3 lg:row-start-3"
+        class="studio-tile studio-tinted studio-tint-emerald studio-enter studio-lift group flex flex-col gap-5 p-6 sm:p-7 md:col-span-2 md:row-start-5 lg:p-6 lg:col-start-3 lg:row-start-3"
         style="--studio-i: 5"
       >
         <div class="flex items-start gap-4">

@@ -43,7 +43,7 @@ const workshop = computed(() => props.talks.find(talk => /workshop/i.test(talk.f
           </span>
         </div>
 
-        <div class="signal-mono space-y-1.5 px-4 py-5 text-[0.76rem] leading-relaxed sm:px-5 sm:text-[0.8rem]">
+        <div class="signal-mono space-y-1.5 px-3.5 py-5 text-[0.72rem] leading-relaxed sm:px-5 sm:text-[0.8rem]">
           <p
             class="t-line"
             style="animation-delay: 0.15s"
@@ -58,12 +58,12 @@ const workshop = computed(() => props.talks.find(talk => /workshop/i.test(talk.f
             <li
               v-for="(step, index) in steps"
               :key="step.key"
-              class="t-line grid grid-cols-[3.5rem_minmax(0,1fr)_auto] items-baseline gap-x-2 sm:grid-cols-[auto_4.25rem_minmax(0,1fr)_auto]"
+              class="t-line grid grid-cols-[3.25rem_minmax(0,1fr)_auto] items-baseline gap-x-1.5 sm:grid-cols-[auto_4.25rem_minmax(0,1fr)_auto] sm:gap-x-2"
               :style="{ animationDelay: `${0.3 + index * 0.15}s` }"
             >
               <span class="t-dim hidden sm:inline">{{ index + 1 }}/{{ steps.length }}</span>
               <span :class="step.tone">{{ step.key }}</span>
-              <span class="truncate">{{ step.detail }}</span>
+              <span class="text-pretty">{{ step.detail }}</span>
               <span class="t-ok"><span aria-hidden="true">✓</span><span class="sr-only">passed</span></span>
             </li>
           </ol>
@@ -86,7 +86,7 @@ const workshop = computed(() => props.talks.find(talk => /workshop/i.test(talk.f
               class="t-line grid grid-cols-[minmax(0,1fr)_auto] gap-x-2"
               style="animation-delay: 1.1s"
             >
-              <span class="truncate"><span class="t-dim">release-to-paste</span> <span class="t-verify">~{{ latency }} ms</span></span>
+              <span><span class="t-dim">release-to-paste</span> <span class="t-verify">~{{ latency }} ms</span></span>
               <span class="t-ok">✓ on device</span>
             </p>
           </template>

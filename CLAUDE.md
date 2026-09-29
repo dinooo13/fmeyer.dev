@@ -280,7 +280,8 @@ The site can render one of several designs, picked with the floating `DesignSwit
 
 - `app/utils/designs.ts` — design registry (`classic`, `editorial`, `signal`, `studio`) and the inline `designBootScript` that sets `data-design` on `<html>` before first paint.
 - `app/plugins/design.client.ts` — static generation always renders `classic`; the stored design is applied after hydration resolves (`app:suspense:resolve`) to avoid hydration mismatches.
-- `app/components/designs/<id>/` — `Shell.vue` (header/footer chrome, used by `layouts/default.vue`), `Home.vue`, `Labs.vue`, `Speaking.vue` (used by the matching pages). Detail pages reuse their existing markup inside the design's Shell.
+- `app/components/designs/<id>/` — `Shell.vue` (header/footer chrome, used by `layouts/default.vue`), `Home.vue`, `Labs.vue`, `Speaking.vue`, `LabDetail.vue`, `TalkDetail.vue` (used by the matching pages). Pages keep data loading, SEO, and schema-org; design components only render.
+- `designOptions[].themeColor` — `theme-color` meta values applied when a design is active.
 - `app/assets/css/designs/<id>.css` — design styles, every rule scoped under `[data-design="<id>"]`, including Nuxt UI token overrides.
 
 Once a design is chosen, promote its components to the defaults and delete the switcher, the other designs, and this section.

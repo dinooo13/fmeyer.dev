@@ -75,7 +75,7 @@ const socialLinks = computed(() => (footer?.links ?? []).filter(link => !String(
       </div>
     </header>
 
-    <div class="pt-20 sm:pt-24">
+    <div class="pt-20 sm:pt-24 lg:pt-20">
       <slot />
     </div>
 
