@@ -23,7 +23,7 @@ experience:
   title: Experience
   description: Current and previous roles across agentic engineering, technical leadership, and software engineering.
   items:
-    - period: 2026 - Present
+    - period: Sep 2026 - Present
       title: Staff Agentic Engineer
       organization: Cordes & Graefe KG
       summary: Staff-level role leading the organisation's move to agentic engineering.
@@ -31,7 +31,7 @@ experience:
         - Drive the organisation-wide shift to agentic engineering across teams and delivery.
         - Build agent-ready tooling, workflows, and spec-driven development practices.
         - Enable engineers through coaching, workshops, and shared standards.
-    - period: Oct 2025 - 2026
+    - period: Oct 2025 - Sep 2026
       title: Chapter Lead Vue | Sales & Settlement
       organization: eventim Tech GmbH
       summary: Chapter leadership role within Sales & Settlement, alongside hands-on engineering work at eventim Tech.
@@ -39,7 +39,7 @@ experience:
         - Led the Vue chapter through coaching, standards, and practical enablement.
         - Connected chapter growth with day-to-day product delivery.
         - Strengthened engineering practices while staying hands-on in delivery.
-    - period: Apr 2022 - 2026
+    - period: Apr 2022 - Sep 2026
       title: Software Development Expert
       organization: eventim Tech GmbH
       summary: Software engineering role focused on shipping product work while growing frontend quality, team effectiveness, and agentic engineering adoption.
