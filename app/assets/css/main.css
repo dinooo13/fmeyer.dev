@@ -1,5 +1,8 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
+@import "./designs/editorial.css";
+@import "./designs/signal.css";
+@import "./designs/studio.css";
 
 @source "../../../content/**/*";
 
@@ -28,6 +31,11 @@
   outline: 2px solid var(--ui-primary, currentColor);
   outline-offset: 2px;
   border-radius: 0.25rem;
+}
+
+/* Hide the prerendered classic markup until a non-default design has swapped in. */
+html.design-pending #__nuxt {
+  visibility: hidden;
 }
 
 [id="main-content"]:focus {

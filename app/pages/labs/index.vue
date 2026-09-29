@@ -19,6 +19,8 @@ if (!page.value) {
 
 usePageSeo(page.value)
 
+const { design } = useDesign()
+
 const runtimeConfig = useRuntimeConfig()
 const siteUrl = runtimeConfig.public.siteUrl.replace(/\/$/, '')
 
@@ -41,7 +43,22 @@ useSchemaOrg([
 </script>
 
 <template>
-  <UPage v-if="page">
+  <DesignsEditorialLabs
+    v-if="page && design === 'editorial'"
+    :page
+    :labs="labs ?? []"
+  />
+  <DesignsSignalLabs
+    v-else-if="page && design === 'signal'"
+    :page
+    :labs="labs ?? []"
+  />
+  <DesignsStudioLabs
+    v-else-if="page && design === 'studio'"
+    :page
+    :labs="labs ?? []"
+  />
+  <UPage v-else-if="page">
     <UPageHero
       :title="page.title"
       :description="page.description"

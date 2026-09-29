@@ -29,6 +29,9 @@ useHead({
     { rel: 'me', href: 'https://github.com/dinooo13' },
     { rel: 'me', href: 'https://linkedin.com/in/fabian-meyer-02038813a' }
   ],
+  script: [
+    { key: 'design-boot', innerHTML: designBootScript, tagPosition: 'head' }
+  ],
   htmlAttrs: {
     lang: 'en'
   }
@@ -70,5 +73,6 @@ useSchemaOrg([
         <NuxtPage />
       </UMain>
     </NuxtLayout>
+    <DesignSwitcher />
   </UApp>
 </template>

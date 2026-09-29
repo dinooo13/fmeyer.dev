@@ -3,17 +3,22 @@ const { data: page } = await useAsyncData('index', () => {
   return queryCollection('index').first()
 })
 
-const { data: latestLab } = await useAsyncData('latest-lab', async () => {
+const { data: labs } = await useAsyncData('home-labs', async () => {
   const entries = await queryCollection('labs').all()
 
-  return sortLabs(entries)[0]
+  return sortLabs(entries)
 })
 
-const { data: latestTalk } = await useAsyncData('latest-talk', async () => {
+const { data: talks } = await useAsyncData('home-talks', async () => {
   const entries = await queryCollection('talks').all()
 
-  return getLatestTalk(entries)
+  return sortTalks(entries)
 })
+
+const latestLab = computed(() => labs.value?.[0])
+const latestTalk = computed(() => getLatestTalk(talks.value ?? []))
+
+const { design } = useDesign()
 
 if (!page.value) {
   throw createError({
@@ -39,7 +44,25 @@ useSchemaOrg([
 </script>
 
 <template>
-  <UPage v-if="page">
+  <DesignsEditorialHome
+    v-if="page && design === 'editorial'"
+    :page
+    :labs="labs ?? []"
+    :talks="talks ?? []"
+  />
+  <DesignsSignalHome
+    v-else-if="page && design === 'signal'"
+    :page
+    :labs="labs ?? []"
+    :talks="talks ?? []"
+  />
+  <DesignsStudioHome
+    v-else-if="page && design === 'studio'"
+    :page
+    :labs="labs ?? []"
+    :talks="talks ?? []"
+  />
+  <UPage v-else-if="page">
     <LandingHero :page />
     <LandingFocus :page />
     <LandingWorkExperience :page />
