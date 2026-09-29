@@ -7,8 +7,7 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@nuxt/ui',
     '@nuxt/content',
-    '@nuxtjs/seo',
-    'motion-v/nuxt'
+    '@nuxtjs/seo'
   ],
 
   css: ['~/assets/css/main.css'],

@@ -8,12 +8,6 @@ const props = defineProps<{
 
 const events = computed(() => new Set(props.talks.map(talk => talk.event)).size)
 const languages = computed(() => [...new Set(props.talks.map(talk => talk.language).filter(Boolean))].join(' & '))
-
-const reveal = {
-  initial: { opacity: 0, transform: 'translateY(16px)' },
-  whileInView: { opacity: 1, transform: 'translateY(0)' },
-  inViewOptions: { once: true, amount: 0.15 }
-}
 </script>
 
 <template>
@@ -68,19 +62,17 @@ const reveal = {
           show-summary
         />
       </li>
-      <Motion
-        v-for="(talk, index) in talks.slice(2)"
+      <li
+        v-for="talk in talks.slice(2)"
         :key="`${talk.title}-${talk.event}`"
-        as="li"
-        v-bind="reveal"
-        :transition="{ delay: index * 0.06 }"
+        class="signal-reveal"
       >
         <TalkRow
           :talk
           heading-level="h2"
           show-summary
         />
-      </Motion>
+      </li>
     </ul>
   </div>
 </template>

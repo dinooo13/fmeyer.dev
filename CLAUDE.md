@@ -13,7 +13,7 @@ Personal website and portfolio for [fmeyer.dev](https://fmeyer.dev), built with 
 - **Content**: `@nuxt/content` v3 (YAML-based content collections)
 - **Images**: `@nuxt/image`, `nuxt-og-image`
 - **SEO**: `@nuxtjs/seo` (robots, sitemap, schema-org, OG images)
-- **Animations**: `motion-v`
+- **Animations**: CSS only (keyframes + scroll-driven `animation-timeline: view()`); no animation library
 - **Icons**: `@iconify-json/lucide` (prefix `i-lucide-`) and `@iconify-json/simple-icons` (prefix `i-simple-icons-`)
 - **Language**: TypeScript
 - **Package manager**: pnpm 10 (required — do not use npm or yarn)
@@ -201,7 +201,7 @@ resources:                 # optional list of linked assets
 - The site is dark-first but must work in light mode too; `signal.css` defines tokens for both (`:root` and `:root.dark`).
 - Whole-card links use the stretched-link pattern: the title link gets `signal-stretched` (its `::after` covers the card) and nested actions sit above it with `relative z-10`.
 - Icon names follow Iconify format: `i-lucide-<name>` or `i-simple-icons-<name>`.
-- The `Motion` component from `motion-v` is available globally for entrance animations.
+- Scroll-in entrance animations use the `signal-reveal` class (CSS scroll-driven animation, zero JS). Do not add an animation library; `motion-v` was removed because it shipped ~85 KB gzip of JS for this.
 
 ### TypeScript / utilities
 
@@ -231,10 +231,10 @@ This site targets strong Lighthouse SEO scores and Google rich results. Every pa
 Performance directly affects user experience and Lighthouse scores. Follow these rules rigorously:
 
 **Animations**
-- Use CSS-only entrance animations for above-the-fold elements. Do **not** use `motion-v` with `initial: { opacity: 0 }` on LCP-critical elements — it hides them until JS hydrates and breaks Lighthouse LCP measurement.
+- Use CSS-only entrance animations. Never hide content until JavaScript runs (e.g. an `opacity: 0` initial state toggled by JS) — it breaks Lighthouse LCP measurement. `signal-reveal` is safe: items already in view at load render at their end state, and browsers without view timelines simply show the content.
 - Animate with `transform` only (e.g., `scale`, `translateY`). Avoid animating `opacity`, `filter`, or layout properties above the fold — non-transform animations force main-thread repaints and increase Total Blocking Time.
 - Staggered hero entrance classes (`.signal-rise` + `.signal-rise-1` … `.signal-rise-5` in `signal.css`) are transform-only and use `animation-delay` so the browser schedules them without blocking.
-- Always include `@media (prefers-reduced-motion: reduce)` coverage. The global block in `main.css` sets `animation-duration: 0.01ms` and disables view-transition animations; `signal.css` has its own block for the backdrop drift, terminal cursor, and pings — keep both up to date when adding new animations.
+- Always include `@media (prefers-reduced-motion: reduce)` coverage. The global block in `main.css` sets `animation-duration: 0.01ms` and disables view-transition animations; `signal.css` has its own blocks for the backdrop drift, terminal cursor, pings, and `signal-reveal` — keep both up to date when adding new animations.
 - Time-dependent rendering (e.g. "Upcoming") must use `useNow()`, never `new Date()` / `Date.now()` directly in a component, or the prerendered HTML will mismatch on hydration once the date passes.
 
 **Images**
@@ -258,7 +258,7 @@ This site targets WCAG 2.1 AA compliance. Every change must preserve or improve 
 
 **Semantic HTML**
 - Wrap groups of navigation links in `<nav aria-label="...">` with `<ul>` / `<li>` children. Do not render link lists as bare `<div>` stacks.
-- Use `<ul aria-label="...">` for content grids (lab grid, talk list). Render `<Motion as="li">` so the grid is a proper list.
+- Use `<ul aria-label="...">` for content grids (lab grid, talk list). Render items as `<li class="signal-reveal">` so the grid is a proper list.
 - Action button groups on detail pages (back, demo, repo) go in `<nav aria-label="..."><ul class="list-none p-0">...</ul></nav>`.
 
 **Interactive elements**

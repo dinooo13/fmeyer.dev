@@ -33,12 +33,6 @@ const stages = computed(() => [
   { id: 'challenge', index: '01', label: 'input', title: 'Challenge', text: props.lab.challenge, tone: 'is-blue' },
   { id: 'approach', index: '02', label: 'build', title: 'Approach', text: props.lab.approach, tone: 'is-azure' }
 ])
-
-const reveal = {
-  initial: { opacity: 0, transform: 'translateY(16px)' },
-  whileInView: { opacity: 1, transform: 'translateY(0)' },
-  inViewOptions: { once: true, amount: 0.15 }
-}
 </script>
 
 <template>
@@ -234,13 +228,11 @@ const reveal = {
           class="signal-pipeline"
           :aria-label="`${lab.title}: challenge, approach and next steps`"
         >
-          <Motion
+          <li
             v-for="stage in stages"
             :key="stage.id"
-            as="li"
-            class="signal-stage"
+            class="signal-reveal signal-stage"
             :class="stage.tone"
-            v-bind="reveal"
           >
             <section
               :aria-labelledby="`signal-stage-${stage.id}`"
@@ -262,12 +254,10 @@ const reveal = {
                 </p>
               </div>
             </section>
-          </Motion>
+          </li>
 
-          <Motion
-            as="li"
-            class="signal-stage is-teal"
-            v-bind="reveal"
+          <li
+            class="signal-reveal signal-stage is-teal"
           >
             <section
               aria-labelledby="signal-stage-next"
@@ -359,7 +349,7 @@ const reveal = {
                 </aside>
               </div>
             </section>
-          </Motion>
+          </li>
         </ol>
       </div>
     </article>
@@ -382,15 +372,13 @@ const reveal = {
         class="mt-10 grid gap-5 md:grid-cols-2"
         aria-label="Related lab projects"
       >
-        <Motion
-          v-for="(entry, index) in related"
+        <li
+          v-for="entry in related"
           :key="entry.title"
-          as="li"
-          v-bind="reveal"
-          :transition="{ delay: index * 0.08 }"
+          class="signal-reveal"
         >
           <LabCard :lab="entry" />
-        </Motion>
+        </li>
       </ul>
     </section>
   </div>

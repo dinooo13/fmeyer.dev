@@ -881,3 +881,36 @@ button:not(:disabled),
 [role="button"] {
   cursor: pointer;
 }
+
+/* ------------------------------------------------------------------ */
+/* Scroll-in reveal                                                    */
+/* ------------------------------------------------------------------ */
+
+/* Pure CSS scroll-driven animation: no JavaScript, runs off the main
+   thread. Items already in view at load are at their end state, so nothing
+   above the fold is hidden. Browsers without view timelines just show the
+   content. */
+@supports (animation-timeline: view()) {
+  .signal-reveal {
+    animation: signal-reveal linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 40%;
+  }
+}
+
+@keyframes signal-reveal {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 16px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .signal-reveal {
+    animation: none;
+  }
+}
