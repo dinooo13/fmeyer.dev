@@ -45,6 +45,21 @@ export default defineNuxtConfig({
   },
 
   hooks: {
+    'build:manifest'(manifest) {
+      // Talk slides (app/utils/talkAssets.ts) are bundled so their URLs are
+      // hashed, but they are only opened on demand. Without this every page
+      // emits <link rel="prefetch"> for ~3 MB of PDFs, which competes with
+      // the page's own resources on slow connections and hurts LCP.
+      for (const entry of Object.values(manifest)) {
+        if (entry.file?.endsWith('.pdf')) {
+          entry.prefetch = false
+          entry.preload = false
+        }
+        if (entry.assets) {
+          entry.assets = entry.assets.filter(asset => !asset.endsWith('.pdf'))
+        }
+      }
+    },
     'nitro:init'(nitro) {
       // Resolve __BASE__ in public/.htaccess.tpl using the runtime base URL
       // and write the result to .output/public/.htaccess. Templating happens at

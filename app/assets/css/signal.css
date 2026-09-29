@@ -588,7 +588,7 @@ body {
   background: var(--signal-glass);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  padding: 0.4rem 0.95rem;
+  padding: 0.2rem 0.95rem;
   font-family: 'Geist Mono', ui-monospace, monospace;
   font-size: 0.8rem;
   color: var(--ui-text-muted);
@@ -596,7 +596,7 @@ body {
 
 .signal-crumbs::before {
   content: '❯';
-  margin-right: 0.6rem;
+  margin-right: 0.15rem;
   color: var(--ui-primary);
 }
 
@@ -606,6 +606,13 @@ body {
 }
 
 .signal-crumbs a {
+  /* WCAG 2.5.8: at least a 24px target, even for the one-character "~" home link. */
+  display: inline-flex;
+  align-items: center;
+  /* Right-aligned so the extra width sits before "~", not between "~" and "/". */
+  justify-content: flex-end;
+  min-width: 1.5rem;
+  min-height: 1.5rem;
   color: var(--ui-text-toned);
   text-decoration: underline;
   text-decoration-color: transparent;
