@@ -22,7 +22,6 @@ const badgeLabel = computed(() => {
   if (props.talk?.placeholder) return 'Upcoming'
   return props.talk?.format ?? 'Talk'
 })
-const badgeColor = computed(() => props.variant === 'featured' ? 'neutral' : 'warning')
 const subtitle = computed(() => {
   const organizerTitle = props.talk?.organizerTitle?.trim()
   const title = props.talk?.title?.trim()
@@ -63,7 +62,7 @@ const subtitle = computed(() => {
       >
         <div class="space-y-3">
           <UBadge
-            :color="badgeColor"
+            color="neutral"
             variant="soft"
             :label="badgeLabel"
           />

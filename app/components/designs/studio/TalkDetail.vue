@@ -180,22 +180,23 @@ const showEventLink = computed(() => Boolean(props.talk.eventUrl && props.talk.e
           <div
             v-for="fact in facts"
             :key="fact.label"
-            class="flex items-start gap-3"
+            class="relative min-h-9 min-w-0 pl-12"
           >
-            <span class="flex size-9 shrink-0 items-center justify-center rounded-xl bg-(--ui-bg-muted) text-toned ring-1 ring-(--ui-border)">
-              <UIcon
-                :name="fact.icon"
-                class="size-4"
-              />
-            </span>
-            <div class="min-w-0">
-              <dt class="text-xs font-medium text-muted">
-                {{ fact.label }}
-              </dt>
-              <dd class="text-[0.95rem] leading-snug font-semibold text-highlighted">
-                {{ fact.value }}
-              </dd>
-            </div>
+            <dt class="text-xs font-medium text-muted">
+              <span
+                aria-hidden="true"
+                class="absolute top-0 left-0 flex size-9 items-center justify-center rounded-xl bg-(--ui-bg-muted) text-toned ring-1 ring-(--ui-border)"
+              >
+                <UIcon
+                  :name="fact.icon"
+                  class="size-4"
+                />
+              </span>
+              {{ fact.label }}
+            </dt>
+            <dd class="text-[0.95rem] leading-snug font-semibold text-highlighted">
+              {{ fact.value }}
+            </dd>
           </div>
         </dl>
         <p class="mt-auto border-t border-(--ui-border) pt-5 text-sm text-muted">
