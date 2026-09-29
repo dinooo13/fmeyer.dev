@@ -1,0 +1,18 @@
+title: Good Vibes Only
+description: Claude Code plugins that take care of the annoying parts of agent work, so agents stay on track and you do not have to babysit them. The first plugin, usage-limits, lets long agent runs survive a usage limit. Claude pauses cleanly and picks up in the same thread once the window resets.
+challenge: Nothing kills the vibe like hitting a usage limit halfway through a long autonomous run. Work stops mid-step, context is lost, and someone has to come back, figure out where things stood, and restart by hand. Agents should handle that interruption themselves, without burning tokens while they wait.
+approach: usage-limits watches the 5-hour and 7-day usage windows while Claude works, and Claude loads it on its own before long jobs. When a limit gets close, Claude finishes the current step, commits, writes itself a handoff note, and starts a background script that sleeps until the reset. Claude Code then wakes the same thread, which reads the note and carries on, and the wait costs no tokens. Usage is read with the token Claude Code already stores, passed on stdin and never cached or printed. When the usage endpoint rate-limits, every check on the machine backs off and falls back to CodexBar or clearly marked stale data.
+nextSteps:
+  - Add more plugins for the friction points of long-running agent work.
+  - Keep hardening usage-limits against rate limiting and stale usage data.
+  - Learn from people running long autonomous jobs which annoyance to automate away next.
+icon: i-lucide-party-popper
+status: wip
+repoUrl: https://github.com/dinooo13/good-vibes-only
+tags:
+  - Claude Code
+  - Agent skills
+  - Agentic engineering
+date: 2026-09-24T22:12:35Z
+order: 3
+note: "Install it from the Claude Code plugin marketplace: dinooo13/good-vibes-only."

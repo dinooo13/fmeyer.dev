@@ -42,7 +42,7 @@ defineProps<{
         <UBadge
           color="neutral"
           variant="soft"
-          label="Latest lab"
+          label="Featured lab"
         />
         <h3
           v-if="lab"

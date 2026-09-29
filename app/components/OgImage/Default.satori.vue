@@ -44,7 +44,7 @@ defineProps({
     </div>
 
     <div class="relative flex items-center justify-between text-[20px] text-neutral-500">
-      <span>Fabian Meyer · Chapter Lead Vue at eventim Tech</span>
+      <span>Fabian Meyer · Staff Agentic Engineer at Cordes &amp; Graefe</span>
       <span class="text-blue-600">fmeyer.dev</span>
     </div>
   </div>

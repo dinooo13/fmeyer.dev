@@ -135,6 +135,7 @@ status: wip                # required: wip | prototype | paused
 tags:
   - Vue
 date: 2025-01-01T00:00:00Z # required
+order: 1                  # optional manual position (lower comes first)
 icon: i-lucide-code        # optional Iconify icon
 image: /path/to/image.jpg  # optional, goes in public/
 url: https://...           # optional live demo URL
@@ -275,7 +276,7 @@ Run `pnpm lint:fix` before committing if you change formatting.
 
 ### Sorting and slug logic
 
-- Labs are sorted by `date` descending, then alphabetically by `title`. Use `sortLabs()`.
+- Labs are sorted by the optional `order` field ascending (entries without `order` come after), then `date` descending, then alphabetically by `title`. Use `sortLabs()`. The first lab is shown as the homepage's featured lab.
 - Talks are sorted by `date` descending (undated entries come after dated ones, `placeholder: true` last). Use `sortTalks()`.
 - Slugs are derived from the YAML filename stem (last path segment). If no stem is available, a slug is generated from the title.
 
