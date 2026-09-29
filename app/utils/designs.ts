@@ -1,8 +1,8 @@
 export const designOptions = [
-  { id: 'classic', label: 'Current', description: 'The site as it is today' },
-  { id: 'editorial', label: 'Editorial', description: 'Serif typography, paper tones, magazine layout' },
-  { id: 'signal', label: 'Signal', description: 'Technical, aurora glow, agent pipeline hero' },
-  { id: 'studio', label: 'Studio', description: 'Bento grid, soft colour, product-page energy' }
+  { id: 'classic', label: 'Current', description: 'The site as it is today', themeColor: { light: 'white', dark: '#020618' } },
+  { id: 'editorial', label: 'Editorial', description: 'Serif typography, paper tones, magazine layout', themeColor: { light: '#f5f1ea', dark: '#12110f' } },
+  { id: 'signal', label: 'Signal', description: 'Technical, aurora glow, agent pipeline hero', themeColor: { light: '#fbfcfe', dark: '#07090f' } },
+  { id: 'studio', label: 'Studio', description: 'Bento grid, soft colour, product-page energy', themeColor: { light: '#faf7f2', dark: '#0f0e13' } }
 ] as const
 
 export type DesignId = typeof designOptions[number]['id']

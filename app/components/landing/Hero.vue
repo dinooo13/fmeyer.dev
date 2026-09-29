@@ -47,17 +47,16 @@ defineProps<{
     </template>
 
     <template #title>
-      <div class="space-y-4 text-center">
-        <div class="hero-enter hero-enter-1">
-          <p class="text-sm font-medium uppercase tracking-[0.28em] text-muted">
-            {{ page.hero.name }}
-          </p>
-        </div>
+      <!-- UPageHero renders this slot inside its own <h1>, so only phrasing content here. -->
+      <span class="block space-y-4 text-center">
+        <span class="hero-enter hero-enter-1 block text-sm font-medium uppercase tracking-[0.28em] text-muted">
+          {{ page.hero.name }}<span class="sr-only">,</span>
+        </span>
 
-        <div class="hero-enter hero-enter-2">
-          <h1>{{ page.hero.role }}</h1>
-        </div>
-      </div>
+        <span class="hero-enter hero-enter-2 block">
+          {{ page.hero.role }}
+        </span>
+      </span>
     </template>
 
     <template #description>

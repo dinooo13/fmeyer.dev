@@ -67,10 +67,27 @@ const relatedLabs = computed(() => {
 
   return combined.slice(0, 3)
 })
+
+const { design } = useDesign()
 </script>
 
 <template>
-  <UPage v-if="lab">
+  <DesignsEditorialLabDetail
+    v-if="lab && design === 'editorial'"
+    :lab
+    :related="relatedLabs"
+  />
+  <DesignsSignalLabDetail
+    v-else-if="lab && design === 'signal'"
+    :lab
+    :related="relatedLabs"
+  />
+  <DesignsStudioLabDetail
+    v-else-if="lab && design === 'studio'"
+    :lab
+    :related="relatedLabs"
+  />
+  <UPage v-else-if="lab">
     <article>
       <UPageHero
         :ui="{
@@ -80,11 +97,9 @@ const relatedLabs = computed(() => {
         }"
       >
         <template #title>
-          <div class="max-w-3xl text-left">
-            <h1 class="text-3xl font-bold tracking-tight text-highlighted sm:text-4xl lg:text-5xl">
-              {{ lab.title }}
-            </h1>
-          </div>
+          <span class="block max-w-3xl text-left text-3xl font-bold tracking-tight text-highlighted sm:text-4xl lg:text-5xl">
+            {{ lab.title }}
+          </span>
         </template>
 
         <template #description>

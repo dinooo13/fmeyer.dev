@@ -75,10 +75,30 @@ const relatedTalks = computed(() => {
     .filter(entry => entry.stem !== current?.stem)
     .slice(0, 3)
 })
+
+const { design } = useDesign()
 </script>
 
 <template>
-  <UPage v-if="talk">
+  <DesignsEditorialTalkDetail
+    v-if="talk && design === 'editorial'"
+    :talk
+    :subtitle="organizerSubtitle"
+    :related="relatedTalks"
+  />
+  <DesignsSignalTalkDetail
+    v-else-if="talk && design === 'signal'"
+    :talk
+    :subtitle="organizerSubtitle"
+    :related="relatedTalks"
+  />
+  <DesignsStudioTalkDetail
+    v-else-if="talk && design === 'studio'"
+    :talk
+    :subtitle="organizerSubtitle"
+    :related="relatedTalks"
+  />
+  <UPage v-else-if="talk">
     <article>
       <UPageHero
         :ui="{
@@ -88,21 +108,19 @@ const relatedTalks = computed(() => {
         }"
       >
         <template #title>
-          <div class="max-w-3xl text-left">
-            <h1 class="text-3xl font-bold tracking-tight text-highlighted sm:text-4xl lg:text-5xl">
-              {{ talk.title }}
-            </h1>
-            <p
-              v-if="organizerSubtitle"
-              class="mt-3 max-w-2xl text-base leading-6 font-normal text-muted sm:text-lg sm:leading-7"
-            >
-              {{ organizerSubtitle }}
-            </p>
-          </div>
+          <span class="block max-w-3xl text-left text-3xl font-bold tracking-tight text-highlighted sm:text-4xl lg:text-5xl">
+            {{ talk.title }}
+          </span>
         </template>
 
         <template #description>
           <div class="max-w-2xl text-left">
+            <p
+              v-if="organizerSubtitle"
+              class="mb-3 text-base leading-6 font-normal text-muted sm:text-lg sm:leading-7"
+            >
+              {{ organizerSubtitle }}
+            </p>
             <p class="text-sm text-muted sm:text-base">
               {{ talk.summary }}
             </p>
