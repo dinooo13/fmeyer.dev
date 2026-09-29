@@ -30,10 +30,12 @@ const dateParts = computed(() => {
   }
 })
 
+const now = useNow()
+
 const isUpcoming = computed(() => {
   if (props.talk.placeholder) return true
   if (!date.value) return false
-  const today = new Date()
+  const today = new Date(now.value)
   today.setUTCHours(0, 0, 0, 0)
   return date.value.getTime() >= today.getTime()
 })
@@ -69,7 +71,7 @@ const place = computed(() => {
           class="inline-flex items-center gap-2.5 rounded-full border border-(--signal-ok)/40 py-0.5 pr-2 pl-2.5 text-(--signal-ok)"
         >
           <span
-            class="signal-live !size-1.5"
+            class="signal-live !size-1"
             aria-hidden="true"
           />
           Upcoming

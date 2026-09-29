@@ -1,22 +1,17 @@
 <script setup lang="ts">
-const { design } = useDesign()
+const route = useRoute()
+const isHome = computed(() => route.path === '/')
 </script>
 
 <template>
-  <DesignsEditorialShell v-if="design === 'editorial'">
+  <div class="signal-shell relative isolate min-h-screen overflow-x-clip">
+    <div
+      class="signal-backdrop"
+      :class="isHome ? '' : 'signal-backdrop--compact'"
+      aria-hidden="true"
+    />
+    <AppHeader />
     <slot />
-  </DesignsEditorialShell>
-  <DesignsSignalShell v-else-if="design === 'signal'">
-    <slot />
-  </DesignsSignalShell>
-  <DesignsStudioShell v-else-if="design === 'studio'">
-    <slot />
-  </DesignsStudioShell>
-  <div v-else>
-    <UContainer class="sm:border-x border-default pt-10">
-      <AppHeader :links="navLinks" />
-      <slot />
-      <AppFooter />
-    </UContainer>
+    <AppFooter />
   </div>
 </template>

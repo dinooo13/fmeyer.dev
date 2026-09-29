@@ -15,11 +15,6 @@ const { data: talks } = await useAsyncData('home-talks', async () => {
   return sortTalks(entries)
 })
 
-const latestLab = computed(() => labs.value?.[0])
-const latestTalk = computed(() => getLatestTalk(talks.value ?? []))
-
-const { design } = useDesign()
-
 if (!page.value) {
   throw createError({
     statusCode: 404,
@@ -44,35 +39,10 @@ useSchemaOrg([
 </script>
 
 <template>
-  <DesignsEditorialHome
-    v-if="page && design === 'editorial'"
+  <HomeView
+    v-if="page"
     :page
     :labs="labs ?? []"
     :talks="talks ?? []"
   />
-  <DesignsSignalHome
-    v-else-if="page && design === 'signal'"
-    :page
-    :labs="labs ?? []"
-    :talks="talks ?? []"
-  />
-  <DesignsStudioHome
-    v-else-if="page && design === 'studio'"
-    :page
-    :labs="labs ?? []"
-    :talks="talks ?? []"
-  />
-  <UPage v-else-if="page">
-    <LandingHero :page />
-    <LandingFocus :page />
-    <LandingWorkExperience :page />
-    <LandingLabsTeaser
-      :section="page.labs"
-      :lab="latestLab"
-    />
-    <LandingSpeakingTeaser
-      :section="page.speaking"
-      :talk="latestTalk"
-    />
-  </UPage>
 </template>

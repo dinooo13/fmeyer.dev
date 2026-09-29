@@ -26,26 +26,29 @@ fmeyer.dev/
 ├── app/                        # Nuxt application code
 │   ├── app.vue                 # Root app component (global SEO, skip link, canonical URL, JSON-LD)
 │   ├── app.config.ts           # Runtime app config (profile pic, email, footer links, UI theme)
-│   ├── assets/css/main.css     # Global CSS (animations, prefers-reduced-motion)
+│   ├── assets/css/
+│   │   ├── main.css            # Tailwind/Nuxt UI imports, fonts (@theme), focus ring, global reduced-motion
+│   │   └── signal.css          # Site theme: tokens, Nuxt UI overrides, `signal-*` component classes
 │   ├── composables/
-│   │   └── usePageSeo.ts       # Sets useSeoMeta from a content page's seo/title/description
+│   │   ├── usePageSeo.ts       # Sets useSeoMeta from a content page's seo/title/description
+│   │   └── useNow.ts           # Hydration-safe "now" for time-dependent UI (Upcoming badges)
 │   ├── components/
-│   │   ├── AppHeader.vue       # Floating pill navigation bar (role="banner")
-│   │   ├── AppFooter.vue       # Footer with social links (role="contentinfo")
+│   │   ├── AppHeader.vue       # Floating glass navigation bar (role="banner")
+│   │   ├── AppFooter.vue       # "Let's talk" contact card + credits (role="contentinfo")
 │   │   ├── ColorModeButton.vue # Dark/light mode toggle
-│   │   ├── LabCard.vue         # Card for a lab entry in the grid
-│   │   ├── OgImage/
-│   │   │   └── NuxtSeoSatori.satori.vue  # OG image template
-│   │   ├── landing/            # Landing page section components
-│   │   │   ├── Hero.vue
-│   │   │   ├── Focus.vue
-│   │   │   ├── WorkExperience.vue
-│   │   │   ├── LabsTeaser.vue
-│   │   │   └── SpeakingTeaser.vue
-│   │   └── talks/
-│   │       └── TalkPreviewCard.vue
+│   │   ├── HomeView.vue        # Homepage: hero + agent-session terminal, focus, experience, speaking, labs
+│   │   ├── LabsView.vue        # Labs listing
+│   │   ├── LabDetailView.vue   # Lab detail: manifest panel, challenge → approach → next steps
+│   │   ├── SpeakingView.vue    # Speaking listing
+│   │   ├── TalkDetailView.vue  # Talk detail: session spec sheet, abstract, resources
+│   │   ├── AgentSession.vue    # Hero terminal (spec → code → verify)
+│   │   ├── LabCard.vue         # Lab card (whole card is a stretched link)
+│   │   ├── TalkRow.vue         # Talk row with date block (whole row is a stretched link)
+│   │   ├── SectionHeader.vue   # Numbered section eyebrow + heading
+│   │   └── OgImage/
+│   │       └── NuxtSeoSatori.satori.vue  # OG image template
 │   ├── layouts/
-│   │   └── default.vue         # Wraps every page: UContainer + AppHeader + slot + AppFooter
+│   │   └── default.vue         # Backdrop (grid + glow) + AppHeader + slot + AppFooter
 │   ├── pages/
 │   │   ├── index.vue           # Homepage (queries index, labs, talks collections)
 │   │   ├── labs/
@@ -71,7 +74,6 @@ fmeyer.dev/
 │   └── speaking/               # One .yml file per talk
 ├── public/                     # Static assets served as-is
 │   ├── favicon.ico
-│   ├── hero/                   # Hero images (random-1.avif … random-9.avif)
 │   ├── profile/                # Profile photo
 │   └── robots.txt
 ├── content.config.ts           # Nuxt Content collection schemas (Zod)
@@ -141,12 +143,6 @@ image: /path/to/image.jpg  # optional, goes in public/
 url: https://...           # optional live demo URL
 repoUrl: https://...       # optional GitHub repo URL
 note: ...                  # optional note shown on detail page
-metrics:                   # optional headline numbers (used by design explorations)
-  - value: "~300"
-    unit: ms               # optional
-    label: release to paste
-highlights:                # optional short selling points
-  - On device
 ```
 
 The slug used for the URL is derived from the filename (e.g., `my-project.yml` → `/labs/my-project`).
@@ -198,8 +194,12 @@ resources:                 # optional list of linked assets
 
 - Use `<script setup lang="ts">` for all components.
 - Use Nuxt auto-imports — do not manually import `ref`, `computed`, `useRoute`, etc.
-- Use `@nuxt/ui` components (`UButton`, `UCard`, `UPage`, `UPageHero`, `UPageSection`, `UBadge`, `UNavigationMenu`, etc.) rather than raw HTML.
-- Use Tailwind utility classes directly. The primary colour is `blue`, neutral is `neutral`.
+- Pages own data loading, SEO, and schema-org; the matching `*View.vue` component only renders (props in, markup out).
+- Use `@nuxt/ui` components for interactive controls (`UButton`, `UIcon`, …). Layout and cards use semantic HTML with the site's `signal-*` classes from `signal.css` (`signal-card`, `signal-chip`, `signal-eyebrow`, `signal-glass`, `signal-gradient-text`, …) plus Tailwind utilities. Reuse those classes rather than inventing new card styles.
+- Fonts are Geist (sans) and Geist Mono (labels, meta, terminal), declared in `main.css` `@theme` and self-hosted by `@nuxt/fonts`.
+- The primary colour is `blue`, neutral is `neutral`.
+- The site is dark-first but must work in light mode too; `signal.css` defines tokens for both (`:root` and `:root.dark`).
+- Whole-card links use the stretched-link pattern: the title link gets `signal-stretched` (its `::after` covers the card) and nested actions sit above it with `relative z-10`.
 - Icon names follow Iconify format: `i-lucide-<name>` or `i-simple-icons-<name>`.
 - The `Motion` component from `motion-v` is available globally for entrance animations.
 
@@ -233,8 +233,9 @@ Performance directly affects user experience and Lighthouse scores. Follow these
 **Animations**
 - Use CSS-only entrance animations for above-the-fold elements. Do **not** use `motion-v` with `initial: { opacity: 0 }` on LCP-critical elements — it hides them until JS hydrates and breaks Lighthouse LCP measurement.
 - Animate with `transform` only (e.g., `scale`, `translateY`). Avoid animating `opacity`, `filter`, or layout properties above the fold — non-transform animations force main-thread repaints and increase Total Blocking Time.
-- Staggered entrance classes (`.hero-enter-1` through `.hero-enter-4` in `main.css`) use `animation-delay` so the browser schedules them without blocking.
-- Always include a `@media (prefers-reduced-motion: reduce)` block that sets `animation-duration: 0.01ms` and disables view-transition animations. This is in `main.css` — keep it up to date when adding new animations.
+- Staggered hero entrance classes (`.signal-rise` + `.signal-rise-1` … `.signal-rise-5` in `signal.css`) are transform-only and use `animation-delay` so the browser schedules them without blocking.
+- Always include `@media (prefers-reduced-motion: reduce)` coverage. The global block in `main.css` sets `animation-duration: 0.01ms` and disables view-transition animations; `signal.css` has its own block for the backdrop drift, terminal cursor, and pings — keep both up to date when adding new animations.
+- Time-dependent rendering (e.g. "Upcoming") must use `useNow()`, never `new Date()` / `Date.now()` directly in a component, or the prerendered HTML will mismatch on hydration once the date passes.
 
 **Images**
 - Hero / above-the-fold images: use `loading="eager"` and `fetchpriority="high"` on `<NuxtImg>`.
@@ -261,12 +262,12 @@ This site targets WCAG 2.1 AA compliance. Every change must preserve or improve 
 - Action button groups on detail pages (back, demo, repo) go in `<nav aria-label="..."><ul class="list-none p-0">...</ul></nav>`.
 
 **Interactive elements**
-- Toggle buttons (e.g., "Show more experience" in `WorkExperience.vue`) must have `:aria-expanded` bound to state and `:aria-controls` pointing to the controlled element's `id`. The button label must also change to reflect state.
+- Toggle buttons (e.g., "Show earlier roles" in `HomeView.vue`) must have `:aria-expanded` bound to state and `:aria-controls` pointing to the controlled element's `id`. The button label must also change to reflect state.
 - Never use a `<div>` or `<span>` as a click target without `role="button"`, `tabindex="0"`, and keyboard handler.
 
 **Screen-reader link text**
 - When a button label is generic (e.g., "View details", "Learn more"), append `<span class="sr-only"> for {{ item.title }}</span>` inside the label slot. This gives screen reader users context without changing the visual design.
-- Pattern used in `LabCard.vue` and `TalkPreviewCard.vue` — follow the same pattern for any new cards.
+- Pattern used in `LabCard.vue` and `TalkRow.vue` — follow the same pattern for any new cards.
 
 **Color contrast**
 - Nuxt UI's `color="success" variant="soft"` renders green text on green background (~2:1 contrast ratio) — it does **not** meet WCAG AA (4.5:1). Use `color="neutral" variant="soft"` for status badges where the meaning is conveyed by text, not colour alone.
@@ -279,18 +280,6 @@ Config is generated by `@nuxt/eslint` with stylistic rules:
 - 1TBS brace style (`braceStyle: '1tbs'`)
 
 Run `pnpm lint:fix` before committing if you change formatting.
-
-### Design explorations (temporary)
-
-The site can render one of several designs, picked with the floating `DesignSwitcher` pill or `?design=<id>` (persisted in `localStorage`):
-
-- `app/utils/designs.ts` — design registry (`classic`, `editorial`, `signal`, `studio`) and the inline `designBootScript` that sets `data-design` on `<html>` before first paint.
-- `app/plugins/design.client.ts` — static generation always renders `classic`; the stored design is applied after hydration resolves (`app:suspense:resolve`) to avoid hydration mismatches.
-- `app/components/designs/<id>/` — `Shell.vue` (header/footer chrome, used by `layouts/default.vue`), `Home.vue`, `Labs.vue`, `Speaking.vue`, `LabDetail.vue`, `TalkDetail.vue` (used by the matching pages). Pages keep data loading, SEO, and schema-org; design components only render.
-- `designOptions[].themeColor` — `theme-color` meta values applied when a design is active.
-- `app/assets/css/designs/<id>.css` — design styles, every rule scoped under `[data-design="<id>"]`, including Nuxt UI token overrides.
-
-Once a design is chosen, promote its components to the defaults and delete the switcher, the other designs, and this section.
 
 ### Sorting and slug logic
 
@@ -305,7 +294,8 @@ Before considering any change done, verify:
 - [ ] `pnpm lint` passes with no errors
 - [ ] `pnpm typecheck` passes with no errors
 - [ ] New above-the-fold elements do not use `opacity: 0` initial states (LCP impact)
-- [ ] New animations have `@media (prefers-reduced-motion: reduce)` coverage in `main.css`
+- [ ] New animations have `@media (prefers-reduced-motion: reduce)` coverage (`main.css` / `signal.css`)
+- [ ] Time-dependent UI uses `useNow()` (no `new Date()` in render paths)
 - [ ] New images have correct `loading`, `fetchpriority`, `alt`, `sizes`, and `densities` attributes
 - [ ] New interactive elements have correct ARIA attributes (landmarks, expanded state, controls)
 - [ ] New link groups use `<nav>` + `<ul>` + `<li>` structure

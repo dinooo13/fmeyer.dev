@@ -5,8 +5,6 @@ const baseURL = runtimeConfig.app.baseURL
 
 const basePrefix = baseURL.replace(/\/$/, '')
 
-const { design } = useDesign()
-const themeColor = computed(() => designOptions.find(option => option.id === design.value)!.themeColor)
 const canonicalUrl = computed(() => {
   return new URL(`${basePrefix}${route.path || '/'}`, runtimeConfig.public.siteUrl).toString()
 })
@@ -17,8 +15,8 @@ useHead({
     // No `key` on the theme-color pair: unhead treats same-name theme-color tags
     // as an array and matches them to the prerendered pair by position. Custom
     // keys made the client insert a second pair after hydration.
-    { name: 'theme-color', media: '(prefers-color-scheme: light)', content: () => themeColor.value.light },
-    { name: 'theme-color', media: '(prefers-color-scheme: dark)', content: () => themeColor.value.dark },
+    { name: 'theme-color', media: '(prefers-color-scheme: light)', content: '#fbfcfe' },
+    { name: 'theme-color', media: '(prefers-color-scheme: dark)', content: '#07090f' },
     { name: 'viewport', content: 'width=device-width, initial-scale=1' },
     { name: 'author', content: 'Fabian Meyer' },
     {
@@ -34,9 +32,6 @@ useHead({
     { rel: 'alternate', type: 'application/rss+xml', title: 'fmeyer.dev — Labs & Speaking', href: `${baseURL}rss.xml` },
     { rel: 'me', href: 'https://github.com/dinooo13' },
     { rel: 'me', href: 'https://linkedin.com/in/fabian-meyer-02038813a' }
-  ],
-  script: [
-    { key: 'design-boot', innerHTML: designBootScript, tagPosition: 'head' }
   ],
   htmlAttrs: {
     lang: 'en'
@@ -79,6 +74,5 @@ useSchemaOrg([
         <NuxtPage />
       </UMain>
     </NuxtLayout>
-    <DesignSwitcher />
   </UApp>
 </template>

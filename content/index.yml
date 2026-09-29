@@ -6,13 +6,13 @@ description: Staff Agentic Engineer at Cordes & Graefe KG focused on organisatio
 hero:
   name: Fabian Meyer
   role: "Staff Agentic Engineer at Cordes\u00A0&\u00A0Graefe\u00A0KG"
-  intro: I am moving Cordes & Graefe to agentic engineering. That means shaping how teams work with agents, building the tooling and workflows that make the change stick, and staying hands-on so the practices hold up in real delivery.
+  intro: I help companies make the move to agentic engineering. That means shaping how teams work with agents, building the tooling and workflows that make the change stick, and staying hands-on so the practices hold up in real delivery.
 focus:
   title: Focus
   description: What I spend time on right now.
   items:
     - title: Agentic engineering transformation
-      description: Moving the organisation to agentic engineering by defining the target way of working, guiding teams through the shift, and making sure adoption shows up as real delivery impact.
+      description: Moving companies to agentic engineering by defining the target way of working, guiding teams through the shift, and making sure adoption shows up as real delivery impact.
     - title: Agent-ready tooling and workflows
       description: Integrating agents into existing delivery tooling and building spec-driven development workflows that let engineers move from executing process to reviewing outcomes.
     - title: Enablement and coaching

@@ -17,10 +17,12 @@ const date = computed(() => {
 
 const isoDate = computed(() => date.value?.toISOString().slice(0, 10))
 
+const now = useNow()
+
 const isUpcoming = computed(() => {
   if (props.talk.placeholder) return true
   if (!date.value) return false
-  const today = new Date()
+  const today = new Date(now.value)
   today.setUTCHours(0, 0, 0, 0)
   return date.value.getTime() >= today.getTime()
 })
@@ -96,9 +98,9 @@ const reveal = {
               >~</NuxtLink>
             </li>
             <li>
-              <NuxtLink to="/speaking">
-                speaking
-              </NuxtLink>
+              <NuxtLink
+                to="/speaking"
+              >speaking</NuxtLink>
             </li>
             <li aria-current="page">
               {{ slug }}
@@ -350,7 +352,7 @@ const reveal = {
       aria-labelledby="signal-related-talks"
       class="mx-auto max-w-6xl border-t border-default px-5 py-16 sm:px-8 sm:py-20"
     >
-      <DesignsSignalSectionHeader
+      <SectionHeader
         index="~/"
         eyebrow="Speaking"
         heading-id="signal-related-talks"
@@ -369,7 +371,7 @@ const reveal = {
           v-bind="reveal"
           :transition="{ delay: index * 0.06 }"
         >
-          <DesignsSignalTalkRow :talk="entry" />
+          <TalkRow :talk="entry" />
         </Motion>
       </ul>
     </section>

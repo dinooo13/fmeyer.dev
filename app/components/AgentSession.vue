@@ -1,21 +1,17 @@
 <script setup lang="ts">
-import type { LabsCollectionItem, TalksCollectionItem } from '@nuxt/content'
+import type { TalksCollectionItem } from '@nuxt/content'
 
 const props = defineProps<{
-  labs: LabsCollectionItem[]
   talks: TalksCollectionItem[]
 }>()
 
 // Every line below is lifted from the Spec, Code, Verify workshop / course
-// abstracts and the Pladder lab entry — nothing here is invented.
+// abstracts — nothing here is invented.
 const steps = [
   { key: 'spec', tone: 't-spec', detail: 'ticket → structured spec' },
   { key: 'code', tone: 't-code', detail: 'task patterns · skills · subagents' },
   { key: 'verify', tone: 't-verify', detail: 'quality gates · automated checks' }
 ]
-
-const pladder = computed(() => props.labs.find(lab => getLabSlug(lab) === 'pladder'))
-const benchmark = computed(() => pladder.value?.metrics?.find(metric => metric.unit === 'ms'))
 
 const workshop = computed(() => props.talks.find(talk => /workshop/i.test(talk.format ?? '')))
 </script>
@@ -75,25 +71,9 @@ const workshop = computed(() => props.talks.find(talk => /workshop/i.test(talk.f
             <span class="t-ok">→</span> reviewable result, ready for human review
           </p>
 
-          <template v-if="pladder && benchmark">
-            <p
-              class="t-line pt-3"
-              style="animation-delay: 0.95s"
-            >
-              <span class="t-prompt">❯</span> <span class="t-strong">bench</span> {{ getLabSlug(pladder) }} <span class="t-dim">--device</span> m1
-            </p>
-            <p
-              class="t-line grid grid-cols-[minmax(0,1fr)_auto] gap-x-2"
-              style="animation-delay: 1.1s"
-            >
-              <span><span class="t-dim">{{ benchmark.label.replaceAll(' ', '-') }}</span> <span class="t-verify">{{ benchmark.value }} {{ benchmark.unit }}</span></span>
-              <span class="t-ok">✓ on device</span>
-            </p>
-          </template>
-
           <p
             class="t-line pt-3"
-            style="animation-delay: 1.25s"
+            style="animation-delay: 0.95s"
           >
             <span class="t-prompt">❯</span> <span
               class="signal-cursor"

@@ -18,7 +18,7 @@ const reveal = {
 
 <template>
   <div class="mx-auto max-w-6xl px-5 pt-32 pb-20 sm:px-8 sm:pt-40 sm:pb-24">
-    <DesignsSignalSectionHeader
+    <SectionHeader
       as="h1"
       eyebrow="Speaking"
       index="~/"
@@ -62,7 +62,7 @@ const reveal = {
         v-for="talk in talks.slice(0, 2)"
         :key="`${talk.title}-${talk.event}`"
       >
-        <DesignsSignalTalkRow
+        <TalkRow
           :talk
           heading-level="h2"
           show-summary
@@ -75,44 +75,12 @@ const reveal = {
         v-bind="reveal"
         :transition="{ delay: index * 0.06 }"
       >
-        <DesignsSignalTalkRow
+        <TalkRow
           :talk
           heading-level="h2"
           show-summary
         />
       </Motion>
     </ul>
-
-    <aside
-      v-if="page.invite"
-      aria-labelledby="signal-invite-title"
-      class="signal-card mt-16 overflow-hidden p-8 sm:p-10"
-    >
-      <div class="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
-        <div class="max-w-xl">
-          <p class="signal-eyebrow">
-            Invite
-          </p>
-          <h2
-            id="signal-invite-title"
-            class="mt-3 text-2xl font-semibold tracking-[-0.03em] text-highlighted sm:text-3xl"
-          >
-            {{ page.invite.title }}
-          </h2>
-          <p class="mt-3 text-muted">
-            {{ page.invite.description }}
-          </p>
-        </div>
-        <UButton
-          v-if="page.invite.link"
-          :to="page.invite.link.to"
-          :icon="page.invite.link.icon"
-          :label="page.invite.link.label"
-          color="primary"
-          size="lg"
-          class="self-start rounded-full px-5 sm:self-auto"
-        />
-      </div>
-    </aside>
   </div>
 </template>

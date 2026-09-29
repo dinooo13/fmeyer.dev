@@ -17,30 +17,17 @@ export type LabEntry = {
   date: string | Date
   order?: number
   note?: string
-  metrics?: LabMetric[]
-  highlights?: string[]
 }
 
-export type LabMetric = {
-  value: string
-  unit?: string
-  label: string
-}
-
-// Neutral on purpose: Nuxt UI's soft warning/info badges miss WCAG AA contrast,
-// and the label plus icon already carry the status.
-export const labStatusMap: Record<LabStatus, { label: string, color: 'neutral' }> = {
+export const labStatusMap: Record<LabStatus, { label: string }> = {
   wip: {
-    label: 'WIP',
-    color: 'neutral'
+    label: 'WIP'
   },
   prototype: {
-    label: 'Prototype',
-    color: 'neutral'
+    label: 'Prototype'
   },
   paused: {
-    label: 'Paused',
-    color: 'neutral'
+    label: 'Paused'
   }
 }
 

@@ -58,9 +58,9 @@ const reveal = {
               >~</NuxtLink>
             </li>
             <li>
-              <NuxtLink to="/labs">
-                labs
-              </NuxtLink>
+              <NuxtLink
+                to="/labs"
+              >labs</NuxtLink>
             </li>
             <li aria-current="page">
               {{ slug }}
@@ -157,7 +157,7 @@ const reveal = {
                 <dd class="flex items-center gap-2">
                   <span
                     v-if="lab.status === 'wip'"
-                    class="signal-live !size-1.5"
+                    class="signal-live !size-1"
                     aria-hidden="true"
                   />
                   {{ status.label }}
@@ -370,7 +370,7 @@ const reveal = {
       aria-labelledby="signal-related-labs"
       class="mx-auto max-w-6xl border-t border-default px-5 py-16 sm:px-8 sm:py-20"
     >
-      <DesignsSignalSectionHeader
+      <SectionHeader
         index="~/"
         eyebrow="Labs"
         heading-id="signal-related-labs"
@@ -389,7 +389,7 @@ const reveal = {
           v-bind="reveal"
           :transition="{ delay: index * 0.08 }"
         >
-          <DesignsSignalLabCard :lab="entry" />
+          <LabCard :lab="entry" />
         </Motion>
       </ul>
     </section>

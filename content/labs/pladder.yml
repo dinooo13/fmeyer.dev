@@ -16,11 +16,3 @@ tags:
   - Speech-to-text
 date: 2026-09-09T21:51:23Z
 order: 1
-metrics:
-  - value: "~300"
-    unit: ms
-    label: release to paste
-highlights:
-  - On device
-  - Offline
-  - MIT licensed

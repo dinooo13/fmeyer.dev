@@ -20,7 +20,7 @@ const reveal = {
 
 <template>
   <div class="mx-auto max-w-6xl px-5 pt-32 pb-20 sm:px-8 sm:pt-40 sm:pb-24">
-    <DesignsSignalSectionHeader
+    <SectionHeader
       as="h1"
       eyebrow="Labs"
       index="~/"
@@ -63,7 +63,7 @@ const reveal = {
         v-if="featuredLab"
         class="md:col-span-2"
       >
-        <DesignsSignalLabCard
+        <LabCard
           :lab="featuredLab"
           featured
           heading-level="h2"
@@ -76,7 +76,7 @@ const reveal = {
         v-bind="reveal"
         :transition="{ delay: index * 0.08 }"
       >
-        <DesignsSignalLabCard
+        <LabCard
           :lab
           heading-level="h2"
         />
