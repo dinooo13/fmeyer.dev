@@ -25,6 +25,9 @@ const displayUrl = (value: string) => {
   }
 }
 
+// Split after each "/" so long URLs wrap at path segments, not mid-word.
+const urlParts = (value: string) => displayUrl(value).split(/(?<=\/)/)
+
 // The three content fields read as one pipeline: input, build, output.
 const stages = computed(() => [
   { id: 'challenge', index: '01', label: 'input', title: 'Challenge', text: props.lab.challenge, tone: 'is-blue' },
@@ -199,8 +202,11 @@ const reveal = {
                     :href="lab.repoUrl"
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="signal-spec-link break-all"
-                  >{{ displayUrl(lab.repoUrl) }}<span class="sr-only"> (opens in a new tab)</span></a>
+                    class="signal-spec-link break-words"
+                  ><template
+                    v-for="(part, index) in urlParts(lab.repoUrl)"
+                    :key="index"
+                  ><wbr v-if="index">{{ part }}</template><span class="sr-only"> (opens in a new tab)</span></a>
                 </dd>
               </div>
               <div v-if="lab.url">
@@ -210,8 +216,11 @@ const reveal = {
                     :href="lab.url"
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="signal-spec-link break-all"
-                  >{{ displayUrl(lab.url) }}<span class="sr-only"> (opens in a new tab)</span></a>
+                    class="signal-spec-link break-words"
+                  ><template
+                    v-for="(part, index) in urlParts(lab.url)"
+                    :key="index"
+                  ><wbr v-if="index">{{ part }}</template><span class="sr-only"> (opens in a new tab)</span></a>
                 </dd>
               </div>
             </dl>
