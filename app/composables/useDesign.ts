@@ -8,11 +8,6 @@ export const useDesign = () => {
     if (import.meta.client) {
       document.documentElement.setAttribute('data-design', id)
 
-      const { themeColor } = designOptions.find(option => option.id === id)!
-      document.querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]').forEach((meta) => {
-        meta.content = meta.media.includes('dark') ? themeColor.dark : themeColor.light
-      })
-
       try {
         localStorage.setItem(DESIGN_STORAGE_KEY, id)
       } catch {
