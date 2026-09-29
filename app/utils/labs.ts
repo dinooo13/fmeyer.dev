@@ -15,6 +15,7 @@ export type LabEntry = {
   repoUrl?: string
   tags: string[]
   date: string | Date
+  order?: number
   note?: string
 }
 
@@ -41,7 +42,9 @@ export const labStatusIconMap: Record<LabStatus, string> = {
 
 export const sortLabs = <Lab extends LabEntry>(labs: Lab[]) => {
   return labs.slice().sort((left, right) => {
-    return (getTimestamp(right.date) ?? 0) - (getTimestamp(left.date) ?? 0) || left.title.localeCompare(right.title)
+    return (left.order ?? Infinity) - (right.order ?? Infinity)
+      || (getTimestamp(right.date) ?? 0) - (getTimestamp(left.date) ?? 0)
+      || left.title.localeCompare(right.title)
   })
 }
 

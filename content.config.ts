@@ -95,6 +95,7 @@ export default defineContentConfig({
         repoUrl: z.string().url().optional(),
         tags: z.array(z.string()),
         date: z.date(),
+        order: z.number().int().optional(),
         note: z.string().optional()
       })
     }),
