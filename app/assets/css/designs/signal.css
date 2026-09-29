@@ -1,1 +1,696 @@
 /* signal design — every rule must be scoped under [data-design="signal"] */
+
+/* ------------------------------------------------------------------ */
+/* Tokens                                                              */
+/* ------------------------------------------------------------------ */
+
+:root[data-design="signal"] {
+  --font-sans: 'Geist', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'Geist Mono', ui-monospace, 'SFMono-Regular', monospace;
+  --ui-container: 72rem;
+  --ui-radius: 0.5rem;
+
+  --ui-bg: #fbfcfe;
+  --ui-bg-muted: #f3f5f9;
+  --ui-bg-elevated: #eef1f6;
+  --ui-bg-accented: #e2e7ef;
+  --ui-bg-inverted: #0b1020;
+
+  --ui-text-dimmed: #5f687b;
+  --ui-text-muted: #525b6e;
+  --ui-text-toned: #394155;
+  --ui-text: #283042;
+  --ui-text-highlighted: #0b1020;
+  --ui-text-inverted: #ffffff;
+
+  --ui-border: #e0e5ee;
+  --ui-border-muted: #eaeef4;
+  --ui-border-accented: #c9d1de;
+  --ui-border-inverted: #0b1020;
+
+  --ui-primary: #2150d4;
+  --ui-warning: #a15c07;
+  --ui-success: #047857;
+  --ui-info: #0b6d8a;
+
+  /* Signal-only tokens */
+  --signal-card: rgb(255 255 255 / 0.78);
+  --signal-card-solid: #ffffff;
+  --signal-glass: rgb(255 255 255 / 0.72);
+  --signal-glass-border: rgb(15 23 42 / 0.08);
+  --signal-grid: rgb(15 23 42 / 0.07);
+  --signal-aurora-1: rgb(59 130 246 / 0.26);
+  --signal-aurora-2: rgb(139 92 246 / 0.22);
+  --signal-aurora-3: rgb(6 182 212 / 0.16);
+  --signal-name-from: #0b1020;
+  --signal-name-via: #3b2bb5;
+  --signal-name-to: #0b6d8a;
+  --signal-blue: #2150d4;
+  --signal-violet: #6d3fd6;
+  --signal-cyan: #0b6d8a;
+  --signal-ok: #047857;
+  --signal-glow: rgb(33 80 212 / 0.16);
+  --signal-shadow: 0 1px 2px rgb(15 23 42 / 0.04), 0 12px 32px -12px rgb(15 23 42 / 0.12);
+  --signal-term-bg: #0b0f19;
+  --signal-term-text: #c9d2e3;
+  --signal-term-dim: #8993a8;
+
+  font-family: 'Geist', ui-sans-serif, system-ui, sans-serif;
+}
+
+:root.dark[data-design="signal"] {
+  --ui-bg: #07090f;
+  --ui-bg-muted: #0c0f17;
+  --ui-bg-elevated: #11151f;
+  --ui-bg-accented: #1a2130;
+  --ui-bg-inverted: #f5f7fb;
+
+  --ui-text-dimmed: #7f899d;
+  --ui-text-muted: #9ba4b6;
+  --ui-text-toned: #bac2d1;
+  --ui-text: #d4dae5;
+  --ui-text-highlighted: #f5f7fb;
+  --ui-text-inverted: #07090f;
+
+  --ui-border: #1b2130;
+  --ui-border-muted: #141925;
+  --ui-border-accented: #2a3246;
+  --ui-border-inverted: #f5f7fb;
+
+  --ui-primary: #82acff;
+
+  --signal-card: rgb(17 21 31 / 0.62);
+  --signal-card-solid: #0d1119;
+  --signal-glass: rgb(10 13 21 / 0.66);
+  --signal-glass-border: rgb(255 255 255 / 0.08);
+  --signal-grid: rgb(148 163 184 / 0.075);
+  --signal-aurora-1: rgb(59 110 246 / 0.34);
+  --signal-aurora-2: rgb(139 92 246 / 0.30);
+  --signal-aurora-3: rgb(56 189 248 / 0.20);
+  --signal-name-from: #ffffff;
+  --signal-name-via: #c9ceff;
+  --signal-name-to: #9eeefc;
+  --signal-blue: #82acff;
+  --signal-violet: #b69cff;
+  --signal-cyan: #67e3f5;
+  --signal-ok: #4ade80;
+  --signal-glow: rgb(130 172 255 / 0.18);
+  --signal-shadow: 0 1px 0 rgb(255 255 255 / 0.04) inset, 0 20px 40px -20px rgb(0 0 0 / 0.6);
+  --signal-term-bg: #0a0d15;
+}
+
+[data-design="signal"] body {
+  font-family: 'Geist', ui-sans-serif, system-ui, sans-serif;
+  font-feature-settings: 'ss01', 'cv11';
+}
+
+[data-design="signal"] .font-mono,
+[data-design="signal"] .signal-mono {
+  font-family: 'Geist Mono', ui-monospace, 'SFMono-Regular', monospace;
+}
+
+[data-design="signal"] ::selection {
+  color: #ffffff;
+  background-color: #2150d4;
+}
+
+/* ------------------------------------------------------------------ */
+/* Backdrop: engineering grid + aurora                                 */
+/* ------------------------------------------------------------------ */
+
+[data-design="signal"] .signal-backdrop {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 56rem;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: -1;
+}
+
+[data-design="signal"] .signal-backdrop::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, var(--signal-grid) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--signal-grid) 1px, transparent 1px);
+  background-size: 56px 56px;
+  background-position: center top;
+  mask-image: radial-gradient(ellipse 75% 70% at 50% 0%, #000 25%, transparent 78%);
+}
+
+[data-design="signal"] .signal-backdrop::after {
+  content: '';
+  position: absolute;
+  inset: -12rem -10% auto;
+  height: 54rem;
+  background:
+    radial-gradient(34% 40% at 30% 48%, var(--signal-aurora-1), transparent 70%),
+    radial-gradient(30% 38% at 60% 40%, var(--signal-aurora-2), transparent 70%),
+    radial-gradient(26% 34% at 78% 58%, var(--signal-aurora-3), transparent 70%);
+  animation: signal-drift 26s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+[data-design="signal"] .signal-backdrop--compact {
+  height: 36rem;
+}
+
+@keyframes signal-drift {
+  from {
+    transform: translate3d(-3%, 0, 0) rotate(-2deg) scale(1);
+  }
+  to {
+    transform: translate3d(3%, 2rem, 0) rotate(2deg) scale(1.06);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Shell                                                               */
+/* ------------------------------------------------------------------ */
+
+[data-design="signal"] .signal-glass {
+  background: var(--signal-glass);
+  border: 1px solid var(--signal-glass-border);
+  backdrop-filter: blur(14px) saturate(160%);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  box-shadow: 0 10px 30px -12px rgb(2 6 23 / 0.25);
+}
+
+[data-design="signal"] .signal-monogram {
+  display: inline-grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 9999px;
+  font-family: 'Geist Mono', ui-monospace, monospace;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #ffffff;
+  background:
+    linear-gradient(135deg, #2150d4, #6d3fd6 55%, #0b6d8a);
+  box-shadow: 0 0 0 1px rgb(255 255 255 / 0.15) inset, 0 4px 14px -4px rgb(59 130 246 / 0.6);
+}
+
+[data-design="signal"] .signal-navlink[aria-current="page"],
+[data-design="signal"] .signal-navlink.is-active {
+  color: var(--ui-text-highlighted);
+  background: var(--ui-bg-accented);
+}
+
+/* ------------------------------------------------------------------ */
+/* Typography helpers                                                  */
+/* ------------------------------------------------------------------ */
+
+[data-design="signal"] .signal-name {
+  background-image: linear-gradient(100deg, var(--signal-name-from) 0%, var(--signal-name-from) 30%, var(--signal-name-via) 62%, var(--signal-name-to) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.045em;
+  line-height: 0.95;
+}
+
+[data-design="signal"] .signal-gradient-text {
+  background-image: linear-gradient(90deg, var(--signal-blue), var(--signal-violet) 55%, var(--signal-cyan));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+[data-design="signal"] .signal-eyebrow {
+  font-family: 'Geist Mono', ui-monospace, monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ui-text-muted);
+}
+
+[data-design="signal"] .signal-rule {
+  height: 1px;
+  background: linear-gradient(90deg, var(--ui-border-accented), transparent);
+}
+
+/* ------------------------------------------------------------------ */
+/* Status chip                                                         */
+/* ------------------------------------------------------------------ */
+
+[data-design="signal"] .signal-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  border-radius: 9999px;
+  border: 1px solid var(--signal-glass-border);
+  background: var(--signal-glass);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 0.35rem 0.85rem 0.35rem 0.6rem;
+}
+
+[data-design="signal"] .signal-live {
+  position: relative;
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  flex-shrink: 0;
+  border-radius: 9999px;
+  background: var(--signal-ok);
+  box-shadow: 0 0 10px var(--signal-ok);
+}
+
+[data-design="signal"] .signal-live::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: inherit;
+  border: 1px solid var(--signal-ok);
+  animation: signal-ping 2.4s cubic-bezier(0.2, 0.7, 0.3, 1) infinite;
+  transform: scale(0.6);
+}
+
+@keyframes signal-ping {
+  0% {
+    transform: scale(0.6);
+  }
+  70%,
+  100% {
+    transform: scale(1.35);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Hero entrance (transform only, LCP-safe)                            */
+/* ------------------------------------------------------------------ */
+
+[data-design="signal"] .signal-rise {
+  animation: signal-rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+[data-design="signal"] .signal-rise-1 { animation-delay: 0.04s; }
+[data-design="signal"] .signal-rise-2 { animation-delay: 0.1s; }
+[data-design="signal"] .signal-rise-3 { animation-delay: 0.16s; }
+[data-design="signal"] .signal-rise-4 { animation-delay: 0.22s; }
+[data-design="signal"] .signal-rise-5 { animation-delay: 0.28s; }
+
+@keyframes signal-rise {
+  from {
+    transform: translate3d(0, 14px, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Agent session terminal                                              */
+/* ------------------------------------------------------------------ */
+
+[data-design="signal"] .signal-terminal {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-radius: 1rem;
+  padding: 1px;
+  background: linear-gradient(160deg, rgb(130 172 255 / 0.55), rgb(182 156 255 / 0.25) 40%, rgb(103 227 245 / 0.35));
+  box-shadow: 0 30px 80px -30px rgb(37 99 235 / 0.55), 0 0 0 1px rgb(255 255 255 / 0.02);
+}
+
+[data-design="signal"] .signal-terminal::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  left: 50%;
+  top: 50%;
+  width: 200%;
+  aspect-ratio: 1;
+  margin-left: -100%;
+  margin-top: -100%;
+  background: conic-gradient(from 0deg, transparent 0deg, rgb(130 172 255 / 0.9) 40deg, transparent 90deg, transparent 180deg, rgb(103 227 245 / 0.8) 220deg, transparent 270deg);
+  animation: signal-orbit 9s linear infinite;
+}
+
+@keyframes signal-orbit {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+[data-design="signal"] .signal-terminal-inner {
+  position: relative;
+  border-radius: calc(1rem - 1px);
+  background:
+    radial-gradient(120% 60% at 100% 0%, rgb(109 63 214 / 0.14), transparent 60%),
+    radial-gradient(90% 60% at 0% 100%, rgb(33 80 212 / 0.14), transparent 60%),
+    var(--signal-term-bg);
+  color: var(--signal-term-text);
+}
+
+[data-design="signal"] .signal-terminal .t-dim { color: var(--signal-term-dim); }
+[data-design="signal"] .signal-terminal .t-prompt { color: #82acff; }
+[data-design="signal"] .signal-terminal .t-spec { color: #82acff; }
+[data-design="signal"] .signal-terminal .t-code { color: #c3aefe; }
+[data-design="signal"] .signal-terminal .t-verify { color: #67e3f5; }
+[data-design="signal"] .signal-terminal .t-ok { color: #4ade80; }
+[data-design="signal"] .signal-terminal .t-strong { color: #f5f7fb; }
+
+[data-design="signal"] .signal-terminal .t-line {
+  animation: signal-line 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+@keyframes signal-line {
+  from {
+    transform: translate3d(-8px, 0, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+[data-design="signal"] .signal-cursor {
+  display: inline-block;
+  width: 0.55em;
+  height: 1.1em;
+  vertical-align: -0.2em;
+  background: #82acff;
+  transform-origin: 50% 100%;
+  animation: signal-blink 1.1s steps(1, end) infinite;
+}
+
+@keyframes signal-blink {
+  0%,
+  49% {
+    transform: scaleY(1);
+  }
+  50%,
+  100% {
+    transform: scaleY(0);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Cards with glowing border + cheap pointer spotlight                 */
+/* ------------------------------------------------------------------ */
+
+[data-design="signal"] .signal-card {
+  position: relative;
+  isolation: isolate;
+  border-radius: 1rem;
+  border: 1px solid var(--ui-border);
+  background: var(--signal-card);
+  box-shadow: var(--signal-shadow);
+  transition: border-color 0.25s ease, transform 0.25s ease;
+}
+
+[data-design="signal"] .signal-card::before,
+[data-design="signal"] .signal-card::after {
+  content: '';
+  position: absolute;
+  pointer-events: none;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* soft fill spotlight */
+[data-design="signal"] .signal-card::before {
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 0%), var(--signal-glow), transparent 45%);
+}
+
+/* luminous border spotlight */
+[data-design="signal"] .signal-card::after {
+  inset: -1px;
+  padding: 1px;
+  background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 0%), rgb(130 172 255 / 0.95), rgb(182 156 255 / 0.5) 35%, transparent 70%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+}
+
+[data-design="signal"] .signal-card:hover,
+[data-design="signal"] .signal-card:focus-within {
+  border-color: var(--ui-border-accented);
+}
+
+[data-design="signal"] .signal-card:hover::before,
+[data-design="signal"] .signal-card:hover::after,
+[data-design="signal"] .signal-card:focus-within::after {
+  opacity: 1;
+}
+
+[data-design="signal"] .signal-icon-tile {
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  border-radius: 0.75rem;
+  color: var(--signal-blue);
+  background:
+    linear-gradient(var(--signal-card-solid), var(--signal-card-solid)) padding-box,
+    linear-gradient(145deg, rgb(130 172 255 / 0.7), rgb(182 156 255 / 0.35), rgb(103 227 245 / 0.55)) border-box;
+  border: 1px solid transparent;
+  box-shadow: 0 8px 24px -10px rgb(59 130 246 / 0.55);
+}
+
+/* ------------------------------------------------------------------ */
+/* Stat strip                                                          */
+/* ------------------------------------------------------------------ */
+
+[data-design="signal"] .signal-stats {
+  border-radius: 1rem;
+  border: 1px solid var(--ui-border);
+  background: var(--signal-card);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: var(--signal-shadow);
+}
+
+[data-design="signal"] .signal-stat-value {
+  font-family: 'Geist', ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ------------------------------------------------------------------ */
+/* Timeline                                                            */
+/* ------------------------------------------------------------------ */
+
+[data-design="signal"] .signal-timeline {
+  position: relative;
+}
+
+[data-design="signal"] .signal-timeline::before {
+  content: '';
+  position: absolute;
+  left: 0.4375rem;
+  top: 0.75rem;
+  bottom: 0.75rem;
+  width: 1px;
+  background: linear-gradient(180deg, var(--signal-blue), var(--signal-violet) 30%, var(--ui-border-accented) 60%, transparent);
+}
+
+[data-design="signal"] .signal-node {
+  position: absolute;
+  left: 0;
+  top: 0.45rem;
+  width: 0.9375rem;
+  height: 0.9375rem;
+  border-radius: 9999px;
+  border: 1px solid var(--ui-border-accented);
+  background: var(--ui-bg);
+}
+
+[data-design="signal"] .signal-node::after {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border-radius: inherit;
+  background: var(--ui-border-accented);
+}
+
+[data-design="signal"] .signal-node--current {
+  border-color: var(--signal-blue);
+  box-shadow: 0 0 0 4px var(--signal-glow), 0 0 22px 2px rgb(59 130 246 / 0.55);
+}
+
+[data-design="signal"] .signal-node--current::after {
+  background: linear-gradient(135deg, var(--signal-blue), var(--signal-cyan));
+}
+
+[data-design="signal"] .signal-node--current::before {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: inherit;
+  border: 1px solid var(--signal-blue);
+  animation: signal-ping 2.8s cubic-bezier(0.2, 0.7, 0.3, 1) infinite;
+}
+
+/* ------------------------------------------------------------------ */
+/* Talk rows                                                           */
+/* ------------------------------------------------------------------ */
+
+[data-design="signal"] .signal-row {
+  position: relative;
+  transition: background-color 0.2s ease;
+}
+
+[data-design="signal"] .signal-row:hover {
+  background: var(--ui-bg-muted);
+}
+
+[data-design="signal"] .signal-row:has(a:focus-visible) {
+  outline: 2px solid var(--ui-primary);
+  outline-offset: -2px;
+  border-radius: 0.75rem;
+}
+
+[data-design="signal"] .signal-row .signal-row-arrow {
+  transition: transform 0.2s ease;
+}
+
+[data-design="signal"] .signal-row:hover .signal-row-arrow {
+  transform: translate3d(4px, 0, 0);
+  color: var(--ui-primary);
+}
+
+/* ------------------------------------------------------------------ */
+/* Detail pages (shared markup) inside the Signal shell                */
+/* ------------------------------------------------------------------ */
+
+[data-design="signal"] .signal-shell article h1 {
+  font-size: clamp(2.5rem, 4.6vw, 4rem);
+  line-height: 1.02;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+}
+
+[data-design="signal"] .signal-shell main section h2 {
+  letter-spacing: -0.03em;
+}
+
+/* Tighter vertical rhythm between the stacked detail sections */
+[data-design="signal"] .signal-shell article [data-slot="container"] {
+  padding-bottom: 3rem;
+}
+
+@media (min-width: 1024px) {
+  [data-design="signal"] .signal-shell article [data-slot="container"] {
+    padding-bottom: 4rem;
+  }
+}
+
+/* Cards: glassy surface, rounder corners */
+[data-design="signal"] .signal-shell main [data-slot="root"].rounded-lg {
+  border-radius: 1rem;
+  border-color: var(--ui-border);
+  background: var(--signal-card);
+  box-shadow: var(--signal-shadow);
+}
+
+/* Field labels become mono eyebrows */
+[data-design="signal"] .signal-shell article p.font-medium.text-highlighted {
+  font-family: 'Geist Mono', ui-monospace, monospace;
+  font-size: 0.7rem;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ui-text-muted);
+  margin-bottom: 0.35rem;
+}
+
+/* Lab detail: meta card becomes a full-width spec strip */
+[data-design="signal"] .signal-shell article .lg\:grid-cols-\[20rem\] {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+[data-design="signal"] .signal-shell article .lg\:grid-cols-\[20rem\] .space-y-5 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem 3.5rem;
+}
+
+[data-design="signal"] .signal-shell article .lg\:grid-cols-\[20rem\] .space-y-5 > * {
+  margin-block: 0;
+}
+
+/* Talk detail: meta grid as a bordered strip */
+[data-design="signal"] .signal-shell article .lg\:grid-cols-4 {
+  padding-block: 1.25rem;
+  border-block: 1px solid var(--ui-border);
+}
+
+[data-design="signal"] .signal-shell article .lg\:grid-cols-4 p:not(.font-medium) {
+  color: var(--ui-text-highlighted);
+}
+
+/* Lab detail: Overview repeats the hero description, so show Challenge and
+   Approach as full-width spec rows with the heading in a side column. */
+[data-design="signal"] .signal-shell article .grid.lg\:grid-cols-3 {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+[data-design="signal"] .signal-shell article .grid.lg\:grid-cols-3 > :first-child {
+  display: none;
+}
+
+[data-design="signal"] .signal-shell article .whitespace-pre-line.text-sm,
+[data-design="signal"] .signal-shell article .grid.lg\:grid-cols-3 .text-sm.leading-7,
+[data-design="signal"] .signal-shell article [data-slot="body"] ul.text-sm {
+  font-size: 1rem;
+  line-height: 1.75;
+  max-width: 68ch;
+}
+
+@media (min-width: 1024px) {
+  [data-design="signal"] .signal-shell article .grid.lg\:grid-cols-3 [data-slot="body"] > .space-y-3 {
+    display: grid;
+    grid-template-columns: 12rem minmax(0, 1fr);
+    gap: 2.5rem;
+  }
+
+  [data-design="signal"] .signal-shell article .grid.lg\:grid-cols-3 [data-slot="body"] > .space-y-3 > * {
+    margin-block: 0;
+  }
+}
+
+/* Next steps: no lonely half-width card when there is no note */
+[data-design="signal"] .signal-shell article .grid:has(> :only-child) {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+[data-design="signal"] .signal-shell article li > span.rounded-full.bg-default {
+  background: var(--ui-primary);
+  box-shadow: 0 0 8px var(--ui-primary);
+}
+
+[data-design="signal"] .signal-shell ul[aria-label="Related lab projects"] {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+}
+
+/* ------------------------------------------------------------------ */
+/* Reduced motion                                                      */
+/* ------------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  [data-design="signal"] .signal-backdrop::after,
+  [data-design="signal"] .signal-live::after,
+  [data-design="signal"] .signal-node--current::before,
+  [data-design="signal"] .signal-rise,
+  [data-design="signal"] .signal-terminal::before,
+  [data-design="signal"] .signal-terminal .t-line,
+  [data-design="signal"] .signal-cursor {
+    animation: none !important;
+  }
+
+  [data-design="signal"] .signal-card,
+  [data-design="signal"] .signal-card::before,
+  [data-design="signal"] .signal-card::after,
+  [data-design="signal"] .signal-row,
+  [data-design="signal"] .signal-row .signal-row-arrow {
+    transition: none !important;
+  }
+}

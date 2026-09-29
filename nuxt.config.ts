@@ -1,5 +1,6 @@
 // Nuxt config — https://nuxt.com/docs/api/configuration/nuxt-config
 import { generateContentArtifacts } from './build/generate-content-artifacts'
+import { designPrerenderRoutes } from './app/utils/designs'
 
 export default defineNuxtConfig({
   modules: [
@@ -38,7 +39,8 @@ export default defineNuxtConfig({
       routes: [
         '/',
         '/404',
-        '/410'
+        '/410',
+        ...designPrerenderRoutes
       ],
       crawlLinks: true
     }

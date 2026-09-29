@@ -1,1 +1,619 @@
 /* studio design — every rule must be scoped under [data-design="studio"] */
+
+/* -------------------------------------------------------------------------
+ * Tokens
+ * `html[...]` (0,1,1) beats Nuxt UI's `:root` / `.dark` token blocks, and
+ * `html.dark[...]` (0,2,1) beats the light override in dark mode.
+ * ---------------------------------------------------------------------- */
+html[data-design="studio"] {
+  --ui-radius: 0.5rem;
+  --ui-container: var(--container-6xl);
+
+  --ui-primary: #2556e0;
+  /* Darker semantic colours so Nuxt UI soft badges reach AA on light tints */
+  --ui-warning: #9a5205;
+  --ui-info: #075985;
+  --ui-success: #046c4e;
+  --ui-bg: #faf7f2;
+  --ui-bg-muted: #f4efe8;
+  --ui-bg-elevated: #ffffff;
+  --ui-bg-accented: #ebe4da;
+  --ui-bg-inverted: #1c1917;
+
+  --ui-text-dimmed: #736b64;
+  --ui-text-muted: #5c554f;
+  --ui-text-toned: #4a443f;
+  --ui-text: #3a3531;
+  --ui-text-highlighted: #1a1614;
+  --ui-text-inverted: #ffffff;
+
+  --ui-border: #ebe4da;
+  --ui-border-muted: #efe9e1;
+  --ui-border-accented: #ddd3c6;
+  --ui-border-inverted: #1c1917;
+
+  --studio-display: 'Bricolage Grotesque', 'Figtree', ui-sans-serif, system-ui, sans-serif;
+  --studio-sans: 'Figtree', ui-sans-serif, system-ui, sans-serif;
+
+  --studio-card: #ffffff;
+  --studio-card-ring: rgb(28 25 23 / 0.07);
+  --studio-shadow: 0 1px 2px rgb(28 25 23 / 0.04), 0 8px 24px -12px rgb(28 25 23 / 0.12);
+  --studio-shadow-lift: 0 2px 4px rgb(28 25 23 / 0.05), 0 22px 44px -18px rgb(28 25 23 / 0.22);
+  --studio-glass: rgb(255 255 255 / 0.72);
+
+  /* Tile families: surface, ring, ink (AA on surface), chip (icon background) */
+  --studio-blue-surface: #e8efff;
+  --studio-blue-ring: #d4e0fe;
+  --studio-blue-ink: #1e40af;
+  --studio-blue-chip: #2f5ee8;
+
+  --studio-amber-surface: #fdf1dc;
+  --studio-amber-ring: #f6e0b6;
+  --studio-amber-ink: #874405;
+  --studio-amber-chip: #b45309;
+
+  --studio-violet-surface: #f0eaff;
+  --studio-violet-ring: #e1d6fd;
+  --studio-violet-ink: #5b21b6;
+  --studio-violet-chip: #7c3aed;
+
+  --studio-emerald-surface: #e2f5eb;
+  --studio-emerald-ring: #c9ead8;
+  --studio-emerald-ink: #065f46;
+  --studio-emerald-chip: #047857;
+
+  --studio-rose-surface: #fde9ee;
+  --studio-rose-ring: #f9d3dd;
+  --studio-rose-ink: #9f1239;
+  --studio-rose-chip: #e11d48;
+
+  --studio-blob-1: rgb(147 180 255 / 0.55);
+  --studio-blob-2: rgb(255 204 140 / 0.5);
+  --studio-blob-3: rgb(206 184 255 / 0.5);
+  --studio-blob-4: rgb(156 228 196 / 0.45);
+
+  ::selection {
+    color: #1a1614;
+    background-color: #cfdcff;
+  }
+}
+
+html.dark[data-design="studio"] {
+  --ui-primary: #7ea6ff;
+  --ui-warning: #fbc15a;
+  --ui-info: #7dd3fc;
+  --ui-success: #6ee7b7;
+  --ui-bg: #0f0e13;
+  --ui-bg-muted: #16141b;
+  --ui-bg-elevated: #1a1820;
+  --ui-bg-accented: #26232d;
+  --ui-bg-inverted: #faf7f2;
+
+  --ui-text-dimmed: #948d97;
+  --ui-text-muted: #b3acb5;
+  --ui-text-toned: #cbc5cd;
+  --ui-text: #e3dee5;
+  --ui-text-highlighted: #ffffff;
+  --ui-text-inverted: #0f0e13;
+
+  --ui-border: #2a2731;
+  --ui-border-muted: #221f28;
+  --ui-border-accented: #37333f;
+  --ui-border-inverted: #faf7f2;
+
+  --studio-card: #18161e;
+  --studio-card-ring: rgb(255 255 255 / 0.07);
+  --studio-shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 10px 28px -14px rgb(0 0 0 / 0.6);
+  --studio-shadow-lift: 0 2px 4px rgb(0 0 0 / 0.35), 0 26px 48px -20px rgb(0 0 0 / 0.75);
+  --studio-glass: rgb(26 24 32 / 0.72);
+
+  --studio-blue-surface: #151e33;
+  --studio-blue-ring: #223157;
+  --studio-blue-ink: #b3c9ff;
+  --studio-blue-chip: #3b6cf0;
+
+  --studio-amber-surface: #251c10;
+  --studio-amber-ring: #3b2d18;
+  --studio-amber-ink: #f8d08c;
+  --studio-amber-chip: #a35403;
+
+  --studio-violet-surface: #1f1931;
+  --studio-violet-ring: #33294f;
+  --studio-violet-ink: #d3c3ff;
+  --studio-violet-chip: #7447e8;
+
+  --studio-emerald-surface: #11231d;
+  --studio-emerald-ring: #1c3a2f;
+  --studio-emerald-ink: #9ee3c3;
+  --studio-emerald-chip: #06855d;
+
+  --studio-rose-surface: #2a161d;
+  --studio-rose-ring: #45232f;
+  --studio-rose-ink: #ffb8c8;
+  --studio-rose-chip: #d0164a;
+
+  --studio-blob-1: rgb(59 108 240 / 0.2);
+  --studio-blob-2: rgb(217 119 6 / 0.13);
+  --studio-blob-3: rgb(124 77 255 / 0.2);
+  --studio-blob-4: rgb(5 150 105 / 0.14);
+
+  ::selection {
+    color: #ffffff;
+    background-color: #2d3f73;
+  }
+}
+
+/* Literal font-family declarations so @nuxt/fonts picks the faces up */
+html[data-design="studio"] body {
+  font-family: 'Figtree', ui-sans-serif, system-ui, sans-serif;
+}
+
+/* -------------------------------------------------------------------------
+ * Nuxt UI components on detail pages (UCard, UPageHero …)
+ * ---------------------------------------------------------------------- */
+[data-design="studio"] #main-content .rounded-lg.overflow-hidden.ring {
+  border-radius: 1.5rem;
+  background-color: var(--studio-card);
+  border-color: transparent;
+  box-shadow: 0 0 0 1px var(--studio-card-edge, var(--studio-card-ring)), var(--studio-shadow);
+}
+
+[data-design="studio"] #main-content h1,
+[data-design="studio"] #main-content h2,
+[data-design="studio"] #main-content h3 {
+  font-family: var(--studio-display);
+  letter-spacing: -0.02em;
+}
+
+[data-design="studio"] #main-content h1 {
+  letter-spacing: -0.035em;
+}
+
+/* Detail pages: tighten the hero rhythm and rebalance the stock grids */
+@media (min-width: 64rem) {
+  [data-design="studio"] #main-content article .lg\:py-32 {
+    padding-top: 4.5rem;
+    padding-bottom: 3.5rem;
+    row-gap: 3rem;
+  }
+
+  /* Lab facts card (status/date/tags) becomes a full-width strip */
+  [data-design="studio"] #main-content article .lg\:grid-cols-\[20rem\] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  [data-design="studio"] #main-content article .lg\:grid-cols-\[20rem\] .space-y-5 {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 1.25rem 3.5rem;
+  }
+
+  [data-design="studio"] #main-content article .lg\:grid-cols-\[20rem\] .space-y-5 > * {
+    margin-top: 0;
+  }
+
+  /* Overview / Challenge / Approach: overview spans, the other two sit side by side */
+  [data-design="studio"] #main-content article .grid.lg\:grid-cols-3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* A lone "Next steps" card should use the full width */
+  [data-design="studio"] #main-content article .grid:has(> :only-child) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  [data-design="studio"] #main-content ul[aria-label="Related lab projects"] {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Detail hero title: bigger display face; the subtitle paragraph stays in the body face */
+[data-design="studio"] #main-content article h1 h1 {
+  font-size: clamp(2.5rem, 1.6rem + 3.4vw, 4.25rem);
+  line-height: 1;
+  font-weight: 800;
+}
+
+[data-design="studio"] #main-content article h1 p {
+  font-family: 'Figtree', ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: normal;
+}
+
+/* Talk facts (event/date/location/language) as a soft card */
+[data-design="studio"] #main-content article .lg\:grid-cols-4 {
+  border-radius: 1.5rem;
+  padding: 1.5rem;
+  background-color: var(--studio-card);
+  box-shadow: 0 0 0 1px var(--studio-card-ring), var(--studio-shadow);
+}
+
+/* Warm tints on the lab story cards */
+[data-design="studio"] #main-content article .grid.lg\:grid-cols-3 > :first-child {
+  display: none; /* repeats the hero description verbatim */
+}
+
+[data-design="studio"] #main-content article .grid.lg\:grid-cols-3 > :nth-child(2) {
+  background-color: var(--studio-amber-surface);
+  --studio-card-edge: var(--studio-amber-ring);
+}
+
+[data-design="studio"] #main-content article .grid.lg\:grid-cols-3 > :nth-child(3) {
+  background-color: var(--studio-violet-surface);
+  --studio-card-edge: var(--studio-violet-ring);
+}
+
+[data-design="studio"] #main-content article .grid.lg\:grid-cols-3 > :nth-child(2) h2 {
+  color: var(--studio-amber-ink);
+}
+
+[data-design="studio"] #main-content article .grid.lg\:grid-cols-3 > :nth-child(3) h2 {
+  color: var(--studio-violet-ink);
+}
+
+[data-design="studio"] #main-content article .grid.lg\:grid-cols-3 > :nth-child(2) p,
+[data-design="studio"] #main-content article .grid.lg\:grid-cols-3 > :nth-child(3) p {
+  color: var(--ui-text-toned);
+}
+
+[data-design="studio"] #main-content article li > .rounded-full.bg-default:first-child {
+  background-color: var(--ui-primary);
+}
+
+[data-design="studio"] #main-content article .text-sm.leading-7 {
+  font-size: 0.95rem;
+  line-height: 1.75;
+}
+
+/* -------------------------------------------------------------------------
+ * Building blocks (in a layer so Tailwind utilities can still override)
+ * ---------------------------------------------------------------------- */
+@layer components {
+  [data-design="studio"] .studio-display {
+    font-family: 'Bricolage Grotesque', 'Figtree', ui-sans-serif, system-ui, sans-serif;
+    font-optical-sizing: auto;
+    letter-spacing: -0.03em;
+  }
+
+  [data-design="studio"] .studio-tile {
+    position: relative;
+    border-radius: 1.75rem;
+    background-color: var(--studio-card);
+    box-shadow: 0 0 0 1px var(--studio-card-ring), var(--studio-shadow);
+    transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.35s ease;
+  }
+
+  [data-design="studio"] .studio-glass {
+    background-color: var(--studio-glass);
+    backdrop-filter: blur(24px) saturate(1.4);
+    -webkit-backdrop-filter: blur(24px) saturate(1.4);
+  }
+
+  [data-design="studio"] .studio-tint-blue {
+    --tint-surface: var(--studio-blue-surface);
+    --tint-ring: var(--studio-blue-ring);
+    --tint-ink: var(--studio-blue-ink);
+    --tint-chip: var(--studio-blue-chip);
+  }
+
+  [data-design="studio"] .studio-tint-amber {
+    --tint-surface: var(--studio-amber-surface);
+    --tint-ring: var(--studio-amber-ring);
+    --tint-ink: var(--studio-amber-ink);
+    --tint-chip: var(--studio-amber-chip);
+  }
+
+  [data-design="studio"] .studio-tint-violet {
+    --tint-surface: var(--studio-violet-surface);
+    --tint-ring: var(--studio-violet-ring);
+    --tint-ink: var(--studio-violet-ink);
+    --tint-chip: var(--studio-violet-chip);
+  }
+
+  [data-design="studio"] .studio-tint-emerald {
+    --tint-surface: var(--studio-emerald-surface);
+    --tint-ring: var(--studio-emerald-ring);
+    --tint-ink: var(--studio-emerald-ink);
+    --tint-chip: var(--studio-emerald-chip);
+  }
+
+  [data-design="studio"] .studio-tint-rose {
+    --tint-surface: var(--studio-rose-surface);
+    --tint-ring: var(--studio-rose-ring);
+    --tint-ink: var(--studio-rose-ink);
+    --tint-chip: var(--studio-rose-chip);
+  }
+
+  [data-design="studio"] .studio-tile.studio-tinted {
+    background-color: var(--tint-surface);
+    box-shadow: 0 0 0 1px var(--tint-ring), var(--studio-shadow);
+  }
+
+  [data-design="studio"] .studio-ink {
+    color: var(--tint-ink);
+  }
+
+  [data-design="studio"] .studio-chip {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    background-color: var(--tint-chip, var(--studio-blue-chip));
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.25), 0 6px 16px -6px var(--tint-chip, var(--studio-blue-chip));
+  }
+
+  [data-design="studio"] .studio-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    border-radius: 9999px;
+    padding: 0.25rem 0.625rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1rem;
+    color: var(--tint-ink, var(--ui-text-toned));
+    background-color: color-mix(in oklab, var(--tint-chip, var(--ui-text-muted)) 14%, transparent);
+  }
+
+  [data-design="studio"] .studio-tag {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 9999px;
+    padding: 0.25rem 0.625rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1rem;
+    color: var(--ui-text-toned);
+    background-color: var(--ui-bg-muted);
+    box-shadow: inset 0 0 0 1px var(--ui-border);
+  }
+
+  [data-design="studio"] .studio-btn {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: 9999px;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.25rem;
+    transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), background-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  [data-design="studio"] .studio-btn-solid {
+    color: var(--ui-text-inverted);
+    background-color: var(--ui-bg-inverted);
+  }
+
+  [data-design="studio"] .studio-btn-soft {
+    color: var(--ui-text-highlighted);
+    background-color: var(--ui-bg-elevated);
+    box-shadow: inset 0 0 0 1px var(--ui-border-accented);
+  }
+
+  [data-design="studio"] .studio-btn:hover {
+    transform: translateY(-1px);
+  }
+
+  [data-design="studio"] .studio-btn-soft:hover {
+    background-color: var(--ui-bg-muted);
+  }
+
+
+  /* Stretched link: the whole tile is clickable, the focus ring sits on the tile */
+  [data-design="studio"] .studio-stretched::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    border-radius: inherit;
+  }
+
+}
+
+/* Focus rings (unlayered so they beat the global :focus-visible rule) */
+[data-design="studio"] .studio-btn:focus-visible,
+[data-design="studio"] .studio-link:focus-visible {
+  outline: 2px solid var(--ui-primary);
+  outline-offset: 3px;
+  border-radius: 9999px;
+}
+
+[data-design="studio"] .studio-stretched:focus-visible {
+  outline: none;
+}
+
+[data-design="studio"] .studio-tile:has(.studio-stretched:focus-visible) {
+  outline: 2px solid var(--ui-primary);
+  outline-offset: 3px;
+}
+
+/* -------------------------------------------------------------------------
+ * Micro-interactions (transform only)
+ * ---------------------------------------------------------------------- */
+@media (hover: hover) {
+  [data-design="studio"] .studio-lift:hover,
+  [data-design="studio"] .studio-lift:focus-within {
+    transform: translateY(-4px);
+    box-shadow: 0 0 0 1px var(--tint-ring, var(--studio-card-ring)), var(--studio-shadow-lift);
+  }
+}
+
+[data-design="studio"] .studio-arrow {
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+[data-design="studio"] .group:hover .studio-arrow,
+[data-design="studio"] .group:focus-within .studio-arrow {
+  transform: translateX(3px);
+}
+
+[data-design="studio"] .group:hover .studio-arrow-diagonal,
+[data-design="studio"] .group:focus-within .studio-arrow-diagonal {
+  transform: translate(2px, -2px);
+}
+
+[data-design="studio"] .studio-portrait-img {
+  transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+[data-design="studio"] .studio-tile:hover .studio-portrait-img {
+  transform: scale(1.035);
+}
+
+/* -------------------------------------------------------------------------
+ * Background mesh
+ * ---------------------------------------------------------------------- */
+[data-design="studio"] .studio-mesh {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+[data-design="studio"] .studio-blob {
+  position: absolute;
+  width: 62vmax;
+  height: 62vmax;
+  border-radius: 9999px;
+  will-change: transform;
+}
+
+[data-design="studio"] .studio-blob-1 {
+  top: -30vmax;
+  left: -18vmax;
+  background: radial-gradient(closest-side, var(--studio-blob-1), transparent);
+  animation: studio-drift-a 38s ease-in-out infinite alternate;
+}
+
+[data-design="studio"] .studio-blob-2 {
+  top: -22vmax;
+  right: -26vmax;
+  background: radial-gradient(closest-side, var(--studio-blob-2), transparent);
+  animation: studio-drift-b 44s ease-in-out infinite alternate;
+}
+
+[data-design="studio"] .studio-blob-3 {
+  top: 34vh;
+  left: 28vw;
+  width: 54vmax;
+  height: 54vmax;
+  background: radial-gradient(closest-side, var(--studio-blob-3), transparent);
+  animation: studio-drift-c 52s ease-in-out infinite alternate;
+}
+
+[data-design="studio"] .studio-blob-4 {
+  bottom: -30vmax;
+  left: -20vmax;
+  background: radial-gradient(closest-side, var(--studio-blob-4), transparent);
+  animation: studio-drift-b 60s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes studio-drift-a {
+  to { transform: translate3d(8vmax, 6vmax, 0) scale(1.08); }
+}
+
+@keyframes studio-drift-b {
+  to { transform: translate3d(-7vmax, 8vmax, 0) scale(0.94); }
+}
+
+@keyframes studio-drift-c {
+  to { transform: translate3d(-10vmax, -6vmax, 0) scale(1.1); }
+}
+
+/* -------------------------------------------------------------------------
+ * Entrance (above the fold): `translate` + `scale` only, never opacity.
+ * Uses the individual transform properties so the hover `transform` still
+ * works after the animation has filled.
+ * ---------------------------------------------------------------------- */
+@keyframes studio-rise {
+  from {
+    translate: 0 18px;
+    scale: 0.97;
+  }
+  to {
+    translate: 0 0;
+    scale: 1;
+  }
+}
+
+[data-design="studio"] .studio-enter {
+  animation: studio-rise 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation-delay: calc(var(--studio-i, 0) * 70ms);
+}
+
+/* Live dot + waveform */
+@keyframes studio-ping {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.9); }
+}
+
+[data-design="studio"] .studio-ping {
+  animation: studio-ping 2.4s ease-in-out infinite;
+}
+
+@keyframes studio-wave {
+  0%, 100% { transform: scaleY(0.35); }
+  50% { transform: scaleY(1); }
+}
+
+[data-design="studio"] .studio-wave-bar {
+  transform-origin: center;
+  animation: studio-wave 1.3s ease-in-out infinite;
+  animation-delay: calc(var(--studio-i, 0) * -110ms);
+}
+
+@keyframes studio-hand {
+  0%, 60%, 100% { transform: rotate(0deg); }
+  10%, 30% { transform: rotate(14deg); }
+  20% { transform: rotate(-8deg); }
+  40% { transform: rotate(-4deg); }
+  50% { transform: rotate(10deg); }
+}
+
+[data-design="studio"] .studio-wave-hand {
+  transform-origin: 70% 80%;
+  animation: studio-hand 2.4s ease-in-out 0.9s 2;
+}
+
+[data-design="studio"] .studio-tile:hover .studio-wave-hand {
+  animation: studio-hand 2.4s ease-in-out infinite;
+}
+
+/* -------------------------------------------------------------------------
+ * Reduced motion
+ * ---------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  [data-design="studio"] .studio-blob,
+  [data-design="studio"] .studio-enter,
+  [data-design="studio"] .studio-ping,
+  [data-design="studio"] .studio-wave-hand,
+  [data-design="studio"] .studio-tile:hover .studio-wave-hand,
+  [data-design="studio"] .studio-wave-bar {
+    animation: none !important;
+  }
+
+  [data-design="studio"] .studio-wave-bar {
+    transform: scaleY(0.6);
+  }
+
+  [data-design="studio"] .studio-tile,
+  [data-design="studio"] .studio-btn,
+  [data-design="studio"] .studio-arrow,
+  [data-design="studio"] .studio-portrait-img {
+    transition: none !important;
+  }
+
+  [data-design="studio"] .studio-lift:hover,
+  [data-design="studio"] .studio-lift:focus-within,
+  [data-design="studio"] .studio-btn:hover,
+  [data-design="studio"] .studio-tile:hover .studio-portrait-img,
+  [data-design="studio"] .group:hover .studio-arrow,
+  [data-design="studio"] .group:focus-within .studio-arrow {
+    transform: none;
+  }
+}

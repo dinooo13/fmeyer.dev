@@ -16,4 +16,13 @@ export const isDesignId = (value: unknown): value is DesignId => {
 // Runs inline in <head> before first paint so design-scoped CSS applies
 // immediately. Non-default designs keep the app hidden until the client
 // plugin has swapped the components in (see plugins/design.client.ts).
-export const designBootScript = `(function(){try{var ids=${JSON.stringify(designOptions.map(option => option.id))};var q=new URLSearchParams(location.search).get('design');var d=ids.indexOf(q)>-1?q:localStorage.getItem('${DESIGN_STORAGE_KEY}');if(ids.indexOf(d)<0)d='classic';if(q===d)localStorage.setItem('${DESIGN_STORAGE_KEY}',d);var h=document.documentElement;h.setAttribute('data-design',d);if(d!=='classic'){h.classList.add('design-pending');setTimeout(function(){h.classList.remove('design-pending')},2500)}}catch(e){}})()`
+export const designBootScript = `(function(){try{var ids=${JSON.stringify(designOptions.map(option => option.id))};var q=new URLSearchParams(location.search).get('design');var d=ids.indexOf(q)>-1?q:localStorage.getItem('${DESIGN_STORAGE_KEY}');if(ids.indexOf(d)<0)d='classic';if(q===d)localStorage.setItem('${DESIGN_STORAGE_KEY}',d);var h=document.documentElement;h.setAttribute('data-design',d);if(d!=='classic'){h.classList.add('design-pending');setTimeout(function(){h.classList.remove('design-pending')},5000)}}catch(e){}})()`
+
+// The explorations only render on the client, so the static build never sees
+// their <NuxtImg> sizes. Prerender them explicitly so previews don't 404.
+const designPortraitSizes = [
+  '1x1', '2x2', '28x28', '44x44', '56x56', '88x88', '360x450', '480x600', '720x900',
+  '960x1200', '538x495', '680x626', '1076x990', '1360x1252'
+]
+
+export const designPrerenderRoutes = designPortraitSizes.map(size => `/_ipx/fit_cover&s_${size}/profile/fabian-meyer-portrait.jpg`)
