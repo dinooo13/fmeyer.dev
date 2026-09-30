@@ -214,7 +214,7 @@ export default defineNuxtConfig({
     urls: [
       {
         loc: '/',
-        images: [{ loc: `${siteUrl}/profile/fabian-meyer-portrait.jpg` }]
+        images: [{ loc: '/profile/fabian-meyer-portrait.jpg' }]
       }
     ]
   }
