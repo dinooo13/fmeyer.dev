@@ -106,6 +106,18 @@ const reveal = {
             >&gt;_</span> {{ current.title }}
           </p>
 
+          <p
+            v-if="page.hero.location"
+            class="signal-rise signal-rise-3 mt-2 flex items-center gap-1.5 font-mono text-sm tracking-[0.02em] text-muted"
+          >
+            <UIcon
+              name="i-lucide-map-pin"
+              class="size-3.5 shrink-0"
+              aria-hidden="true"
+            />
+            <span>{{ page.hero.location }}</span>
+          </p>
+
           <p class="signal-rise signal-rise-3 mt-7 max-w-xl text-xl leading-snug font-medium tracking-[-0.02em] text-pretty text-highlighted sm:text-2xl">
             {{ intro.lead }}
           </p>

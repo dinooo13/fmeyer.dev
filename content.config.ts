@@ -51,6 +51,7 @@ export default defineContentConfig({
         hero: z.object({
           name: z.string(),
           role: z.string(),
+          location: z.string().optional(),
           intro: z.string()
         }),
         focus: createBaseSchema().extend({

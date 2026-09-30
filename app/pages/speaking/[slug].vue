@@ -30,14 +30,14 @@ usePageSeo({
 })
 
 const siteUrl = runtimeConfig.public.siteUrl.replace(/\/$/, '')
-const canonicalUrl = `${siteUrl}/speaking/${slug}`
+const canonicalUrl = `${siteUrl}/speaking/${slug}/`
 const identityId = `${siteUrl}/#identity`
 
 useSchemaOrg([
   defineBreadcrumb({
     itemListElement: [
       { name: 'Home', item: `${siteUrl}/` },
-      { name: 'Speaking', item: `${siteUrl}/speaking` },
+      { name: 'Speaking', item: `${siteUrl}/speaking/` },
       { name: talk.value.title, item: canonicalUrl }
     ]
   }),

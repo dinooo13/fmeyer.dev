@@ -145,7 +145,7 @@ repoUrl: https://...       # optional GitHub repo URL
 note: ...                  # optional note shown on detail page
 ```
 
-The slug used for the URL is derived from the filename (e.g., `my-project.yml` → `/labs/my-project`).
+The slug used for the URL is derived from the filename (e.g., `my-project.yml` → `/labs/my-project/`).
 
 ### Adding a talk entry
 

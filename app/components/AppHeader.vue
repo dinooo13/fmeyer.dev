@@ -7,7 +7,8 @@ const links = computed(() => navLinks.map(link => ({
 })))
 
 const isActive = (to: string) => {
-  return to === '/' ? route.path === '/' : route.path.startsWith(to)
+  const current = route.path.endsWith('/') ? route.path : `${route.path}/`
+  return to === '/' ? current === '/' : current.startsWith(to)
 }
 </script>
 

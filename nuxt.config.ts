@@ -1,6 +1,8 @@
 // Nuxt config — https://nuxt.com/docs/api/configuration/nuxt-config
 import { generateContentArtifacts } from './build/generate-content-artifacts'
 
+const siteUrl = (process.env.NUXT_PUBLIC_SITE_URL || 'https://fmeyer.dev').replace(/\/$/, '')
+
 export default defineNuxtConfig({
   modules: [
     '@nuxt/eslint',
@@ -14,15 +16,19 @@ export default defineNuxtConfig({
   css: ['~/assets/css/main.css'],
 
   site: {
-    url: process.env.NUXT_PUBLIC_SITE_URL || 'https://fmeyer.dev',
+    url: siteUrl,
     name: 'fmeyer.dev',
+    // The host serves prerendered pages as directory indexes and 301-redirects
+    // /labs to /labs/. Canonical URLs, sitemap entries and internal links all
+    // use the trailing-slash form so nothing points at a redirect.
+    trailingSlash: true,
     description: 'Fabian Meyer — Staff Agentic Engineer at Cordes & Graefe KG, moving the organisation to agentic engineering.',
     defaultLocale: 'en'
   },
 
   runtimeConfig: {
     public: {
-      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://fmeyer.dev',
+      siteUrl,
       noindex: process.env.NUXT_PUBLIC_NOINDEX === 'true'
     }
   },
@@ -130,27 +136,86 @@ export default defineNuxtConfig({
   },
 
   schemaOrg: {
+    // Global Person identity: the node every page's WebSite / WebPage / Event /
+    // CreativeWork points at (#identity). Beyond name and job, the properties
+    // exist to disambiguate this Fabian Meyer from the many namesakes Google
+    // knows about: legal name parts, handle, city, employer URL, topics, and
+    // the third-party pages that describe the same person.
     identity: {
       type: 'Person',
       name: 'Fabian Meyer',
-      url: process.env.NUXT_PUBLIC_SITE_URL || 'https://fmeyer.dev',
+      givenName: 'Fabian',
+      familyName: 'Meyer',
+      alternateName: 'dinooo13',
+      url: `${siteUrl}/`,
       image: '/profile/fabian-meyer-portrait.jpg',
       description: 'Staff Agentic Engineer at Cordes & Graefe KG. Leads the organisation-wide move to agentic engineering, building agent-ready tooling, spec-driven development workflows, and enabling engineers to work effectively with agents.',
+      email: 'hello@fmeyer.dev',
       jobTitle: 'Staff Agentic Engineer',
       worksFor: {
         '@type': 'Organization',
-        'name': 'Cordes & Graefe KG'
+        'name': 'Cordes & Graefe KG',
+        'url': 'https://www.cordes-graefe.de/'
       },
+      homeLocation: {
+        '@type': 'Place',
+        'name': 'Bremen, Germany',
+        'address': {
+          '@type': 'PostalAddress',
+          'addressLocality': 'Bremen',
+          'addressCountry': 'DE'
+        }
+      },
+      nationality: {
+        '@type': 'Country',
+        'name': 'Germany'
+      },
+      knowsAbout: [
+        'Agentic engineering',
+        'Spec-driven development',
+        'AI coding agents',
+        { '@type': 'Thing', 'name': 'Software engineering', 'sameAs': 'https://en.wikipedia.org/wiki/Software_engineering' },
+        { '@type': 'Thing', 'name': 'Vue.js', 'sameAs': 'https://en.wikipedia.org/wiki/Vue.js' },
+        { '@type': 'Thing', 'name': 'Nuxt', 'sameAs': 'https://en.wikipedia.org/wiki/Nuxt' },
+        { '@type': 'Thing', 'name': 'TypeScript', 'sameAs': 'https://en.wikipedia.org/wiki/TypeScript' }
+      ],
+      // Profiles first, then third-party pages that name this person with a
+      // matching bio. Reciprocal links from these pages back to fmeyer.dev are
+      // what lets Google confirm they all describe the same entity.
       sameAs: [
         'https://github.com/dinooo13',
-        'https://linkedin.com/in/fabian-meyer-02038813a'
-      ]
+        'https://linkedin.com/in/fabian-meyer-02038813a',
+        'https://www.rheinwerk-verlag.de/konferenzen/coding-mit-ki/speaker/#fabian-meyer',
+        'https://www.rheinwerk-verlag.de/online-kurse/spec-driven-development/',
+        'https://agentic.hamburg/news/blog/2026/speaker-spotlight-fabian-meyer-onboarding-your-agent-how-eventim-integrates-agentic-engineering-into-enterprise-workflows/'
+      ],
+      subjectOf: {
+        '@type': 'Article',
+        'headline': 'Speaker Spotlight: Fabian Meyer – Onboarding Your Agent: How eventim Integrates Agentic Engineering into Enterprise Workflows',
+        'url': 'https://agentic.hamburg/news/blog/2026/speaker-spotlight-fabian-meyer-onboarding-your-agent-how-eventim-integrates-agentic-engineering-into-enterprise-workflows/',
+        'publisher': {
+          '@type': 'Organization',
+          'name': 'Agentic Conf Hamburg',
+          'url': 'https://agentic.hamburg/'
+        }
+      }
     }
   },
 
   sitemap: {
     autoLastmod: true,
     xsl: false,
-    exclude: ['/404', '/410']
+    exclude: ['/404', '/404/', '/410', '/410/'],
+    // Image discovery reads <img src> out of the prerendered HTML, where the
+    // @nuxt/image `_ipx/fit_cover&s_…` thumbnail URL is already HTML-escaped;
+    // the sitemap escapes it again and emits a URL that 404s. Declare the
+    // portrait explicitly instead — the same file the Person schema uses.
+    discoverImages: false,
+    urls: [
+      {
+        loc: '/',
+        images: [{ loc: '/profile/fabian-meyer-portrait.jpg' }]
+      }
+    ]
   }
 })

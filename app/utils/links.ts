@@ -7,9 +7,9 @@ export const navLinks: NavigationMenuItem[] = [{
 }, {
   label: 'Labs',
   icon: 'i-lucide-folder',
-  to: '/labs'
+  to: '/labs/'
 }, {
   label: 'Speaking',
   icon: 'i-lucide-mic',
-  to: '/speaking'
+  to: '/speaking/'
 }]

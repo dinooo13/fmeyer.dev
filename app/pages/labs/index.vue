@@ -26,7 +26,7 @@ useSchemaOrg([
   defineBreadcrumb({
     itemListElement: [
       { name: 'Home', item: `${siteUrl}/` },
-      { name: 'Labs', item: `${siteUrl}/labs` }
+      { name: 'Labs', item: `${siteUrl}/labs/` }
     ]
   }),
   defineItemList({

@@ -14,6 +14,17 @@
     Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self';"
 </IfModule>
 
+# Cache policy. The host applies a blanket one-year max-age to every file. That
+# is right for hashed /_nuxt/ assets but wrong for HTML, feeds and crawler files
+# (sitemap.xml, rss.xml, robots.txt, llms.txt): browsers and feed readers would
+# keep a stale copy until a hard refresh. Force revalidation for those instead;
+# ETag / Last-Modified turn repeat requests into cheap 304s.
+<IfModule mod_headers.c>
+    <FilesMatch "\.(html|xml|txt)$">
+        Header set Cache-Control "no-cache"
+    </FilesMatch>
+</IfModule>
+
 # Custom error pages (prerendered Nuxt routes).
 ErrorDocument 404 __BASE__404/index.html
 ErrorDocument 410 __BASE__410/index.html
@@ -24,9 +35,19 @@ ErrorDocument 410 __BASE__410/index.html
 <IfModule mod_rewrite.c>
     RewriteEngine On
     RewriteBase __BASE__
-    RewriteRule ^tags(/.*)?$  - [G,L,NC]
-    RewriteRule ^en(/.*)?$    - [G,L,NC]
-    RewriteRule ^legal/?$     - [G,L,NC]
+    # Legacy Hugo site (hugo-theme-stack): German content at the root with
+    # posts under /p/, pagination under /page/, plus the theme's list pages;
+    # the English mirror lived under /en/.
+    RewriteRule ^p(/.*)?$          - [G,L,NC]
+    RewriteRule ^page(/.*)?$       - [G,L,NC]
+    RewriteRule ^tags(/.*)?$       - [G,L,NC]
+    RewriteRule ^categories(/.*)?$ - [G,L,NC]
+    RewriteRule ^archives(/.*)?$   - [G,L,NC]
+    RewriteRule ^search(/.*)?$     - [G,L,NC]
+    RewriteRule ^about(/.*)?$      - [G,L,NC]
+    RewriteRule ^en(/.*)?$         - [G,L,NC]
+    RewriteRule ^legal/?$          - [G,L,NC]
+    # Labs that were removed from the current site.
     RewriteRule ^labs/watch-wise/?$    - [G,L,NC]
     RewriteRule ^labs/tv-show-bingo/?$ - [G,L,NC]
     RewriteRule ^labs/fmeyer-dev/?$    - [G,L,NC]

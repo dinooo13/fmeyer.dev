@@ -59,7 +59,7 @@ export const getLabSlug = <Lab extends Pick<LabEntry, 'stem' | 'title'>>(lab: La
 }
 
 export const getLabPath = <Lab extends Pick<LabEntry, 'stem' | 'title'>>(lab: Lab) => {
-  return `/labs/${getLabSlug(lab)}`
+  return `/labs/${getLabSlug(lab)}/`
 }
 
 export const formatLabDate = (value: string | Date) => {

@@ -38,7 +38,7 @@ defineOgImage('Default')
             </li>
             <li>
               <UButton
-                to="/labs"
+                to="/labs/"
                 icon="i-lucide-folder"
                 color="neutral"
                 variant="outline"
@@ -47,7 +47,7 @@ defineOgImage('Default')
             </li>
             <li>
               <UButton
-                to="/speaking"
+                to="/speaking/"
                 icon="i-lucide-mic"
                 color="neutral"
                 variant="outline"
