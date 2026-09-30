@@ -6,6 +6,7 @@ description: Staff Agentic Engineer at Cordes & Graefe KG focused on organisatio
 hero:
   name: Fabian Meyer
   role: "Staff Agentic Engineer at Cordes\u00A0&\u00A0Graefe\u00A0KG"
+  location: Bremen, Germany
   intro: I help companies make the move to agentic engineering. That means shaping how teams work with agents, building the tooling and workflows that make the change stick, and staying hands-on so the practices hold up in real delivery.
 focus:
   title: Focus
@@ -69,7 +70,7 @@ labs:
   link:
     label: Explore Labs
     icon: i-lucide-flask-conical
-    to: /labs
+    to: /labs/
 
 speaking:
   title: Speaking
@@ -77,4 +78,4 @@ speaking:
   link:
     label: View Speaking
     icon: i-lucide-mic-vocal
-    to: /speaking
+    to: /speaking/

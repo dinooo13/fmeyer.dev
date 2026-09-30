@@ -5,8 +5,12 @@ const baseURL = runtimeConfig.app.baseURL
 
 const basePrefix = baseURL.replace(/\/$/, '')
 
+// Canonical URLs use the trailing-slash form (see `site.trailingSlash` in
+// nuxt.config.ts); normalise here so a slash-less route never leaks through.
 const canonicalUrl = computed(() => {
-  return new URL(`${basePrefix}${route.path || '/'}`, runtimeConfig.public.siteUrl).toString()
+  const path = route.path || '/'
+  const normalised = path.endsWith('/') ? path : `${path}/`
+  return new URL(`${basePrefix}${normalised}`, runtimeConfig.public.siteUrl).toString()
 })
 
 useHead({

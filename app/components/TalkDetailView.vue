@@ -99,7 +99,7 @@ const reveal = {
             </li>
             <li>
               <NuxtLink
-                to="/speaking"
+                to="/speaking/"
               >speaking</NuxtLink>
             </li>
             <li aria-current="page">
@@ -357,7 +357,7 @@ const reveal = {
         eyebrow="Speaking"
         heading-id="signal-related-talks"
         title="More talks"
-        :link="{ label: 'All talks', to: '/speaking' }"
+        :link="{ label: 'All talks', to: '/speaking/' }"
       />
 
       <ul

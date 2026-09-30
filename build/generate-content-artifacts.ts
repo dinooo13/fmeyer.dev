@@ -98,7 +98,7 @@ const renderLlmsTxt = (siteUrl: string, labs: LabEntry[], talks: TalkEntry[], ho
     lines.push('## Labs')
     lines.push('')
     for (const lab of labs) {
-      lines.push(`- [${lab.title}](${siteUrl}/labs/${lab.slug}): ${collapseWhitespace(lab.description)}`)
+      lines.push(`- [${lab.title}](${siteUrl}/labs/${lab.slug}/): ${collapseWhitespace(lab.description)}`)
     }
     lines.push('')
   }
@@ -108,7 +108,7 @@ const renderLlmsTxt = (siteUrl: string, labs: LabEntry[], talks: TalkEntry[], ho
     lines.push('')
     for (const talk of talks) {
       const meta = [talk.event, talk.location, talk.dateLabel].filter(Boolean).join(' — ')
-      lines.push(`- [${talk.title}](${siteUrl}/speaking/${talk.slug}): ${collapseWhitespace(talk.summary)} (${meta})`)
+      lines.push(`- [${talk.title}](${siteUrl}/speaking/${talk.slug}/): ${collapseWhitespace(talk.summary)} (${meta})`)
     }
     lines.push('')
   }
@@ -130,7 +130,7 @@ const renderLlmsFullTxt = (siteUrl: string, labs: LabEntry[], talks: TalkEntry[]
     for (const lab of labs) {
       const block: string[] = []
       block.push(`### ${lab.title}`)
-      block.push(`URL: ${siteUrl}/labs/${lab.slug}`)
+      block.push(`URL: ${siteUrl}/labs/${lab.slug}/`)
       if (lab.status) block.push(`Status: ${lab.status}`)
       if (lab.tags?.length) block.push(`Tags: ${lab.tags.join(', ')}`)
       if (lab.url) block.push(`Demo: ${lab.url}`)
@@ -161,7 +161,7 @@ const renderLlmsFullTxt = (siteUrl: string, labs: LabEntry[], talks: TalkEntry[]
     for (const talk of talks) {
       const block: string[] = []
       block.push(`### ${talk.title}`)
-      block.push(`URL: ${siteUrl}/speaking/${talk.slug}`)
+      block.push(`URL: ${siteUrl}/speaking/${talk.slug}/`)
       block.push(`Event: ${talk.event}`)
       block.push(`Location: ${talk.location}`)
       if (talk.dateLabel) block.push(`Date: ${talk.dateLabel}`)
@@ -197,8 +197,8 @@ const renderRssXml = (siteUrl: string, labs: LabEntry[], talks: TalkEntry[]) => 
   for (const lab of labs) {
     pushItem({
       title: lab.title,
-      link: `${siteUrl}/labs/${lab.slug}`,
-      guid: `${siteUrl}/labs/${lab.slug}`,
+      link: `${siteUrl}/labs/${lab.slug}/`,
+      guid: `${siteUrl}/labs/${lab.slug}/`,
       pubDate: formatDate(lab.date),
       category: 'Labs',
       description: collapseWhitespace(lab.description)
@@ -207,8 +207,8 @@ const renderRssXml = (siteUrl: string, labs: LabEntry[], talks: TalkEntry[]) => 
   for (const talk of talks) {
     pushItem({
       title: talk.title,
-      link: `${siteUrl}/speaking/${talk.slug}`,
-      guid: `${siteUrl}/speaking/${talk.slug}`,
+      link: `${siteUrl}/speaking/${talk.slug}/`,
+      guid: `${siteUrl}/speaking/${talk.slug}/`,
       pubDate: formatDate(talk.date),
       category: 'Speaking',
       description: collapseWhitespace(talk.summary)

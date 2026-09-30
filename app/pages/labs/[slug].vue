@@ -25,14 +25,14 @@ if (!lab.value) {
 usePageSeo(lab.value)
 
 const siteUrl = runtimeConfig.public.siteUrl.replace(/\/$/, '')
-const canonicalUrl = `${siteUrl}/labs/${slug}`
+const canonicalUrl = `${siteUrl}/labs/${slug}/`
 const identityId = `${siteUrl}/#identity`
 
 useSchemaOrg([
   defineBreadcrumb({
     itemListElement: [
       { name: 'Home', item: `${siteUrl}/` },
-      { name: 'Labs', item: `${siteUrl}/labs` },
+      { name: 'Labs', item: `${siteUrl}/labs/` },
       { name: lab.value.title, item: canonicalUrl }
     ]
   }),

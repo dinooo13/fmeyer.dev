@@ -116,7 +116,7 @@ export const getTalkSlug = <Talk extends Pick<TalkEntry, 'stem' | 'title'>>(talk
 }
 
 export const getTalkPath = <Talk extends Pick<TalkEntry, 'stem' | 'title'>>(talk: Talk) => {
-  return `/speaking/${getTalkSlug(talk)}`
+  return `/speaking/${getTalkSlug(talk)}/`
 }
 
 const parseDurationMinutes = (duration?: string): number | null => {
