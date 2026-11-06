@@ -51,4 +51,10 @@ ErrorDocument 410 __BASE__410/index.html
     RewriteRule ^labs/watch-wise/?$    - [G,L,NC]
     RewriteRule ^labs/tv-show-bingo/?$ - [G,L,NC]
     RewriteRule ^labs/fmeyer-dev/?$    - [G,L,NC]
+    # Replaced talk slides. Bundled PDFs have content-hashed URLs, so a new
+    # export gets a new URL and the deploy deletes the old file. Keep links
+    # that were already shared (e.g. on LinkedIn) working by redirecting the
+    # old URL to the current file. If the deck is replaced again, point these
+    # targets at the newest hash too.
+    RewriteRule "^_nuxt/Onboarding Your Agent code\.talks\.BqOjJApr\.pdf$" "_nuxt/Onboarding Your Agent code.talks.DkOtIBWD.pdf" [R=301,L]
 </IfModule>
