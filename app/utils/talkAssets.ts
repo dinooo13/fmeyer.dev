@@ -1,9 +1,11 @@
 import onboardingYourAgentSlides from '../assets/Onboarding Your Agent.pdf'
+import onboardingYourAgentCodeTalksSlides from '../assets/Onboarding Your Agent code.talks.pdf'
 import sddInDerPraxisSlides from '../assets/SDD in der Praxis.pdf'
 import specCodeVerifySlides from '../assets/Spec Code Verify Workshop.pdf'
 
 export const talkAssetRegistry = {
   'onboarding-your-agent-slides': onboardingYourAgentSlides,
+  'onboarding-your-agent-code-talks-slides': onboardingYourAgentCodeTalksSlides,
   'spec-driven-development-in-practice-slides': sddInDerPraxisSlides,
   'spec-code-verify-slides': specCodeVerifySlides
 } as const
