@@ -1,0 +1,32 @@
+title: "Onboarding Your Agent: How to Integrate Agentic Engineering into Enterprise Workflows"
+summary: Six months after the first version, almost everything changed. With far more capable models, the bottleneck moved from writing code to verifying and reviewing it - this talk shows how we make agent work verifiable, keep merge requests reviewable, and sharpen the agent from every run.
+event: code.talks 2026
+location: Kinopolis HafenCity, Hamburg, Germany
+topic: Agentic engineering in enterprise workflows
+description: >-
+  Coding agents are impressive, but in enterprise environments code was never
+  the main bottleneck. The friction lives in the process: turning tickets into
+  specs, running pipelines, opening merge requests, deploying, and debugging
+  failures. We onboarded our agent like a new engineer. We gave it access to
+  our tools, implemented our workflows as agent skills, and let it operate
+  within our guardrails from ticket to verified result. Engineers review
+  outcomes, not execute steps. This talk breaks down the four building blocks
+  behind it: Specification, Implementation, Tools, and Verification. Together,
+  they're what lets an agent own engineering work end to end - not just write
+  code.
+date: 2026-11-05
+dateLabel: "November 5, 2026 · 15:15"
+time: "15:15"
+room: Stage 9
+duration: 20 min
+format: Keynote
+language: English
+venueName: Kinopolis HafenCity
+url: https://codetalks.com/speaker/fabian-meyer
+eventUrl: https://codetalks.com/
+resources:
+  - kind: slides
+    title: Slides
+    asset: onboarding-your-agent-code-talks-slides
+    format: PDF
+    pages: 18
