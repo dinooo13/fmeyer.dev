@@ -1,10 +1,9 @@
 title: Pladder
-description: Push-to-talk dictation for macOS, built for talking to coding agents. Hold a key, speak, let go, and about 0.2 seconds later the prompt is in T3 Code, Claude Code, Codex or Cursor. It runs entirely on device, works offline in 25 languages, and is free and MIT licensed, with a signed, notarised download.
+description: Push-to-talk dictation for macOS, built for talking to coding agents. Hold a key, speak, let go, and about 0.2 seconds later the prompt is in T3 Code, Claude Code, Codex or Cursor. It runs entirely on device, works offline in 25 languages, and is free and MIT licensed, with a signed, notarised download that keeps itself up to date.
 challenge: Prompts for agents keep getting longer, and speaking is three to four times faster than typing. Dictation has always given that advantage back in the wait after you stop talking, and cloud tools add a subscription, an account, and the question of where your audio ends up. The goal is release-to-paste latency close to zero on the slowest supported Mac, without a single word leaving the machine.
-approach: Pladder runs Parakeet Ultra, Moondream's post-training of NVIDIA's Parakeet TDT v3, on the Neural Engine and transcribes while you are still speaking, so an M1 pastes in a median of 0.195 seconds whether you spoke for five seconds or five minutes. Everything else was moved off the critical path, and every change to it ships with a before-and-after benchmark. Around that core sits a polished menu bar app with a Liquid Glass pill, a send key that pastes and presses Return in one motion, a dictionary that learns your project's jargon, filler-word removal, spoken punctuation, and a CLI so other tools can use it for speech-to-text. Releases are Developer ID signed, notarised DMGs, built and published by CI from main.
+approach: Pladder runs Parakeet Ultra, Moondream's post-training of NVIDIA's Parakeet TDT v3, on the Neural Engine and transcribes while you are still speaking, so an M1 pastes in a median of 0.195 seconds whether you spoke for five seconds or five minutes. Everything else was moved off the critical path, and every change to it ships with a before-and-after benchmark. Around that core sits a quiet, native menu bar app with a Liquid Glass pill, a send key that pastes and presses Return in one motion, a dictionary that learns your project's jargon, filler-word removal, spoken punctuation, and a CLI so other tools can use it for speech-to-text. Releases are Developer ID signed, notarised DMGs, built and published by CI from main. The same workflow signs a Sparkle appcast, so the app updates itself with automatic checks opt-in, and bumps a Homebrew cask for anyone who would rather run brew upgrade.
 nextSteps:
   - Graduate the experimental on-device polish step that turns "wait, no, Friday" into "Friday".
-  - Spike an iOS dictation keyboard backed by a background app.
   - Add managed policies so organisations can pin the engine and lock features on or off.
   - Keep pushing release-to-paste latency down, with a benchmark for every change.
 icon: i-lucide-mic
@@ -16,5 +15,5 @@ tags:
   - macOS
   - On-device AI
   - Speech-to-text
-date: 2026-11-02T13:27:11Z
+date: 2026-11-07T00:39:28Z
 order: 1
