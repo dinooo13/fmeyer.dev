@@ -21,6 +21,10 @@ language: German
 url: https://www.rheinwerk-verlag.de/konferenzen/coding-mit-ki/#vortrag-spec-driven-development
 eventUrl: https://www.rheinwerk-verlag.de/konferenzen/coding-mit-ki/
 resources:
+  - kind: recording
+    title: Recording
+    url: https://youtu.be/7jXyeMuj10I
+    format: Video
   - kind: slides
     title: Slides
     asset: spec-driven-development-in-practice-slides
